@@ -227,6 +227,7 @@ else
 	echo -e "Trim_galore already done" >> $logfile;
 fi
 
+
 ##################################
 ##	Metagenomic steps : VSEARCH	##
 ##################################
@@ -257,13 +258,17 @@ then
 	echo -e "~~	MergePair	~~";
 	find . -name "${suffix}*R1*.fq" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'r2="${0/R1/R2}"; [[ ${0} =~ \.*/*(${suffix}.*)[\._-]R1.* ]]; echo Pair : ${0} $r2 - Label : ${BASH_REMATCH[1]}; vsearch --quiet --fastq_mergepairs ${0} --reverse $r2 --minseqlength 30 --threads '${threads}' --fastq_allowmergestagger --label_suffix ${BASH_REMATCH[1]} --fastaout '${tmpdir}/'${BASH_REMATCH[1]}.fasta &>> '${logfile}';'
 	
+	
 	cd ${tmpdir};
 	##	Dereplication
 	echo -e "~~	Dereplicate	~~";
 	find . -name "${suffix}*.fasta" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'vsearch --quiet --derep_fulllength '${tmpdir}/'${0} --sizeout --threads '${threads}' --relabel_sha1 --fasta_width 0 --minuniquesize 2 --output '${tmpdir}'/$(basename "${0/.fasta/}")_lin_der.fasta --log $(basename "${0/.fasta/}").log  &>> '${logfile}';'
+
 	##	Chimerics removal
 	echo -e "~~	ChimericSeqRemoval	~~";
 	find . -name "${suffix}*_lin_der.fasta" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'vsearch --quiet --uchime_denovo '${tmpdir}/'${0} --sizein --threads '${threads}' --relabel $(basename "${0/_lin_der.fasta/}") --sizeout --xsize --nonchimeras '${tmpdir}/'$(basename "${0/_lin_der.fasta/}")_no_chim.fasta --log $(basename "${0/_lin_der.fasta/}")_chimeria.log &>> '${logfile}';';
+	
+
 	##	Clustering
 	echo -e "~~	Clustering	~~";
 	find . -name "${suffix}*_no_chim.fasta" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'vsearch --quiet --cluster_size '${tmpdir}/'${0} --id 0.98 --threads '${threads}' --sizein --clusterout_id --clusterout_sort --sizeout --xsize --relabel $(basename "${0/_no_chim.fasta/}") --centroids '${outputdir}/'$(basename "${0/_no_chim.fasta/}").fasta --log $(basename "${0/_no_chim.fasta/}")_clustering.log &>> '${logfile}';';

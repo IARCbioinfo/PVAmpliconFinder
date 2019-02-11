@@ -1183,6 +1183,7 @@ my @res_known=concat_sequence($output_known,$inputdirfasta);
 my %hdata_known=%{$res_known[0]};
 my %hseq_known=%{$res_known[1]};
 
+
 ##################################
 ##	Concat_sequence function	##
 ##################################
@@ -1407,7 +1408,6 @@ mkdir $tmp3;
 chdir $output_known;
 print "Create contigs KNOWN VIRUS\n";
 my @aecrire3=contig_build(\%hdata_known,\%hseq_known,$inputdirfasta,$tmp3);
-
 
 
 ## perl analysis_summary_dariush_lastVersion.pl -i /home/robitaillea/ICB/Dariush_virome_Alex_Tarik_11052018/TEST/results/TEST_1_seq/blast_results_mimic -o /home/robitaillea/ICB/Dariush_virome_Alex_Tarik_11052018/TEST/results/TEST_1_seq/ -s Dariush_ -d /home/robitaillea/ICB/Dariush_virome_Alex_Tarik_11052018/TEST/results/TEST_1_seq/vsearch_mimic -f /home/robitaillea/ICB/Dariush_virome_Alex_Tarik_11052018/TEST/results/TEST_1_seq/infofile_mimic.csv -t 8
@@ -1841,6 +1841,7 @@ chdir "$whereiam/raxml/known";
 
 chdir "$whereiam/raxml";
 
+
 ##FROM HERE :
 ##	NEED TO DOWNLOAD 2 FILES FROM PAVE (THEY ARN'T FORMATED THE SAME!!!!!)
 	#	Human Ref Clone table : https://pave.niaid.nih.gov/#explore/reference_genomes/human_genomes --> export
@@ -1905,12 +1906,18 @@ my $putative_new=$outputdir."/table_putative_new_VIRUS.txt";
 my $putative_known=$outputdir."/table_putative_known_VIRUS.txt";
 
 ##	Re-intitalisation of variable
-%hnewtable=();
+%hnewtable=();		#For RaxML
+my %hnewtable_blastn=();
 %hseq=();
 my @catknown=();
 my @catnew=();
 %known=();
 %new=();
+
+my @catknown_blastn=();
+my @catnew_blastn=();
+my %known_blastn=();
+my %new_blastn=();
 
 my $outnew=$outputdir."/table_putative_new_VIRUS_RaxML.txt";
 open(T,">".$outnew) or die "$! : $outnew\n";
@@ -1992,8 +1999,12 @@ sub treatputative{
 		my $hpv_blast="";
 		my $classification_blastn="";
 		my $seq="";
+		
 		my $raxml_class="";
 		my $raxml_closest="";
+		
+		my $blastn_species="";
+		my $blastn_closest="";
 		
 		if($boolean_infofile eq "true"){
 			
@@ -2050,6 +2061,15 @@ sub treatputative{
 				$raxml_class=join('/',@taxtmp);
 				$raxml_closest=join('/',@closetmp);
 				
+				if($hpv_blast=~/\//){	#more than one seq
+					my @tabtmp=split(/\//,$hpv_blast);
+					$blastn_closest=$tabtmp[0];
+				}
+				if($classification_blastn=~/\//){	#more than one seq
+					my @tabtmp=split(/\//,$classification_blastn);
+					$blastn_species=$tabtmp[0];
+				}
+				
 			}
 			else{						##	Une seule sequence pour ce cluser
 				
@@ -2058,6 +2078,8 @@ sub treatputative{
 				$idselected=$id;
 				$raxml_class=$querytax{$idselected};
 				$raxml_closest=$queryclose{$idselected};
+				$blastn_closest=$hpv_blast;
+				$blastn_species=$classification_blastn;
 			}
 		}
 		else{	##NO INFOFILE, LESS COLUMN		
@@ -2106,6 +2128,15 @@ sub treatputative{
 				$raxml_class=join('/',@taxtmp);
 				$raxml_closest=join('/',@closetmp);
 				
+				if($hpv_blast=~/\//){	#more than one seq
+					my @tabtmp=split(/\//,$hpv_blast);
+					$blastn_closest=$tabtmp[0];
+				}
+				if($classification_blastn=~/\//){	#more than one seq
+					my @tabtmp=split(/\//,$classification_blastn);
+					$blastn_species=$tabtmp[0];
+				}
+				
 			}
 			else{						##	Une seule sequence pour ce cluser
 				
@@ -2114,6 +2145,8 @@ sub treatputative{
 				$idselected=$id;
 				$raxml_class=$querytax{$idselected};
 				$raxml_closest=$queryclose{$idselected};
+				$blastn_closest=$hpv_blast;
+				$blastn_species=$classification_blastn;
 			}
 			
 		}
@@ -2123,14 +2156,19 @@ sub treatputative{
 		#~ $@{$hnewtable{$tissu{$pool}}{$cattmp}{$hpvcat{$hpvname}}{$hpvname}}[$poolsid{$pool}]+=$htarget{$pool}{'known'}{$hpvname};
 		
 		my $genus="";
-		#~ print $idselected."\n";
-		#~ print $querytax{$idselected}."\n";
-		#~ exit;
 		if($querytax{$idselected}=~/^(\S+)\s\d+$/){
 			$genus=$1;
 		}
 		else{
 			$genus=$querytax{$idselected};
+		}
+		
+		my $genus_blastn="";
+		if($blastn_species=~/(\S+)papillomavirus (\d+)/){
+			$genus_blastn=$1."papillomavirus";
+		}
+		else{
+			$genus_blastn="Unclassified";
 		}
 		
 		#{$tissu}{$hpvgenus}{$hpvspecies}{$hpvname}=@(nbreads_pool1,nbreads_pool2,...,nbreads_pool8)
@@ -2143,6 +2181,7 @@ sub treatputative{
 		#~ print $queryclose{$idselected}."\n";
 		#~ print $poolsid{$pool}."\n";
 		#~ print $nbread."\n";
+		
 		if(!(defined($queryclose{$idselected}))){
 			print $idselected."\n";
 			print $l."\n";
@@ -2154,7 +2193,19 @@ sub treatputative{
 			@{$hnewtable{$tissu}{$genus}{$querytax{$idselected}}{$queryclose{$idselected}}}=();
 		}
 		
+		my $blastn_tmp=$blastn_closest;
+		if(($blastn_tmp=~/(.*)\(\d+\.\d+%\)/) or ($blastn_tmp=~/(.*)\(\d+%\)/)){
+			$blastn_closest=$1;
+		}
+		
+		##	Pour Blastn
+		if(!(defined($hnewtable_blastn{$tissu}{$genus_blastn}{$blastn_species}{$blastn_closest}))){
+			@{$hnewtable_blastn{$tissu}{$genus_blastn}{$blastn_species}{$blastn_closest}}=();
+		}
+		
 		$@{$hnewtable{$tissu}{$genus}{$querytax{$idselected}}{$queryclose{$idselected}}}[$poolsid{$pool}]+=$nbread;
+		
+		$@{$hnewtable_blastn{$tissu}{$genus_blastn}{$blastn_species}{$blastn_closest}}[$poolsid{$pool}]+=$nbread;
 		
 		my $simplegenus="";
 		if($querytax{$idselected}=~/^(\S+)papillomavirus/){
@@ -2167,6 +2218,33 @@ sub treatputative{
 			$simplegenus=$querytax{$idselected};
 		}
 		
+		
+		#
+		#	BlastN
+		#
+		if($type eq "new"){
+			$new_blastn{$pool}{$genus_blastn}+=$nbread;
+		}
+		else{
+			$known_blastn{$pool}{$genus_blastn}+=$nbread;
+		}
+		
+		foreach my $cat (keys %{$known_blastn{$pool}}){
+			if (! grep {$_ eq $cat} @catknown_blastn){
+				push(@catknown_blastn,$cat);
+			}
+			
+		}
+		foreach my $cat (keys %{$new_blastn{$pool}}){
+			if (! grep {$_ eq $cat} @catnew_blastn){
+				#~ print "Category new :".$cat."\n";
+				push(@catnew_blastn,$cat);
+			}
+		}
+		
+		#
+		#	RaxML
+		#
 		if(defined($querytaxall{$type}{$idselected})){
 			if($type eq "known"){
 				$known{$pool}{$simplegenus}+=$nbread;
@@ -2203,7 +2281,7 @@ sub treatputative{
 }
 
 
-#################################################
+#################################################			###		RAXML		###
 ##	WRITE TABLE HPV DIVERSITY BY TISSUE TYPE	##
 ##################################################
 ##				!!	NEW VERSION	!!				##
@@ -2344,7 +2422,6 @@ foreach my $t (sort keys %hnewtable){		##TISSU
 }
 
 
-
 ##########################################
 ##	WRITE TABLE HPV DIVERSITY OVERALL	##
 ##########################################
@@ -2457,6 +2534,266 @@ close(OUTALL);
 
 
 
+
+#################################################			###		BLASTN		###
+##	WRITE TABLE HPV DIVERSITY BY TISSUE TYPE	##
+##################################################
+##				!!	NEW VERSION	!!				##
+##################################################
+##	2 independant table : 1 for SKIN and 1 for ORAL
+
+$krona=$outputdir."/KRONA_BlastN";
+mkdir $krona;
+
+my %hoverall_blastn=();	# {Family}{Genus}{Species}{virusname}{tissu}=nb reads
+
+$fg=0;
+$fs=0;
+$fn=0;
+foreach my $t (sort keys %hnewtable_blastn){		##TISSU
+	
+	my $kronaname="";
+	
+	my @primertmp_no_uniq=();
+	my @poolsidtmp=();
+	foreach my $p (sort @pools){			# Pour chaque nom ordered
+		if($tissu{$p} eq $t){				# Si le tissu du pollname correspond a celui procedé
+			push(@primertmp_no_uniq,$primer{$p});		#le primer de ce pool										$p = NGSDEEP_DL2A1_S11_L001 --> $primer{$p} = 11
+			push(@poolsidtmp,$poolsid{$p});		###	Both table are in the same order	$p = NGSDEEP_DL2A1_S11_L001 --> $poolsid{$p} = 	
+		}
+	}
+	my @primertmp=();
+	@primertmp=uniq @primertmp_no_uniq;
+	
+	if($boolean_infofile eq "true"){
+		open(OUT,">".$outputdir."/diversityByTissu_".$t."_BlastN.csv") or die "$!";
+		print OUT "TISSUE\tFamily\tGenus\tSpecies\tRelated\t".join("\t",sort @primertmp)."\tPool\n";		#vérifier ordre primertmp
+		print OUT $t."\tPapillomaviridae\t";
+		$kronaname="krona_".$t."_BlastN";
+		open(KRO,">".$krona."/krona_".$t."_BlastN.txt") or die "$!";
+	}
+	else{
+		open(OUTALL,">".$outputdir."/OverallDiversity_BlastN.csv") or die "$!";
+		print OUT "Family\tFamily\tGenus\tSpecies\tRelated\t".join("\t",sort @primertmp)."\tPool\n";		#vérifier ordre primertmp
+		print OUT "Virus\t";
+		
+		$kronaname="krona_ByTissue_BlastN.txt";
+		open(KRO,">".$krona."/krona_ByTissue_BlastN") or die "$!";
+	}
+	
+	
+	
+	foreach my $g (sort keys %{$hnewtable_blastn{$t}}){			##GENUS
+		if($fg==0){
+			print OUT $g."\t";
+			$fg=1;
+		}
+		else{
+			print OUT "\t\t".$g."\t";
+		}
+		foreach my $s (sort keys %{$hnewtable_blastn{$t}{$g}}){		##SPECIES
+			if($fs==0){
+				print OUT $s."\t";
+				$fs=1;
+			}
+			else{
+				print OUT "\t\t\t".$s."\t";
+			}
+			foreach my $n (sort keys %{$hnewtable_blastn{$t}{$g}{$s}}){		##NAME
+				my @tmp_pool=();
+				my %tmp_primer=();
+				if($fn==0){
+					print OUT $n."\t";
+					$fn=1;
+				}
+				else{
+					print OUT "\t\t\t\t".$n."\t";
+				}
+				my $tabtmp=$@{$hnewtable_blastn{$t}{$g}{$s}{$n}};
+				#~ my $cluster=@$tabtmp[0]." (".nearest(.01,((@$tabtmp[0]/$clusttissue{$t})*100)).")";
+
+				#~ for my $i (@poolsidtmp){
+					#~ if((defined(@$tabtmp[$i])) && @$tabtmp>0){
+						#~ my %hpoolsidrev= reverse %poolsid;
+						#~ my $p=$hpoolsidrev{$i};
+						#~ $tmp_primer{$p}+=@$tabtmp[$i];
+						#~ push(@tmp_pool,$p);
+					#~ }
+				#~ }
+				#~ my $tmp_towrite="";
+				#~ my $total_krona=0;
+				#~ foreach my $i (sort @poolsidtmp){
+					#~ my %hpoolsidrev= reverse %poolsid;
+					#~ my $p=$hpoolsidrev{$i};
+					#~ if(exists($tmp_primer{$p})){
+						#~ $tmp_towrite.=$tmp_primer{$p}."\t";
+						#~ $total_krona+=$tmp_primer{$p};
+					#~ }
+					#~ else{
+						#~ $tmp_towrite.="-\t";
+					#~ }
+				#~ }
+				
+				for my $i (@poolsidtmp){	#	3	4	5	6	7	8	9	10	11	
+					if((defined(@$tabtmp[$i])) && @$tabtmp>0){		#	3	4	5
+						my %hpoolsidrev= reverse %poolsid;			#	poolid vers poolname	
+						my $p=$hpoolsidrev{$i};						#	$p=NGSDEEP_DL2A1_S11_L001	--> $i=3
+						$tmp_primer{$primer{$p}}+=@$tabtmp[$i];		#	$primer{$p} = nb reads of pool number X having this primer		
+						push(@tmp_pool,$p);			#	get pool name - $p = NGSDEEP_DL2A1_S11_L001
+					}
+				}
+				my $tmp_towrite="";
+				my $total_krona=0;
+				foreach my $prim (sort @primertmp){#	all primer concerned
+					if(exists($tmp_primer{$prim})){		# tmp_primer de NGSDEEP_DL2A1_S11_L001 --> nb reads of pool number (3)	
+						$tmp_towrite.=$tmp_primer{$prim}."\t";		##on ecrit
+						$total_krona+=$tmp_primer{$prim};
+					}
+					else{
+						$tmp_towrite.="-\t";
+					}
+				}
+				
+				chomp($tmp_towrite);
+				print OUT $tmp_towrite.join(",",@tmp_pool)."\n";
+				
+				print KRO $total_krona."\t".$t."\t".$g."\t".$s."\n";
+				
+				$hoverall_blastn{'Papillomaviridae'}{$g}{$s}{$n}{$t}+=$total_krona;
+				
+				#~ my %hoverall=();	# {Family}{Genus}{Species}{virusname}{tissu}=nb reads
+
+
+			}
+			$fn=0;
+		}
+		$fs=0;
+	}
+	$fg=0;
+	close(OUT);
+	
+	`ktImportText $krona/$kronaname.txt -o $krona/$kronaname.html`;
+}
+
+
+
+##########################################			###		BLASTN		###
+##	WRITE TABLE HPV DIVERSITY OVERALL	##
+##########################################
+$ff=0;
+$fg=0;
+$fs=0;
+$fn=0;
+@sorttissu=();
+foreach my $t (sort keys %hnewtable_blastn){		#For each tissu (sorted)
+	push(@sorttissu,$t);
+}
+
+open(OUTALL,">".$outputdir."/DiversityByTissu_BlastN.csv") or die "$!";
+print OUTALL "TISSUE\tFamily\tGenus\tSpecies\tRelated\t".join("\t",@sorttissu)."\tPool\n";		#vérifier ordre primertmp
+print OUTALL "ALL\t";
+
+open(KRO,">".$krona."/krona_OverAll_BlastN.txt") or die "$!";
+
+foreach my $f (sort keys %hoverall_blastn){		#For each family
+	if($ff==0){
+		print OUTALL $f."\t";
+		$ff=1;
+	}
+	else{
+		print OUTALL "\t".$f."\t";
+	}
+	foreach my $g (sort keys %{$hoverall_blastn{$f}}){		#For each genus (sorted)
+		#~ print OUTALL $g."\t";
+		if($fg==0){
+			print OUTALL $g."\t";
+			$fg=1;
+		}
+		else{
+			print OUTALL "\t\t".$g."\t";
+		}
+		foreach my $s (sort keys %{$hoverall_blastn{$f}{$g}}){	#For each species
+			if($fs==0){
+				print OUTALL $s."\t";
+				$fs=1;
+			}
+			else{
+				print OUTALL "\t\t\t".$s."\t";
+			}
+			foreach my $n (sort keys %{$hoverall_blastn{$f}{$g}{$s}}){		#For each polyoname
+				if($fn==0){
+					print OUTALL $n."\t";
+					$fn=1;
+				}
+				else{
+					print OUTALL "\t\t\t\t".$n."\t";
+				}
+				
+				my @pool_list=();
+				
+				my $total_krona=0;
+				foreach my $t (@sorttissu){
+					my $nbread="-";
+					if(defined($hoverall_blastn{$f}{$g}{$s}{$n}{$t})){
+						$nbread=$hoverall_blastn{$f}{$g}{$s}{$n}{$t};
+						$total_krona+=$hoverall_blastn{$f}{$g}{$s}{$n}{$t};
+						
+							## To display the pool concerned	$@{$hnewtable{$tissu{$pool}}{$family}{$genus}{$species}{$virusname}}[$poolsid{$pool}]=$htarget{$pool}{'new'}{$virusname};
+						my $tabtmp;
+						#~ $@{$hnewtable{$tissu}{$genus}{$querytax{$idselected}}{$queryclose{$idselected}}}[$poolsid{$pool}]+=$nbread;
+						#{$tissu}{$hpvgenus}{$hpvspecies}{$hpvname}=@(nbreads_pool1,nbreads_pool2,...,nbreads_pool8)
+						
+						#~ my $tabtmp=$@{$hnewtable{$t}{$g}{$s}{$n}};
+						
+						if(defined($hnewtable_blastn{$t}{$g}{$s}{$n})){
+							$tabtmp=$@{$hnewtable_blastn{$t}{$g}{$s}{$n}};
+						}
+						#~ else{
+							#~ print $hoverall{$f}{$g}{$s}{$n}{$t}."\n";
+							#~ print $t."\n";
+							#~ print $f."\n";
+							#~ print $g."\n";
+							#~ print $s."\n";
+							#~ print $n."\n";
+							#~ print "Error\n";
+							#~ exit;
+						#~ }
+						for(my $i=1; $i<=$#{$tabtmp}; $i++){		# 0 is kept for the number of cluster
+							if((defined(@$tabtmp[$i])) && @$tabtmp>0){			#	3	4	5
+								my %hpoolsidrev= reverse %poolsid;				#	poolid vers poolname	
+								my $p=$hpoolsidrev{$i};							
+								push(@pool_list,$p);
+							}
+						}
+					
+					}
+					print OUTALL $nbread."\t";	
+					
+				}
+				print OUTALL join(',',@pool_list);
+				print OUTALL "\n";
+				
+				print KRO $total_krona."\tALL\t".$g."\t".$s."\n";
+			}
+			$fn=0;
+		}
+		$fs=0;
+	}
+	$fg=0;
+}
+$ff=0;
+close(KRO);
+close(OUTALL);
+
+`ktImportText $krona/krona_OverAll_BlastN.txt -o $krona/krona_OverAll_BlastN.html`;
+
+
+
+
+
+
+
+
 ##################################
 ##	WRITE TABLE SUMMARY RAXML	##
 ##################################
@@ -2506,10 +2843,53 @@ foreach my $pool (sort keys %new){
 	}
 	print OUT "\n";
 }
+print OUT "\n";
+
+
+##########################################
+##	Table 11 - KNOWN virus genus level	##
+##########################################
+print OUT "\nTable 11 - KNOWN virus genus level - BlastN\n";
+print OUT "Pool";
+foreach my $cat (sort @catknown_blastn){
+	print OUT "\t".$cat;
+}
+print OUT "\n";
+foreach my $pool (sort keys %known_blastn){
+	print OUT $pool;
+	foreach my $cat (sort @catknown_blastn){
+		if(defined($known_blastn{$pool}{$cat})){
+			print OUT "\t".$known_blastn{$pool}{$cat};
+		}
+		else{
+			print OUT "\t0";
+		}
+	}
+	print OUT "\n";
+}
+######################################
+##	Table 12 - NEW virus genus level	##
+######################################
+print OUT "\nTable 12 - NEW virus genus level - BlastN\n";
+print OUT "Pool";
+##	WRITE TABLE NEW HPV CATEGORY
+foreach my $cat (sort @catnew_blastn){
+	print OUT "\t".$cat;
+}
+print OUT "\n";
+foreach my $pool (sort keys %new_blastn){
+	print OUT $pool;
+	foreach my $cat (sort @catnew_blastn){
+		if(defined($new_blastn{$pool}{$cat})){
+			print OUT "\t".$new_blastn{$pool}{$cat};
+		}
+		else{
+			print OUT "\t0";
+		}
+	}
+	print OUT "\n";
+}
 close(OUT);
-
-
-
 
 
 ##	Get index of max value in a table
