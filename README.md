@@ -12,7 +12,23 @@ The PVampliconFinder workflow is designed for the analysis of sequencing reads g
 
 ### Dependencies & External Software
 
-What things you need to install the software and how to install them
+- [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+- [MultiQC](https://multiqc.info/)
+- [Trim Galore!](https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/)
+- [VSEARCH](https://github.com/torognes/vsearch)
+- [Blast](https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=Download)
+- [RaxML-EPA](https://cme.h-its.org/exelixis/web/software/epa/index.html)
+- [PaPaRa](https://cme.h-its.org/exelixis/web/software/papara/index.html)
+- [CAP3](http://seq.cs.iastate.edu/cap3.html)
+
+### Databases
+
+- [blastdb](ftp://ftp.ncbi.nlm.nih.gov/blast/db/) : It is advised to use the script [update_blastddb.pl](https://www.ncbi.nlm.nih.gov/IEB/ToolBox/CPP_DOC/lxr/source/src/app/blast/update_blastdb.pl). the required databases are :
+  - nt
+  - taxdb
+- [ncbitax2lin](https://github.com/zyxue/ncbitax2lin) : A lineage file is available on the GitHub webpage, but a more recent one can be created manually following the instruction
+- [PaVE](https://pave.niaid.nih.gov/#search/search_database/kw?dbNamespace=Genomes&includeNR=true&refCloneOnly=false&sort=Locus_ID&sortType=true&page=600&start=1&showTable=1&) : Select All > Download Fasta
+
 
 ```
 Give examples
