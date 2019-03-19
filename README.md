@@ -12,6 +12,8 @@ The PVampliconFinder workflow is designed for the analysis of sequencing reads g
 
 ### Dependencies & External Software
 
+> For now the following tools need to be manually downloaded and installed, and corresponding executable must be present in the [PATH environment variable](http://www.linfo.org/path_env_var.html). Dependencies are expected to be soon available in this GitHub repository.
+
 - [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 - [MultiQC](https://multiqc.info/)
 - [Trim Galore!](https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/)
@@ -20,18 +22,25 @@ The PVampliconFinder workflow is designed for the analysis of sequencing reads g
 - [RaxML-EPA](https://cme.h-its.org/exelixis/web/software/epa/index.html)
 - [PaPaRa](https://cme.h-its.org/exelixis/web/software/papara/index.html)
 - [CAP3](http://seq.cs.iastate.edu/cap3.html)
+- [KRONA](https://github.com/marbl/Krona/wiki)
 
 ### Databases
 
-- [blastdb](ftp://ftp.ncbi.nlm.nih.gov/blast/db/) : It is advised to use the script [update_blastddb.pl](https://www.ncbi.nlm.nih.gov/IEB/ToolBox/CPP_DOC/lxr/source/src/app/blast/update_blastdb.pl). the required databases are :
+> For now the following database must be manually downloaded. Please settle the ```~/.ncbirc file``` to specify the location of the nt database to the system.
+
+- [blastdb](ftp://ftp.ncbi.nlm.nih.gov/blast/db/) : It is advised to use the NCBI script [update_blastdb.pl](https://www.ncbi.nlm.nih.gov/IEB/ToolBox/CPP_DOC/lxr/source/src/app/blast/update_blastdb.pl). Required databases are :
   - nt
   - taxdb
 - [ncbitax2lin](https://github.com/zyxue/ncbitax2lin) : A lineage file is available on the GitHub webpage, but a more recent one can be created manually following the instruction
 - [PaVE](https://pave.niaid.nih.gov/#search/search_database/kw?dbNamespace=Genomes&includeNR=true&refCloneOnly=false&sort=Locus_ID&sortType=true&page=600&start=1&showTable=1&) : Select All > Download Fasta
 
-
+Once the lineage file downloaded, please launch the following command :
 ```
-Give examples
+grep -i "virus" lineages* > lineages-virus.csv
+```
+Once the PaVE database download, please launch the following command :
+```
+gettaxidByAcc.sh
 ```
 
 ### Installing
