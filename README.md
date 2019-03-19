@@ -48,16 +48,15 @@ gettaxidByAcc.sh
   |-----------|---------------|
   | -d        | PATH to input fastq directory|
 
-
-  Specify the test files location
+> tests files can be found .....
 
 ## Parameters
 
   * #### Mandatory
 | Name      | Example value | Description     |
 |-----------|---------------|-----------------|
-| --param1    |            xx | ...... |
-| --param2    |            xx | ...... |
+| -s    | pool | suffix of fastq filename |
+| -o    | PV_Amplicon_output | PATH to output directory |
 
   * #### Optional
 | Name      | Default value | Description     |
