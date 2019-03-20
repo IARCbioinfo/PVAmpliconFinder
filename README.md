@@ -61,8 +61,11 @@ gettaxidByAcc.sh
   * #### Optional
 | Name      | Default value | Description     |
 |-----------|---------------|-----------------|
-| --param3   |            xx | ...... |
-| --param4    |            xx | ...... |
+| -f   | NA | Tabular file containing information about the samples |
+| -b    | nt | Name of the local "nt" blast database |
+| -p   | NA | Adapter seuqence of Read1 (in case the adapter have been sequenced) |
+| -q    | NA | Adapter seuqence of Read2 (in case the adapter have been sequenced)|
+| -t    | 2 | Number of threads |
 
   * #### Flags
 
@@ -70,56 +73,59 @@ Flags are special parameters without value.
 
 | Name      | Description     |
 |-----------|-----------------|
-| --help    | Display help |
-| --flag2    |      .... |
-
+| -h   | Display help |
 
 ## Usage
   ```
-  ...
+sh amplicon_processing_HPV_Vlast.sh [-h] [-t threads] [-b "nt" database] [-f info_file] [-p adapter R1] [-q adapter R2] -s fastq_files_suffix -d input_dir -o output_dir
   ```
-
 ## Output
+
   | Type      | Description     |
   |-----------|---------------|
-  | output1    | ...... |
-  | output2    | ...... |
+  | QC report    | Report on FastQ file quality, before and after trimming |
+  | Diversity by tissu    | Excel table of taxonomically classified PV species identified in the samples |
+  | Table summary    | Excel table of reads metics |
+  | Table putative Known viruses    | Excel table of putative known viruses identified in the samples |
+  | Table putative New viruses    | Excel table of putative new viruses identified in the samples | 
+  | Putative Known viruses    | Fasta files of putative known viruses ssequences identified in the samples | 
+  | Putative New viruses    | Fasta files of putative new viruses ssequences identified in the samples | 
+  | KRONA Megablast    | Directory of KRONA graphical representations of the unormalized abundance of viruses identified by Megablast in the samples |
+  | KRONA BlastN    | Directory of KRONA graphical representations of the unormalized abundance of viruses identified by BlastN in the samples |
+  | KRONA RaxML    | Directory of KRONA graphical representations of the unormalized abundance of viruses identified by RaxML-EPA in the samples |
+  | Log file    | File of the logs | 
+  
+## Detailed description of the output
 
-
-## Detailed description (optional section)
-...
+[Detailed description of the output](docs/output_description.md)
 
 ## Contributions
 
   | Name      | Email | Description     |
   |-----------|---------------|-----------------|
-  | contrib1*    |            xx | Developer to contact for support (link to specific gitter chatroom) |
-  | contrib2    |            xx | Developer |
-  | contrib3    |            xx | Tester |
+  | Alexis Robitaille    | robitaillea@students.iarc.fr | Developer to contact for support (link to specific gitter chatroom) |
+  | Magali Olivier    | olivierm@iarc.fr |  |
+  | Massimo Tommasino    | tommasinom@iarc.fr |  |
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+Version 1.0
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+* **Alexis Robitaille** - *Initial work* - [IARC bioinformatic platform](https://github.com/IARCbioinfo)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under ...
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+## References
 
-## References (optional)
+[References](docs/references.md)
 
-## FAQ (optional)
+## FAQ
 
 
 
