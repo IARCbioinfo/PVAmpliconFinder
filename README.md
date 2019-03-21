@@ -10,18 +10,30 @@ PVampliconFinder is based on alignment similarity metrics, but also consider mol
 
 The PVampliconFinder workflow is designed for the analysis of sequencing reads generated from **paired-end sequencing** of DNA amplified using degenerated primers targeting specifically the L1 sequence of papillomaviruses ([Chouhy *et al.*, 2010](https://www.ncbi.nlm.nih.gov/pubmed/19948351),[Forslund *et al.*, 1999](https://www.ncbi.nlm.nih.gov/pubmed/10501499),[Forslund *et al.*, 2003](https://www.ncbi.nlm.nih.gov/pubmed/12798239)).
 
-### Dependencies
+### Installation
 
-#### Programming Language
+#### Automatic installation
 
-- Bash/Shell
-- Perl
-- Python
+PVAmpliconFinder come with a SHELL script [PVAmplicon_install.sh](PVAmplicon_install.sh) that will proceed with the downloading and the installation of all the softawre required to run PVAmpliconFinder.
 
-#### External Software
+```
+PVAmplicon_install.sh
+```
 
-> For now the following tools need to be manually downloaded and installed, and corresponding executable must be present in the [PATH environment variable](http://www.linfo.org/path_env_var.html). Dependencies are expected to be soon available in this GitHub repository.
+> **PVAmpliconFinder rely on [Bioconda](https://bioconda.github.io/) to install the software and associated dependencies**
 
+> For 32bits system, [PaPaRa](https://cme.h-its.org/exelixis/web/software/papara/index.html) available binary file is not functionnal. You need to install manually PaPara, and put the corresponding binary file in PVAmpliconFinder/program. Binary file must be named "papara".
+
+#### Manual installation
+
+The list of tools used bu PVAmpliconFinder can be manually downloaded and installed, and corresponding **executable must be present in the [PATH environment variable](http://www.linfo.org/path_env_var.html)**.
+
+> Please note that [PaPaRa](https://cme.h-its.org/exelixis/web/software/papara/index.html) binary file must be named "papara".
+
+#### List of programing language and software
+
+- [Python2.7](https://www.python.org/download/releases/2.7/) or higher
+- [Perl v5.22.1](https://www.perl.org/get.html) or higher
 - [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 - [MultiQC](https://multiqc.info/)
 - [Trim Galore!](https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/)
@@ -34,22 +46,18 @@ The PVampliconFinder workflow is designed for the analysis of sequencing reads g
 
 ### Databases
 
-> For now the following database must be manually downloaded. Please settle the ```~/.ncbirc file``` to specify the location of the nt database to the system.
+#### NCBI databases
 
-- [blastdb](ftp://ftp.ncbi.nlm.nih.gov/blast/db/) : It is advised to use the NCBI script [update_blastdb.pl](https://www.ncbi.nlm.nih.gov/IEB/ToolBox/CPP_DOC/lxr/source/src/app/blast/update_blastdb.pl). Required databases are :
-  - nt
-  - taxdb
-- [ncbitax2lin](https://github.com/zyxue/ncbitax2lin) : A lineage file is available on the GitHub webpage, but a more recent one can be created manually following the instruction
-- [PaVE](https://pave.niaid.nih.gov/#search/search_database/kw?dbNamespace=Genomes&includeNR=true&refCloneOnly=false&sort=Locus_ID&sortType=true&page=600&start=1&showTable=1&) : Select All > Download Fasta
+PVAmpliconFinder need the **nt** and **taxdb** NCBI databases to work properly. You can find thoses databases [here](ftp://ftp.ncbi.nlm.nih.gov/blast/db/). Note that the taxonomy file must be correctly located.
 
-Once the lineage file downloaded, please launch the following command :
-```
-grep -i "virus" lineages* > lineages-virus.csv
-```
-Once the PaVE database download, please launch the following command :
-```
-gettaxidByAcc.sh
-```
+> It is advised to use the NCBI script [update_blastdb.pl](https://www.ncbi.nlm.nih.gov/IEB/ToolBox/CPP_DOC/lxr/source/src/app/blast/update_blastdb.pl) to facilitate the installation of the databases.
+
+> **Once downloaded and installed, please check that the ```~/.ncbirc file``` is present and point to the correct NCBI nt database location.**
+
+#### List of other databases
+
+- [ncbitax2lin](https://github.com/zyxue/ncbitax2lin) 
+- [PaVE](https://pave.niaid.nih.gov/)
 
 ## Input
   | Type      | Description     |
@@ -121,7 +129,7 @@ Version 1.0
 
 ## Authors
 
-* **Alexis Robitaille** - *Initial work* - [IARC bioinformatic platform](https://github.com/IARCbioinfo)
+* **Alexis Robitaille** - [IARC bioinformatic platform](https://github.com/IARCbioinfo)
 
 ## License
 
