@@ -10,7 +10,15 @@ PVampliconFinder is based on alignment similarity metrics, but also consider mol
 
 The PVampliconFinder workflow is designed for the analysis of sequencing reads generated from **paired-end sequencing** of DNA amplified using degenerated primers targeting specifically the L1 sequence of papillomaviruses ([Chouhy *et al.*, 2010](https://www.ncbi.nlm.nih.gov/pubmed/19948351),[Forslund *et al.*, 1999](https://www.ncbi.nlm.nih.gov/pubmed/10501499),[Forslund *et al.*, 2003](https://www.ncbi.nlm.nih.gov/pubmed/12798239)).
 
-### Dependencies & External Software
+### Dependencies
+
+#### Programming Language
+
+- Bash/Shell
+- Perl
+- Python
+
+#### External Software
 
 > For now the following tools need to be manually downloaded and installed, and corresponding executable must be present in the [PATH environment variable](http://www.linfo.org/path_env_var.html). Dependencies are expected to be soon available in this GitHub repository.
 
