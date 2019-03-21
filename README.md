@@ -12,6 +12,8 @@ The PVampliconFinder workflow is designed for the analysis of sequencing reads g
 
 ## Installation
 
+[Python2.7](https://www.python.org/download/releases/2.7/) or higher and [Perl v5.22.1](https://www.perl.org/get.html) or higher must be present
+
 ### Automatic installation
 
 PVAmpliconFinder come with a SHELL script [PVAmplicon_install.sh](PVAmplicon_install.sh) that will proceed with the downloading and the installation of all the software required to run PVAmpliconFinder.
@@ -30,10 +32,8 @@ The list of tools used by PVAmpliconFinder can be manually downloaded and instal
 
 > Please note that [PaPaRa](https://cme.h-its.org/exelixis/web/software/papara/index.html) binary file must be named "papara".
 
-### List of programing language and software
+### List of software
 
-- [Python2.7](https://www.python.org/download/releases/2.7/) or higher
-- [Perl v5.22.1](https://www.perl.org/get.html) or higher
 - [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 - [MultiQC](https://multiqc.info/)
 - [Trim Galore!](https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/)
