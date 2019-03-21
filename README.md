@@ -10,27 +10,27 @@ PVampliconFinder is based on alignment similarity metrics, but also consider mol
 
 The PVampliconFinder workflow is designed for the analysis of sequencing reads generated from **paired-end sequencing** of DNA amplified using degenerated primers targeting specifically the L1 sequence of papillomaviruses ([Chouhy *et al.*, 2010](https://www.ncbi.nlm.nih.gov/pubmed/19948351),[Forslund *et al.*, 1999](https://www.ncbi.nlm.nih.gov/pubmed/10501499),[Forslund *et al.*, 2003](https://www.ncbi.nlm.nih.gov/pubmed/12798239)).
 
-### Installation
+## Installation
 
-#### Automatic installation
+### Automatic installation
 
-PVAmpliconFinder come with a SHELL script [PVAmplicon_install.sh](PVAmplicon_install.sh) that will proceed with the downloading and the installation of all the softawre required to run PVAmpliconFinder.
+PVAmpliconFinder come with a SHELL script [PVAmplicon_install.sh](PVAmplicon_install.sh) that will proceed with the downloading and the installation of all the software required to run PVAmpliconFinder.
 
 ```
 PVAmplicon_install.sh
 ```
 
-> **PVAmpliconFinder rely on [Bioconda](https://bioconda.github.io/) to install the software and associated dependencies**
+**PVAmpliconFinder rely on [Bioconda](https://bioconda.github.io/) to install the software and associated dependencies**
 
-> For 32bits system, [PaPaRa](https://cme.h-its.org/exelixis/web/software/papara/index.html) available binary file is not functionnal. You need to install manually PaPara, and put the corresponding binary file in PVAmpliconFinder/program. Binary file must be named "papara".
+> For 32bits system, [PaPaRa](https://cme.h-its.org/exelixis/web/software/papara/index.html) available binary file is not functionnal, as specified on the webpage of the tool. You need to install manually PaPara following the instruction, and put the binary file in PVAmpliconFinder/program. Note that the binary file must be named "papara".
 
-#### Manual installation
+### Manual installation
 
-The list of tools used bu PVAmpliconFinder can be manually downloaded and installed, and corresponding **executable must be present in the [PATH environment variable](http://www.linfo.org/path_env_var.html)**.
+The list of tools used by PVAmpliconFinder can be manually downloaded and installed, and corresponding **executable must be present in the [PATH environment variable](http://www.linfo.org/path_env_var.html)**.
 
 > Please note that [PaPaRa](https://cme.h-its.org/exelixis/web/software/papara/index.html) binary file must be named "papara".
 
-#### List of programing language and software
+### List of programing language and software
 
 - [Python2.7](https://www.python.org/download/releases/2.7/) or higher
 - [Perl v5.22.1](https://www.perl.org/get.html) or higher
@@ -44,17 +44,17 @@ The list of tools used bu PVAmpliconFinder can be manually downloaded and instal
 - [CAP3](http://seq.cs.iastate.edu/cap3.html)
 - [KRONA](https://github.com/marbl/Krona/wiki)
 
-### Databases
+## Databases
 
-#### NCBI databases
+### NCBI databases
 
-PVAmpliconFinder need the **nt** and **taxdb** NCBI databases to work properly. You can find thoses databases [here](ftp://ftp.ncbi.nlm.nih.gov/blast/db/). Note that the taxonomy file must be correctly located.
+PVAmpliconFinder need the **nt** and **taxdb** NCBI databases to work properly. You can find thoses databases at the following ftp adress : ftp://ftp.ncbi.nlm.nih.gov/blast/db/. Note that the taxonomy file must be correctly located.
 
-> It is advised to use the NCBI script [update_blastdb.pl](https://www.ncbi.nlm.nih.gov/IEB/ToolBox/CPP_DOC/lxr/source/src/app/blast/update_blastdb.pl) to facilitate the installation of the databases.
+It is advised to use the NCBI script [update_blastdb.pl](https://www.ncbi.nlm.nih.gov/IEB/ToolBox/CPP_DOC/lxr/source/src/app/blast/update_blastdb.pl) to facilitate the installation of the databases.
 
-> **Once downloaded and installed, please check that the ```~/.ncbirc file``` is present and point to the correct NCBI nt database location.**
+**Once downloaded and installed, please check that the ```~/.ncbirc file``` is present and point to the correct NCBI nt database location.**
 
-#### List of other databases
+### List of other databases
 
 - [ncbitax2lin](https://github.com/zyxue/ncbitax2lin) 
 - [PaVE](https://pave.niaid.nih.gov/)
