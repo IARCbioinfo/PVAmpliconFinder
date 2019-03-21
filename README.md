@@ -12,7 +12,7 @@ The PVampliconFinder workflow is designed for the analysis of sequencing reads g
 
 ## Installation
 
-[Python2.7](https://www.python.org/download/releases/2.7/) or higher and [Perl v5.22.1](https://www.perl.org/get.html) or higher must be present
+[Python2.7](https://www.python.org/download/releases/2.7/) or higher and [Perl v5.22.1](https://www.perl.org/get.html) or higher are required.
 
 ### Automatic installation
 
