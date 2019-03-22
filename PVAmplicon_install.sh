@@ -11,6 +11,22 @@
 ##	This script is used to install all the requirement to run PVAmpliconFinder tool on a Linux machine
 ##	For more information, please visit : https://github.com/SixEl27/PVAmpliconFinder
 
+usage="$(basename "$0") [-h]
+This script is used to install all the requirement to run PVAmpliconFinder tool on a Linux machine
+It does not take any argument.
+Please note that tool instalaltion is managed by conda, that will be installed in your system.
+All executable file will be accessible in your PATH.
+If you wish to manually install the tools, please visit https://github.com/SixEl27/PVAmpliconFinder"
+
+while getopts ':h' option; do
+  case "$option" in
+    h) echo -e "$usage"
+       exit
+       ;;
+   esac
+done
+shift $((OPTIND - 1))      
+       
 NC='\033[0m'
 BLUE='\033[0;34m'
 RED='\033[0;31m'
