@@ -50,6 +50,7 @@ fi
 
 ##	Parse Python version
 echo -e "Proceed installation for ${MACHINE_TYPE} machine type, using Python version ${PYTHON_VERSION}"
+parsedVersion=$(echo "${PYTHON_VERSION//./}")
 
 ##########################
 ##	Conda installation	##
@@ -80,7 +81,6 @@ then
 		echo "For more information, please visit https://cme.h-its.org/exelixis/web/software/papara/index.html${NC}"
 	fi
 else																	##	Python version => 3.0.0
-then
 	if [ ${MACHINE_TYPE} == 'x86_64' ]
 	then
 		wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
