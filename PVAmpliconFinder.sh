@@ -109,14 +109,6 @@ fi
 
 mkdir -p $working_dir;
 
-##############################
-##	Location of software	##
-##############################
-#~ fastqc="~/app/FastQC/fastqc";
-#~ usearch="~/app/usearch9.2.64_i86linux32";
-#~ trim_galore="~/app/trim_galore";
-#~ blast="~/app/ncbi-blast-2.6.0+/bin/";
-#~ multiQC="~/app/miniconda2/bin/multiqc";
 
 ##################
 ##	Log file	##

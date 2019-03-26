@@ -18,7 +18,6 @@ use warnings;
 use Getopt::Std;
 use Math::Round ':all';
 use File::Basename; # my ($filename, $directories, $suffix) = fileparse($file, qr/\.[^.]*/);
-#~ use Statistics::R;
 use List::MoreUtils qw(uniq);
 use Bio::SeqIO;
 use Bio::DB::Fasta;
@@ -28,7 +27,6 @@ use Bio::SearchIO;
 use Bio::Seq;
 use Text::CSV;
 use Cwd;
-use Bio::TreeIO;
 
 ##############
 ##	Options	##
