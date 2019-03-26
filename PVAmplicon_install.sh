@@ -52,9 +52,6 @@ else
 	mkdir -p ${path}
 fi
 
-
-echo ${path};exit;
-
 NC='\033[0m'
 BLUE='\033[0;34m'
 RED='\033[0;31m'
@@ -63,6 +60,7 @@ echo -e "${RED}[$systime]${NC}"
 echo -e "This script will install all the requirement to run PVAmpliconFinder tool on a Linux machine."
 echo -e "It may take some time, please be patient..."
 
+echo -e "PVAmpliconFinder will be installed : ${BLUE}${path}${NC}"
 
 ##	Get the machine type
 MACHINE_TYPE=`uname -m`
@@ -100,12 +98,12 @@ then
 	if [ ${MACHINE_TYPE} == 'x86_64' ]
 	then
 		wget https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh
-		chmod +x $PWD/Miniconda2-latest-Linux-x86_64.sh
-		bash $PWD/Miniconda2-latest-Linux-x86_64.sh -b -p $PWD/miniconda
+		chmod +x ${path}/Miniconda2-latest-Linux-x86_64.sh
+		bash ${path}/Miniconda2-latest-Linux-x86_64.sh -b -p $PWD/miniconda
 	else
 		wget https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86.sh
-		chmod +x $PWD/Miniconda2-latest-Linux-x86.sh
-		bash $PWD/Miniconda2-latest-Linux-x86.sh -b -p $PWD/miniconda
+		chmod +x ${path}/Miniconda2-latest-Linux-x86.sh
+		bash ${path}/Miniconda2-latest-Linux-x86.sh -b -p $PWD/miniconda
 		echo "${RED}Please considere that under 32bits version, you need to manually install PaPaRa"
 		echo "For more information, please visit https://cme.h-its.org/exelixis/web/software/papara/index.html${NC}"
 	fi
@@ -113,19 +111,19 @@ else																	##	Python version => 3.0.0
 	if [ ${MACHINE_TYPE} == 'x86_64' ]
 	then
 		wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-		chmod +x $PWD/Miniconda3-latest-Linux-x86_64.sh
-		bash $PWD/Miniconda3-latest-Linux-x86_64.sh -b -p $PWD/miniconda
+		chmod +x ${path}/Miniconda3-latest-Linux-x86_64.sh
+		bash ${path}/Miniconda3-latest-Linux-x86_64.sh -b -p $PWD/miniconda
 	else
 		wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86.sh
-		chmod +x $PWD/Miniconda3-latest-Linux-x86.sh
-		bash $PWD/Miniconda3-latest-Linux-x86.sh -b -p $PWD/miniconda
+		chmod +x ${path}/Miniconda3-latest-Linux-x86.sh
+		bash ${path}/Miniconda3-latest-Linux-x86.sh -b -p $PWD/miniconda
 		echo "${RED}Please considere that under 32bits version, you need to manually install PaPaRa"
 		echo "For more information, please visit https://cme.h-its.org/exelixis/web/software/papara/index.html${NC}"
 	fi
 fi
 
 ##	Add miniconda into $PATH environment variable
-export PATH="$PWD/miniconda/bin:$PATH"
+export PATH="${path}/miniconda/bin:$PATH"
 
 ##	Update conda
 #~ conda update -y -c defaults conda
@@ -155,10 +153,12 @@ conda install -y fastqc multiqc trim-galore vsearch blast raxml cap3 krona libxm
 #~ chmod +x $PWD/papara
 
 ##	Go back to root of PVAmpliconFinder
-cd $PWD/..
+cd $PWD
 
 ##	If any issue with PaPaRa, need to be build manually : https://cme.h-its.org/exelixis/web/software/papara/index.html
-export PATH="$PWD/program:$PATH"
+export PATH="${path}:$PATH"
+
+export PATH="$PWD/program:$PATH" #For papara
 
 systime=`date`
 echo -e "${BLUE}Done!${NC}"

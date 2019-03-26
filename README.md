@@ -20,6 +20,12 @@ PVAmpliconFinder come with a SHELL script [PVAmplicon_install.sh](PVAmplicon_ins
 
 ```
 PVAmplicon_install.sh [-h] [-p conda installation path]
+
+Description :
+
+    -h  display help
+    -p	directory installation path (will be created if not already existing) - default value : PVAmpliconFinder/program
+
 ```
 
 **PVAmpliconFinder rely on [Bioconda](https://bioconda.github.io/) to install the software and associated dependencies**
