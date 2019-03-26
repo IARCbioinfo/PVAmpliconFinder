@@ -52,6 +52,11 @@ else
 	mkdir -p ${path}
 fi
 
+#~ echo ${path};
+#~ exit;
+
+script_dir=$PWD;
+
 NC='\033[0m'
 BLUE='\033[0;34m'
 RED='\033[0;31m'
@@ -123,10 +128,20 @@ else																	##	Python version => 3.0.0
 fi
 
 ##	Add miniconda into $PATH environment variable
+
+#~ echo "export PATH=\"${path}/miniconda/bin:$PATH\"" >> ~/.bashrc
 export PATH="${path}/miniconda/bin:$PATH"
+#~ echo "export PATH=\"${path}/miniconda:$PATH\"" >> ~/.bashrc
+export PATH="${path}/miniconda:$PATH"
+#~ source ~/.bashrc
+
+#~ echo ${path};
+#~ echo $PATH;
+#~ exit;
+
 
 ##	Update conda
-#~ conda update -y -c defaults conda
+#~ conda update -y -c defaults/label/cf201901 conda
 
 ##	Add bioconda channels
 conda config --add channels defaults/label/cf201901
@@ -153,12 +168,14 @@ conda install -y fastqc multiqc trim-galore vsearch blast raxml cap3 krona libxm
 #~ chmod +x $PWD/papara
 
 ##	Go back to root of PVAmpliconFinder
-cd $PWD
+cd ${script_dir}
 
 ##	If any issue with PaPaRa, need to be build manually : https://cme.h-its.org/exelixis/web/software/papara/index.html
+#~ echo "export PATH=\"${path}:$PATH\"" >> ~/.bashrc
 export PATH="${path}:$PATH"
 
-export PATH="$PWD/program:$PATH" #For papara
+#~ echo "export PATH=\"$PWD/program:$PATH\"" >> ~/.bashrc #For papara
+export PATH="$PWD/program:$PATH"
 
 systime=`date`
 echo -e "${BLUE}Done!${NC}"
@@ -171,3 +188,4 @@ echo -e "${RED}[$systime]${NC}"
 #~ rm -rf $PWD/program/*
 
 #~ Also remove the hidden .condarc file and .conda and .continuum directories which may have been created in the home directory with
+source ~/.bashrc

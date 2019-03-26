@@ -13,7 +13,7 @@
 ##############
 ##	USAGE	##
 ##############
-usage="$(basename "$0") [-h] [-t threads] [-b \"nt\" database] [-f info_file] [-p adapter R1] [-q adapter R2] -s fastq_files_suffix -d input_dir -o output_dir -- program to process amplicon-based NGS data
+usage="$(basename "$0") [-h] [-t threads] [-b \"nt\" database] [-f info_file] [-i identity thershold] -s fastq_files_suffix -d input_dir -o output_dir -- program to process amplicon-based NGS data
 Version 1.0
 The fastq filename to process must with the same suffix (option \"-s\").
 The Read 1 filename must contain \"R1\" and the Read 2 filename must contain \"R2\" (the pair must otherwise have the same name).
@@ -26,8 +26,7 @@ where:
     -o	PATH to output directory
     -f	file containing pool information
     -b	\"nt\" blast database name (default \"nt\")
-    -p	adapter sequence of read 1
-    -q	adapter sequence of read 2
+    -i	threshold of percentage of identity for centroid clustering (default 98) - INT only
     -t	number of threads (default 2)
     "
     
@@ -35,7 +34,7 @@ where:
 #time ./amplicon_processing_HPV_Vlast.sh -s pool -d /data/robitaillea/NGS1/fastq_files -o /data/robitaillea/NGS1/output -f /data/robitaillea/NGS1/infofile.txt -t 8
 
 ##	Get the parameters
-while getopts ':hs:d:t:o:b:f:p:q:' option; do
+while getopts ':hs:d:t:o:b:f:i:' option; do
   case "$option" in
     h) echo -e "$usage"
        exit
@@ -52,9 +51,7 @@ while getopts ':hs:d:t:o:b:f:p:q:' option; do
        ;; 
     f) info=$OPTARG
        ;; 
-    p) primer=$OPTARG
-       ;; 
-    q) primer2=$OPTARG
+    i) identity=$OPTARG
        ;; 
     :) echo -e "$usage" >&2
 	   printf "missing argument for -%s\n" "$OPTARG" >&2
@@ -71,9 +68,6 @@ while getopts ':hs:d:t:o:b:f:p:q:' option; do
 done
 shift $((OPTIND - 1))
 
-primer="${primer%\\n}"
-primer2="${primer2%\\n}"
-
 ##	Check if parameters are correct
 if [ -z "$working_dir" ] || [ -z "$fastq_dir" ] || [ -z "$suffix" ]
 then
@@ -86,6 +80,16 @@ then
 	threads=2
 fi
 
+if [ -z "$identity" ]
+then
+	identity=98
+fi
+
+if ! [[ "$identity" =~ ^[0-9]+$ ]]
+    then
+        echo -e "$usage"
+        echo -e "You must provide an integer as identity thershold for de-novo clustering"
+fi
 
 if [ -z "$dbnt" ]
 then
@@ -187,13 +191,7 @@ then
 	cd ${fastq_dir};
 	
 	##	Trimming TrimGalore!
-	if [ -z "$primer" ]
-	then
-		find . -name "${suffix}*R1*.fastq" -o -name "${suffix}*R1*.fq" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'r2="${0/R1/R2}"; echo Pair : ${0} $r2; trim_galore --fastqc --paired --retain_unpaired -o '${trim_galore}' ${0} $r2 &>>'${logfile}';';
-	else
-		find . -name "${suffix}*R1*.fastq" -o -name "${suffix}*R1*.fq" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'r2="${0/R1/R2}"; echo Pair : ${0} $r2; trim_galore --fastqc --paired --retain_unpaired -o '${trim_galore}' -a $primer -a2 $primer2 ${0} $r2 &>>'${logfile}';';
-		#~ find . -name "${suffix}*R1*.fastq" -o -name "${suffix}*R1*.fq" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'r2="${0/R1/R2}"; echo Pair : ${0} $r2; trim_galore --fastqc --paired --retain_unpaired -o '${trim_galore}' -a '${primer}' -a2 '${primer2}' --clip_R1 9 --clip_R2 9 --three_prime_clip_R1 2 --three_prime_clip_R2 2 ${0} $r2 &>>'${logfile}';';
-	fi
+	find . -name "${suffix}*R1*.fastq" -o -name "${suffix}*R1*.fq" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'r2="${0/R1/R2}"; echo Pair : ${0} $r2; trim_galore --fastqc --paired --retain_unpaired -o '${trim_galore}' ${0} $r2 &>>'${logfile}';';
 	
 	cd ${trim_galore};
 	
@@ -263,7 +261,7 @@ then
 
 	##	Clustering
 	echo -e "~~	Clustering	~~";
-	find . -name "${suffix}*_no_chim.fasta" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'vsearch --quiet --cluster_size '${tmpdir}/'${0} --id 0.98 --threads '${threads}' --sizein --clusterout_id --clusterout_sort --sizeout --xsize --relabel $(basename "${0/_no_chim.fasta/}") --centroids '${outputdir}/'$(basename "${0/_no_chim.fasta/}").fasta --log $(basename "${0/_no_chim.fasta/}")_clustering.log &>> '${logfile}';';
+	find . -name "${suffix}*_no_chim.fasta" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'vsearch --quiet --cluster_size '${tmpdir}/'${0} --id 0.'${identity}' --threads '${threads}' --sizein --clusterout_id --clusterout_sort --sizeout --xsize --relabel $(basename "${0/_no_chim.fasta/}") --centroids '${outputdir}/'$(basename "${0/_no_chim.fasta/}").fasta --log $(basename "${0/_no_chim.fasta/}")_clustering.log &>> '${logfile}';';
 	
 	cd ${working_dir};
 

@@ -19,7 +19,7 @@ The PVampliconFinder workflow is designed for the analysis of sequencing reads g
 PVAmpliconFinder come with a SHELL script [PVAmplicon_install.sh](PVAmplicon_install.sh) that will proceed with the downloading and the installation of all the software required to run PVAmpliconFinder.
 
 ```
-PVAmplicon_install.sh [-h] [-p conda installation path]
+source PVAmplicon_install.sh [-h] [-p conda installation path]
 
 Description :
 
@@ -85,9 +85,9 @@ It is advised to use the NCBI script [update_blastdb.pl](https://www.ncbi.nlm.ni
 |-----------|---------------|-----------------|
 | -f   | NA | Tabular file containing information about the samples |
 | -b    | nt | Name of the local "nt" blast database |
-| -p   | NA | Adapter seuqence of Read1 (in case the adapter have been sequenced) |
-| -q    | NA | Adapter seuqence of Read2 (in case the adapter have been sequenced)|
+| -i	| 98	| Threshold of percentage of identity used for the de-novo centroid-based clustering	|
 | -t    | 2 | Number of threads |
+
 
   * #### Flags
 
@@ -98,9 +98,9 @@ Flags are special parameters without value.
 | -h   | Display help |
 
 ## Usage
-  ```
-sh amplicon_processing_HPV_Vlast.sh [-h] [-t threads] [-b "nt" database] [-f info_file] [-p adapter R1] [-q adapter R2] -s fastq_files_suffix -d input_dir -o output_dir
-  ```
+```
+sh amplicon_processing_HPV_Vlast.sh [-h] [-t threads] [-b "nt" database] [-f info_file] [-i identity thershold] -s fastq_files_suffix -d input_dir -o output_dir
+```
 ## Output
 
   | Type      | Description     |
