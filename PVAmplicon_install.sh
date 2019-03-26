@@ -11,22 +11,50 @@
 ##	This script is used to install all the requirement to run PVAmpliconFinder tool on a Linux machine
 ##	For more information, please visit : https://github.com/SixEl27/PVAmpliconFinder
 
-usage="$(basename "$0") [-h]
+usage="$(basename "$0") [-h] [-p conda installation path]
 This script is used to install all the requirement to run PVAmpliconFinder tool on a Linux machine.
-It does not take any argument. An internet connexion is required.
-Please note that tool installation is managed by conda, that will be installed in your system.
-All executable file will be accessible in your PATH.
-If you wish to manually install the tools, please visit https://github.com/SixEl27/PVAmpliconFinder to get the complete required tool list."
+Please note that tool installation is managed by conda, that will be installed in your system. Thus, an internet connexion is required.
+All executable files will be accessible in your PATH environment variable.
+If you wish to manually install the tools, please visit https://github.com/SixEl27/PVAmpliconFinder to get the complete required tool list.
 
-while getopts ':h' option; do
+Description :
+
+    -h  show this help text
+    -p	directory installation path (will be created if not already existing) - default value : PVAmpliconFinder/program\n"
+    
+    
+while getopts ':hp:' option; do
   case "$option" in
     h) echo -e "$usage"
+       exit 1
+       ;;
+    p) path=$OPTARG
+       ;;    
+    :) echo -e "$usage" >&2
+	   printf "missing argument for -%s\n" "$OPTARG" >&2
+       exit 1
+       ;;
+   \?) echo -e "$usage" >&2
+	   printf "illegal option: -%s\n" "$OPTARG" >&2
+       exit 1
+       ;;
+   (*) echo -e "$usage"
        exit
        ;;
    esac
 done
 shift $((OPTIND - 1))
-       
+
+if [ -z "$path" ]
+then
+	path="$PWD/program"
+else
+	mkdir -p ${path}
+fi
+
+
+echo ${path};exit;
+
 NC='\033[0m'
 BLUE='\033[0;34m'
 RED='\033[0;31m'
@@ -58,7 +86,7 @@ parsedVersion=$(echo "${PYTHON_VERSION//./}" | grep -P '^\d+' -o)
 ##########################
 ##	To get latest version of Miniconda, please visit https://conda.io/en/latest/miniconda.html
 
-cd $PWD/program
+cd ${path}
 
 ##	Install the Miciconda version corresponding to the Phyton version installed on the system
 if [[ "$parsedVersion" -lt "2700" ]]										##	Python version < 2.7.0

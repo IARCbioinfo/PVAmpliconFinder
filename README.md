@@ -19,7 +19,7 @@ The PVampliconFinder workflow is designed for the analysis of sequencing reads g
 PVAmpliconFinder come with a SHELL script [PVAmplicon_install.sh](PVAmplicon_install.sh) that will proceed with the downloading and the installation of all the software required to run PVAmpliconFinder.
 
 ```
-PVAmplicon_install.sh
+PVAmplicon_install.sh [-h] [-p conda installation path]
 ```
 
 **PVAmpliconFinder rely on [Bioconda](https://bioconda.github.io/) to install the software and associated dependencies**
