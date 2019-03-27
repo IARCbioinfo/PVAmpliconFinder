@@ -5,7 +5,7 @@
 ##	Creation 21/03/2019										##
 ##	Alexis Robitaille : robitaillea@students.iarc.fr		##
 ##	IARC, LYON												##
-##	Last modification = 26/03/2019							##
+##	Last modification = 27/03/2019							##
 ##	Version 1.0												##
 ##############################################################
 ##	This script is used to install all the requirement to run PVAmpliconFinder tool on a Linux machine

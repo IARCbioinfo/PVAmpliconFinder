@@ -667,7 +667,7 @@ my %taxid2gen=();
 my %taxid2spe=();
 my %taxid2fam=();
 
-my $lineage="/data/robitaillea/NGS1/lineages-virus.csv";		
+my $lineage="$whereiam/databases/lineages/lineagesVirus.csv";		
 
 my $csv = Text::CSV->new ( { binary => 1 } ) or die "Cannot use CSV: ".Text::CSV->error_diag ();
 
