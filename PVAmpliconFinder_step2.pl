@@ -27,6 +27,7 @@ use Bio::SearchIO;
 use Bio::Seq;
 use Text::CSV;
 use Cwd;
+use Bio::TreeIO;
 
 ##############
 ##	Options	##
@@ -90,6 +91,17 @@ if ( $opts{h} ) {
 
 my $whereiam=getcwd;
 
+if($inputdirfasta!~/^\//){
+	$inputdirfasta=$whereiam."/".$inputdirfasta;
+}
+
+if($inputdirblast!~/^\//){
+	$inputdirblast=$whereiam."/".$inputdirblast;
+}
+
+if($outputdir!~/^\//){
+	$outputdir=$whereiam."/".$outputdir;
+}
 ##############
 ##	Usage	##
 ##############
@@ -971,11 +983,11 @@ foreach my $t (sort keys %hnewtable){		#For each tissue
 		open(KRO,">".$krona."/krona_".$t."_MegaBlast.txt") or die "$!";
 	}
 	else{
-		open(OUTALL,">".$outputdir."/OverallDiversity_MegaBlast.csv") or die "$!";
+		open(OUT,">".$outputdir."/OverallDiversity_MegaBlast.csv") or die "$!";
 		print OUT "Family\tFamily\tGenus\tSpecies\tRelated\tNb Cluster (%)\t".join("\t",sort @primertmp)."\tPool\n";		#vérifier ordre primertmp
 		print OUT "Virus\t";
 		
-		$kronaname="krona_ByTissue_MegaBlast.txt";
+		$kronaname="krona_ByTissue_MegaBlast";
 		open(KRO,">".$krona."/krona_ByTissue_MegaBlast") or die "$!";
 	}
 	foreach my $f (sort keys %{$hnewtable{$t}}){
@@ -1513,7 +1525,7 @@ sub contig_build{
 					my $seqstrtmpfun  = $seqtmpfun->seq;
 					my $len		   = $seqtmpfun->length;
 					##	Get length and sequence
-					push(@tseqtmpfun,$seqstrtmpfun);
+					
 					push(@lentemp,$len);
 					
 					my $id  = $seqtmpfun->display_id();
@@ -1532,6 +1544,9 @@ sub contig_build{
 					my $result=$in2->next_result;									
 					my $var=$result->query_name();
 					my $hit=$result->next_hit();
+					my $frame_query="";
+					my $frame_hit="";
+						
 					if(defined $hit){
 						my $desc = $hit->description();
 						my $hit_name = $hit->name();
@@ -1563,8 +1578,7 @@ sub contig_build{
 						my @percent_id=();
 						my $compte=0;
 						my @start_stop_len_hsp=();
-								
-								
+
 						if(defined $hsp){
 							do{
 								$compte++;
@@ -1572,6 +1586,13 @@ sub contig_build{
 								
 								my $queryaln=$hsp->start."-".$hsp->end."(".$hsp->length('query').")";
 								push @start_stop_len_hsp, $queryaln;
+								
+								
+								$frame_query=$hsp->query->frame;
+								$frame_hit=$hsp->hit->frame;
+								
+								#~ print "HSP here : $compte\tFrame query : $frame_query\tFrame hit : $frame_hit\n";
+
 										
 							}while(my $hsp=$hit->next_hsp());
 						}
@@ -1595,7 +1616,17 @@ sub contig_build{
 						push(@hpvclosest,"NA");
 						push(@classification,"NA");
 					}
+					
+					## ICI change le frame en fonction de blastn results
 
+					if($frame_query!=$frame_hit){
+						push(@tseqtmpfun,reverse_complement_IUPAC($seqstrtmpfun));	## ICI frame a changer en fct de blastn results
+					}
+					else{
+						push(@tseqtmpfun,$seqstrtmpfun);	## ICI frame a changer en fct de blastn results
+					}
+					
+					
 				}
 				##	Concatene information
 				my $len=join("/",@lentemp);
@@ -1703,9 +1734,19 @@ sub contig_build{
 									my $queryaln=$hsp->start."-".$hsp->end."(".$hsp->length('query').")";
 									#~ print $hit_name."\n";
 									#~ print $queryaln."\n";
+									#~ print $queryaln."\n";
 									#~ print $hsp->rank." rank\n";
 									push @start_stop_len_hsp, $queryaln;
+
+									my $frame_query=$hsp->query->strand;
+									my $frame_hit=$hsp->hit->strand;
 									
+									#~ print "HSP : $compte\tFrame query : $frame_query\tFrame hit : $frame_hit\tFrame subject : $frame_subject\t$frame_subject_hit\n";
+									
+									if($frame_query!=$frame_hit){			##Reverse the sequence in order to have the good orientation before RaxML
+										${$$hdatafun{$title}{$pool}}[9]=reverse_complement_IUPAC(${$$hdatafun{$title}{$pool}}[9]);
+									}
+
 								}while(my $hsp=$hit->next_hsp());
 							}
 							
@@ -1749,64 +1790,73 @@ sub contig_build{
 	return(@aecrirefun);
 }
 
-
-
-##########
-##	NEW	##
-##########
-open(OUT,">".$outputdir."/table_putative_new_VIRUS.txt") or die "$! : $outputdir/table_putative_new_VIRUS.txt\n";
-open(FA,">".$outputdir."/putative_new_VIRUS.fa") or die "$! : $outputdir/putative_new_VIRUS.fa\n";
-if($boolean_infofile eq "true"){
-	print OUT "VIRUSname\t%dissimilarity\tAbundance\tN°reads\tGInum\tAlignmentPosition_MegaBlast\tVIRUS_closest_MegaBlast\tPool\tTissu\tPrimer\tLength\tAlignmentPositionBlastN_start:stop(length)\tVIRUS_closest_Blast\tClassification\tSequence(s)\n";
-}
-else{
-	print OUT "VIRUSname\t%dissimilarity\tAbundance\tN°reads\tGInum\tAlignmentPosition_MegaBlast\tVIRUS_closest_MegaBlast\tPool\tLength\tAlignmentPosition_start:stop(length)\tVIRUS_closest_Blast\tClassification\tSequence(s)\n";
-}
-foreach my $line (@aecrire){
-	print OUT $line."\n";
-	my @tab=split /\t/, $line;
-	if($#tab>14){
-		my $cpt=1;
-		for (my $i=14; $i<=$#tab; $i++){
-			print FA ">".$tab[0].".".$cpt."\n".$tab[$i]."\n";
-			$cpt++;
-		}
+my $bol_new_empty="F";
+if(@aecrire != 0){		##Si des nouvelles sequences ont été trouvées
+	##########
+	##	NEW	##
+	##########
+	open(OUT,">".$outputdir."/table_putative_new_VIRUS.txt") or die "$! : $outputdir/table_putative_new_VIRUS.txt\n";
+	open(FA,">".$outputdir."/putative_new_VIRUS.fa") or die "$! : $outputdir/putative_new_VIRUS.fa\n";
+	if($boolean_infofile eq "true"){
+		print OUT "VIRUSname\t%dissimilarity\tAbundance\tN°reads\tGInum\tAlignmentPosition_MegaBlast\tVIRUS_closest_MegaBlast\tPool\tTissu\tPrimer\tLength\tAlignmentPositionBlastN_start:stop(length)\tVIRUS_closest_Blast\tClassification\tSequence(s)\n";
 	}
 	else{
-		print FA ">".$tab[0]."\n".$tab[$#tab]."\n";
+		print OUT "VIRUSname\t%dissimilarity\tAbundance\tN°reads\tGInum\tAlignmentPosition_MegaBlast\tVIRUS_closest_MegaBlast\tPool\tLength\tAlignmentPosition_start:stop(length)\tVIRUS_closest_Blast\tClassification\tSequence(s)\n";
 	}
-}
-close(FA);
-close(OUT);
-
-
-##############
-##	KNOWN	##
-##############
-open(OUT,">".$outputdir."/table_putative_known_VIRUS.txt") or die "$! : $outputdir/table_putative_known_VIRUS.txt\n";
-open(FA,">".$outputdir."/putative_known_VIRUS.fa") or die "$! : $outputdir/putative_known_VIRUS.fa\n";
-if($boolean_infofile eq "true"){
-	print OUT "VIRUSname\t%dissimilarity\tAbundance\tN°reads\tGInum\tAlignmentPosition_MegaBlast\tVIRUS_closest_MegaBlast\tPool\tTissu\tPrimer\tLength\tAlignmentPositionBlastN_start:stop(length)\tVIRUS_closest_Blast\tClassification\tSequence(s)\n";
-}
-else{
-	print OUT "VIRUSname\t%dissimilarity\tAbundance\tN°reads\tGInum\tAlignmentPosition_MegaBlast\tVIRUS_closest_MegaBlast\tPool\tLength\tAlignmentPosition_start:stop(length)\tVIRUS_closest_Blast\tClassification\tSequence(s)\n";
-}
-foreach my $line (@aecrire3){
-	print OUT $line."\n";
-	my @tab=split /\t/, $line;
-	if($#tab>14){
-		my $cpt=1;
-		for (my $i=14; $i<=$#tab; $i++){
-			print FA ">".$tab[0].".".$cpt."\n".$tab[$i]."\n";
-			$cpt++;
+	foreach my $line (@aecrire){
+		print OUT $line."\n";
+		my @tab=split /\t/, $line;
+		if($#tab>14){
+			my $cpt=1;
+			for (my $i=14; $i<=$#tab; $i++){
+				print FA ">".$tab[0].".".$cpt."\n".$tab[$i]."\n";
+				$cpt++;
+			}
+		}
+		else{
+			print FA ">".$tab[0]."\n".$tab[$#tab]."\n";
 		}
 	}
-	else{
-		print FA ">".$tab[0]."\n".$tab[$#tab]."\n";
-	}
+	close(FA);
+	close(OUT);
 }
-close(FA);
-close(OUT);
+else{
+	$bol_new_empty="T";
+}
+
+my $bol_known_empty="F";
+if(@aecrire3 != 0){		##Si des nouvelles sequences ont été trouvées
+	##############
+	##	KNOWN	##
+	##############
+	open(OUT,">".$outputdir."/table_putative_known_VIRUS.txt") or die "$! : $outputdir/table_putative_known_VIRUS.txt\n";
+	open(FA,">".$outputdir."/putative_known_VIRUS.fa") or die "$! : $outputdir/putative_known_VIRUS.fa\n";
+	if($boolean_infofile eq "true"){
+		print OUT "VIRUSname\t%dissimilarity\tAbundance\tN°reads\tGInum\tAlignmentPosition_MegaBlast\tVIRUS_closest_MegaBlast\tPool\tTissu\tPrimer\tLength\tAlignmentPositionBlastN_start:stop(length)\tVIRUS_closest_Blast\tClassification\tSequence(s)\n";
+	}
+	else{
+		print OUT "VIRUSname\t%dissimilarity\tAbundance\tN°reads\tGInum\tAlignmentPosition_MegaBlast\tVIRUS_closest_MegaBlast\tPool\tLength\tAlignmentPosition_start:stop(length)\tVIRUS_closest_Blast\tClassification\tSequence(s)\n";
+	}
+	foreach my $line (@aecrire3){
+		print OUT $line."\n";
+		my @tab=split /\t/, $line;
+		if($#tab>14){
+			my $cpt=1;
+			for (my $i=14; $i<=$#tab; $i++){
+				print FA ">".$tab[0].".".$cpt."\n".$tab[$i]."\n";
+				$cpt++;
+			}
+		}
+		else{
+			print FA ">".$tab[0]."\n".$tab[$#tab]."\n";
+		}
+	}
+	close(FA);
+	close(OUT);
+}
+else{
+	$bol_known_empty="T";
+}
 
 
 ##############
@@ -1823,19 +1873,23 @@ my $knownfasta=$outputdir."/putative_known_VIRUS.fa";
 mkdir $whereiam."/raxml/new";
 mkdir $whereiam."/raxml/known";
 
-##	New
-chdir "$whereiam/raxml/new";
+if($bol_new_empty eq "F"){
+	##	New
+	chdir "$whereiam/raxml/new";
 
-`papara -t ../L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -s ../L1_All_genome_NUC_alignment.phylip -q $newfasta -j $threads`;
+	`papara -t ../L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -s ../L1_All_genome_NUC_alignment.phylip -q $newfasta -j $threads`;
 
-`raxmlHPC-PTHREADS-AVX2 -f v -s papara_alignment.default -t ../L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -m GTRGAMMA -n new -T $threads --epa-keep-placements=1`;
+	`raxmlHPC-PTHREADS-AVX2 -f v -s papara_alignment.default -t ../L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -m GTRGAMMA -n new -T $threads --epa-keep-placements=1`;
+}
 
-#~ ##	Known
-chdir "$whereiam/raxml/known";
+if($bol_known_empty eq "F"){
+	##	Known
+	chdir "$whereiam/raxml/known";
 
-`papara -t ../L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -s ../L1_All_genome_NUC_alignment.phylip -q $knownfasta -j $threads`;
+	`papara -t ../L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -s ../L1_All_genome_NUC_alignment.phylip -q $knownfasta -j $threads`;
 
-`raxmlHPC-PTHREADS-AVX2 -f v -s papara_alignment.default -t ../L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -m GTRGAMMA -n known -T $threads --epa-keep-placements=1`;
+	`raxmlHPC-PTHREADS-AVX2 -f v -s papara_alignment.default -t ../L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -m GTRGAMMA -n known -T $threads --epa-keep-placements=1`;
+}
 
 chdir "$whereiam/raxml";
 
@@ -1889,16 +1943,22 @@ my $out_known="$whereiam/raxml/known/Raxml_known.csv";
 
 #~ parseRaxML($class_new,$new_tree,$info_new,$out_new);
 #~ parseRaxML($class_known,$known_tree,$info_known,$out_known);
-
-parseRaxMLv2($new_tree,$info_new,$out_new);
-parseRaxMLv2($known_tree,$info_known,$out_known);
-
+if($bol_new_empty eq "F"){
+	parseRaxMLv2($new_tree,$info_new,$out_new);
+}
+if($bol_known_empty eq "F"){
+	parseRaxMLv2($known_tree,$info_known,$out_known);
+}
 
 my %querytaxall=();
 my %querycloseall=();
 
-readraxml($out_new);
-readraxml($out_known);
+if($bol_new_empty eq "F"){
+	readraxml($out_new);
+}
+if($bol_known_empty eq "F"){
+	readraxml($out_known);
+}
 
 my $putative_new=$outputdir."/table_putative_new_VIRUS.txt";
 my $putative_known=$outputdir."/table_putative_known_VIRUS.txt";
@@ -1917,16 +1977,19 @@ my @catnew_blastn=();
 my %known_blastn=();
 my %new_blastn=();
 
-my $outnew=$outputdir."/table_putative_new_VIRUS_RaxML.txt";
-open(T,">".$outnew) or die "$! : $outnew\n";
-treatputative($putative_new,$out_new);
-close(T);
+if($bol_new_empty eq "F"){
+	my $outnew=$outputdir."/table_putative_new_VIRUS_RaxML.txt";
+	open(T,">".$outnew) or die "$! : $outnew\n";
+	treatputative($putative_new,$out_new);
+	close(T);
+}
 
-my $outknown=$outputdir."/table_putative_known_VIRUS_RaxML.txt";
-open(T,">".$outknown) or die "$! : $outknown\n";
-treatputative($putative_known,$out_known);
-close(T);
-
+if($bol_known_empty eq "F"){
+	my $outknown=$outputdir."/table_putative_known_VIRUS_RaxML.txt";
+	open(T,">".$outknown) or die "$! : $outknown\n";
+	treatputative($putative_known,$out_known);
+	close(T);
+}
 
 
 ##	This rewrite the final output, and include the RaxML classification
@@ -2313,16 +2376,16 @@ foreach my $t (sort keys %hnewtable){		##TISSU
 		open(OUT,">".$outputdir."/diversityByTissu_".$t."_RaxML.csv") or die "$!";
 		print OUT "TISSUE\tFamily\tGenus\tSpecies\tRelated\t".join("\t",sort @primertmp)."\tPool\n";		#vérifier ordre primertmp
 		print OUT $t."\tPapillomaviridae\t";
-		$kronaname="krona_".$t."_RaxML";
+		$kronaname="krona_".$t."_RaxML.txt";
 		open(KRO,">".$krona."/krona_".$t."_RaxML.txt") or die "$!";
 	}
 	else{
-		open(OUTALL,">".$outputdir."/OverallDiversity_RaxML.csv") or die "$!";
+		open(OUT,">".$outputdir."/OverallDiversity_RaxML.csv") or die "$!";
 		print OUT "Family\tFamily\tGenus\tSpecies\tRelated\t".join("\t",sort @primertmp)."\tPool\n";		#vérifier ordre primertmp
 		print OUT "Virus\t";
 		
-		$kronaname="krona_ByTissue_RaxML.txt";
-		open(KRO,">".$krona."/krona_ByTissue_RaxML") or die "$!";
+		$kronaname="krona_ByTissue_RaxML";
+		open(KRO,">".$krona."/krona_ByTissue_RaxML.txt") or die "$!";
 	}
 	
 	
@@ -2567,16 +2630,16 @@ foreach my $t (sort keys %hnewtable_blastn){		##TISSU
 		open(OUT,">".$outputdir."/diversityByTissu_".$t."_BlastN.csv") or die "$!";
 		print OUT "TISSUE\tFamily\tGenus\tSpecies\tRelated\t".join("\t",sort @primertmp)."\tPool\n";		#vérifier ordre primertmp
 		print OUT $t."\tPapillomaviridae\t";
-		$kronaname="krona_".$t."_BlastN";
+		$kronaname="krona_".$t."_BlastN.txt";
 		open(KRO,">".$krona."/krona_".$t."_BlastN.txt") or die "$!";
 	}
 	else{
-		open(OUTALL,">".$outputdir."/OverallDiversity_BlastN.csv") or die "$!";
+		open(OUT,">".$outputdir."/OverallDiversity_BlastN.csv") or die "$!";
 		print OUT "Family\tFamily\tGenus\tSpecies\tRelated\t".join("\t",sort @primertmp)."\tPool\n";		#vérifier ordre primertmp
 		print OUT "Virus\t";
 		
-		$kronaname="krona_ByTissue_BlastN.txt";
-		open(KRO,">".$krona."/krona_ByTissue_BlastN") or die "$!";
+		$kronaname="krona_ByTissue_BlastN";
+		open(KRO,">".$krona."/krona_ByTissue_BlastN.txt") or die "$!";
 	}
 	
 	

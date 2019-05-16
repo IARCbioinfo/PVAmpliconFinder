@@ -68,6 +68,8 @@ while getopts ':hs:d:t:o:b:f:i:' option; do
 done
 shift $((OPTIND - 1))
 
+dir=${PWD};
+
 ##	Check if parameters are correct
 if [ -z "$working_dir" ] || [ -z "$fastq_dir" ] || [ -z "$suffix" ]
 then
@@ -290,7 +292,7 @@ then
 	cd ${outputdir};
 	
 	##	BLASTN
-	find . -name "${suffix}*.fasta" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'name=$(basename "${0/.fasta/}"); echo $name; blastn -task megablast -use_index false -db '${dbnt}' -query ${0} -out '${blastdir}'/${name}.blast -evalue 1e-05 -max_target_seqs 1 -num_threads '${threads}' -outfmt "6 qseqid sseqid evalue bitscore length pident frames staxids sskingdoms sscinames scomnames sblastnames stitle qseq qstart qend";'
+	find . -name "${suffix}*.fasta" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'name=$(basename "${0/.fasta/}"); echo $name; blastn -task megablast -use_index true -db '${dbnt}' -query ${0} -out '${blastdir}'/${name}.blast -evalue 1e-05 -max_target_seqs 1 -num_threads '${threads}' -outfmt "6 qseqid sseqid evalue bitscore length pident frames staxids sskingdoms sscinames scomnames sblastnames stitle qseq qstart qend";'
 	
 	cd ${blastdir};
 	
@@ -310,8 +312,7 @@ fi
 echo -e "##########################################\n##\tAdvanced analysis\t\t##\n##########################################" >> $logfile;
 echo -e "##########################################\n##\tAdvanced analysis\t\t##\n##########################################";
 
-cd ${working_dir};
-cd ..;
+cd ${dir};
 
 if [ ! -d ${working_dir}"/analysis_new" ]
 then
