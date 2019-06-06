@@ -1408,10 +1408,10 @@ sub concat_sequence{
 ##	HERE WE HAVE TO DOWNLOAD, OR GIVE WITH THE TOOL, THE PAVE DB	##
 ## fasta ---> Be carfeul of taxonomy ID that are all 0, blast hate it
 #	solution :
-#				sed -i 's/>gi|/>IDgi|/g' Pave.fasta
+#				sed -i 's/>gi|/>IDgi|/g' PaVE.fasta
 
 
-#	makeblastdb -in Pave.fasta -input_type fasta -hash_index -dbtype nucl (-parse_seqids)
+#	makeblastdb -in PaVE.fasta -input_type fasta -hash_index -dbtype nucl (-parse_seqids)
 
 ##################################
 ##	BLASTN DATABASE DEFINITION	##
@@ -1577,7 +1577,7 @@ sub contig_build{
 						
 						my $hpv="";
 						
-						if($desc=~/.*\((\S+)\)/){
+						if($desc=~/.*\((\S+)\)/){		##	SPLIT PAR "|", le 4eme
 							$hpv=$1;
 						}
 						else{
@@ -3145,7 +3145,7 @@ sub parseRaxMLv2{
 		if((defined($hquerytohpv{$q}))){
 			$acc=$hquerytohpv{$q};
 			if((defined($hacctotax{$hquerytohpv{$q}}))){
-				$tax=$hacctotax{$hquerytohpv{$q}};
+				$tax=$hacctotax{$hquerytohpv{$q}};				#Modifier ce n'est plus acc
 			}
 			else{
 				$tax="Unclassified";
