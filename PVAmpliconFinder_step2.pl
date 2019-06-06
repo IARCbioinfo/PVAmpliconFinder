@@ -19,6 +19,7 @@ use Getopt::Std;
 use Math::Round ':all';
 use File::Basename; # my ($filename, $directories, $suffix) = fileparse($file, qr/\.[^.]*/);
 use List::MoreUtils qw(uniq);
+use List::MoreUtils qw(first_index);
 use Bio::SeqIO;
 use Bio::DB::Fasta;
 use Bio::Index::Fasta;
@@ -267,6 +268,43 @@ sub readinfofile{
 	push (@return, \%tissu);
 	return (\@return);
 }
+
+##########################################
+##	Define classification from PAVE		##
+##########################################
+##	NEED TO DOWNLOAD 2 FILES FROM PAVE (THEY ARN'T FORMATED THE SAME!!!!!)
+	#	Human Ref Clone table : https://pave.niaid.nih.gov/#explore/reference_genomes/human_genomes --> export
+	#	Animal Ref Clone Table : https://pave.niaid.nih.gov/#explore/reference_genomes/animal_genomes --> export
+##	Both file has to be save as .csv or txt file (separator tabular)
+
+#~ awk -v OFS="\t" -F"\t" '{print $1, $9, $3}' download_animal_RefClone_7896321e.csv
+#~ awk -v OFS="\t" -F"\t" '{print $1, $5, $2}' download_human_RefClone_09156ea6.csv
+
+#~	sudo apt-get install gnumeric
+
+#~ cat <(sed -e '1d' download_animal_RefClone_*.csv | awk -v OFS="\t" -F"\t" '{print $1, $9, $3}') <(sed -e '1d' download_human_RefClone_*.csv | awk -v OFS="\t" -F"\t" '{print $1, $5, $2}') > pave_table.txt
+
+my $table="$whereiam/raxml/pave_table.txt";
+
+my %hacctohpv=();
+my %hacctotax=();
+my %hhpvtotax=();
+open(T, $table) or die "$! : $table\n";	#HPV1	V01116	Mupapillomavirus 1
+while(<T>){
+	chomp($_);
+	my @tab=split(/\t/,$_);
+	if((defined($tab[1])) && $tab[1]!~/^\s*$/){
+		$hacctohpv{$tab[1]}=$tab[0];		#	BPV7	DQ217793	Dyoxipapillomavirus 1
+	}
+	if((defined($tab[2])) && $tab[2]!~/^\s*$/){
+		$hacctotax{$tab[1]}=$tab[2];		#	BPV7	DQ217793	Dyoxipapillomavirus 1
+	}
+	if((defined($tab[0])) && $tab[0]!~/^\s*$/){
+		$hhpvtotax{$tab[0]}=$tab[2];		#	BPV7	DQ217793	Dyoxipapillomavirus 1
+	}
+}
+close(T);
+
 
 my %htype;#number of reads by pool and organism category - key = pool & organism type
 my %hhpv;#number of reads by pool and HPV category - key = tissue - VIRUS type
@@ -1344,7 +1382,7 @@ sub concat_sequence{
 						if($#{$hseqfun{$title}{$pool}}<0){
 							push(@{$hseqfun{$title}{$pool}},${$hdatafun{$title}{$pool}}[10]."|".${$hdatafun{$title}{$pool}}[9]); #On lui donne la séquence d'avant que si la table est vide
 						}
-						push(@{$hseqfun{$title}{$pool}},,$qid."|".$seqstr);						#Et la nouvelle
+						push(@{$hseqfun{$title}{$pool}},$qid."|".$seqstr);						#Et la nouvelle
 					}
 				}
 			}
@@ -1379,26 +1417,11 @@ sub concat_sequence{
 ##	BLASTN DATABASE DEFINITION	##
 ##################################
 my $fac = Bio::Tools::Run::StandAloneBlastPlus->new(
-   -db_data => '/home/robitaillea/ICB/blastdb/PaVE_complet/Pave.fasta',
+   -db_data => $whereiam.'/databases/PaVE/PaVE.fasta',
    -create => 1,
    -alphabet=>'dna'
 		);
 		
-##	With the database "viruses.fasta" there is the script "gettaxidByAcc.sh" that get the taxid for each acc number of the file
-##	We have to load this to get the lineage of $acc = $hit->accession();
-my $gitotax="/home/robitaillea/ICB/blastdb/PaVE_complet/GItoTAX.txt";
-my %gi_tax=();
-
-open(CLA, $gitotax) or die "$! : $gitotax\n";
-while(<CLA>){
-	my @tab=split /\t/, $_;
-	chomp($tab[0]);
-	chomp($tab[1]);
-	$gi_tax{$tab[0]}=$tab[1];		##Verifier que tout est bien présent (pas de vide) : https://www.biostars.org/p/10959/
-}
-close(CLA);
-
-
 ##########
 ##	NEW	##
 ##########
@@ -1418,9 +1441,6 @@ mkdir $tmp3;
 chdir $output_known;
 print "Create contigs KNOWN VIRUS\n";
 my @aecrire3=contig_build(\%hdata_known,\%hseq_known,$inputdirfasta,$tmp3);
-
-
-## perl analysis_summary_dariush_lastVersion.pl -i /home/robitaillea/ICB/Dariush_virome_Alex_Tarik_11052018/TEST/results/TEST_1_seq/blast_results_mimic -o /home/robitaillea/ICB/Dariush_virome_Alex_Tarik_11052018/TEST/results/TEST_1_seq/ -s Dariush_ -d /home/robitaillea/ICB/Dariush_virome_Alex_Tarik_11052018/TEST/results/TEST_1_seq/vsearch_mimic -f /home/robitaillea/ICB/Dariush_virome_Alex_Tarik_11052018/TEST/results/TEST_1_seq/infofile_mimic.csv -t 8
 
 
 ##############################
@@ -1469,6 +1489,7 @@ sub contig_build{
 					my $idtmp=$tabtmp[0];
 					my $l=$tabtmp[1];
 					print TMP ">".$idtmp."\n".$l."\n";
+					#~ print ">".$idtmp."\n".$l."\n";
 					$s++;
 				}
 				close(TMP);
@@ -1544,6 +1565,7 @@ sub contig_build{
 					my $result=$in2->next_result;									
 					my $var=$result->query_name();
 					my $hit=$result->next_hit();
+					
 					my $frame_query="";
 					my $frame_hit="";
 						
@@ -1553,24 +1575,43 @@ sub contig_build{
 						#~ print $desc." la\n";		##	By modifying structure of naming for fasta file, allow to do the blast, but not to get gi, so have to take it from name or description
 						#~ print $hit_name." ici\n";
 						
-						my @tab_name=split(/\|/,$hit_name);
-						my $gi = $tab_name[1];
-						chomp($gi);
-
-						my $taxid="";
-
-						$taxid=$gi_tax{$gi};
-						chomp($taxid);
-						my $classification_tmp="";
-						if(defined($taxid2spe{$taxid})){
-							$classification_tmp=$taxid2spe{$taxid};
-						}
-						elsif(defined($taxid2gen{$taxid})){
-							$classification_tmp=$taxid2gen{$taxid};
+						my $hpv="";
+						
+						if($desc=~/.*\((\S+)\)/){
+							$hpv=$1;
 						}
 						else{
-							$classification_tmp="Unclassified";
+							print $hpv."\n"; exit;
 						}
+						
+						my $classification_tmp="";
+						
+						$classification_tmp=$hhpvtotax{$hpv};
+						
+						if(!(defined($classification_tmp)) or ($classification_tmp eq "")){
+							$classification_tmp="NA";
+						}
+						#~ print $hpv."\n";
+						#~ print $classification_tmp."\n";
+						
+						#~ my @tab_name=split(/\|/,$hit_name);
+						#~ my $gi = $tab_name[1];
+						#~ chomp($gi);
+
+						#~ my $taxid="";
+
+						#~ $taxid=$gi_tax{$gi};
+						#~ chomp($taxid);
+						#~ my $classification_tmp="";
+						#~ if(defined($taxid2spe{$taxid})){
+							#~ $classification_tmp=$taxid2spe{$taxid};
+						#~ }
+						#~ elsif(defined($taxid2gen{$taxid})){
+							#~ $classification_tmp=$taxid2gen{$taxid};
+						#~ }
+						#~ else{
+							#~ $classification_tmp="Unclassified";
+						#~ }
 						
 						
 						my $percent_id_moy="NA";
@@ -1611,40 +1652,86 @@ sub contig_build{
 						push(@classification,$classification_tmp);
 							
 						
-					}
+					}				##	Si pas de hit
 					else{
 						push(@hpvclosest,"NA");
 						push(@classification,"NA");
+						push(@start_stop_len_hit,"NA");
 					}
 					
 					## ICI change le frame en fonction de blastn results
-
-					if($frame_query!=$frame_hit){
-						push(@tseqtmpfun,reverse_complement_IUPAC($seqstrtmpfun));	## ICI frame a changer en fct de blastn results
-					}
-					else{
-						push(@tseqtmpfun,$seqstrtmpfun);	## ICI frame a changer en fct de blastn results
-					}
 					
-					
+					if(defined $hit){			##	Get at least one hit
+						if($frame_query!=$frame_hit){
+							push(@tseqtmpfun,reverse_complement_IUPAC($seqstrtmpfun));	## ICI frame a changer en fct de blastn results
+						}
+						else{
+							push(@tseqtmpfun,$seqstrtmpfun);	## ICI frame a changer en fct de blastn results
+						}
+					}
+					else{						## Pas de hit at all
+						push(@tseqtmpfun,$seqstrtmpfun);
+					}
 				}
+				##	Fin traitement toutes les sequences du clusters
+				
+				
 				##	Concatene information
-				my $len=join("/",@lentemp);
-				$hpvclosest=join("/",@hpvclosest);
-				$classification=join("/",@classification);
+				#~ foreach my $lt (@lentemp){
+					#~ print $lt." here \n";
+				#~ }
+				######################################	HERE	######################################	
+				##	Here rank having longuest sequence first
+				my $len="";
+				my $infoalign="";
 				
-				my $infoalign=join("/",@start_stop_len_hit);
+				#~ if($#hpvclosest != $#classification){
+					#~ print ${$$hdatafun{$title}{$pool}}[0]."\n";
+					#~ print $k.$k.$k."fasta";
+					#~ exit;
+				#~ }
 				
-				#print $hpvclosest."par ici \n";
+				if($#lentemp > 0){		## Plus d'un contigs/singlets au moins un match			 && (@start_stop_len_hsp != 0)
+					my $res=longuestFirst(\@lentemp,\@hpvclosest,\@classification,\@start_stop_len_hit,\@tseqtmpfun);
+					$len=$$res[0];
+					$hpvclosest=$$res[1];
+					$classification=$$res[2];
+					$infoalign=$$res[3];
+					$seqf=$$res[4];
+				}
+				elsif($#lentemp==0){				##	Un seul contigs/singlets au moins un match
+					$len=$lentemp[0];
+					$hpvclosest=$hpvclosest[0];
+					$classification=$classification[0];
+					$infoalign=$start_stop_len_hit[0];
+					$seqf=$tseqtmpfun[0];
+				}
+				#~ else{												##	pas de match
+					#~ print "error\n";exit;
+					#~ $len=join("/",@lentemp);
+					#~ $hpvclosest=join("/",@hpvclosest);
+					#~ $classification=join("/",@classification);
+				#~ }
 				
-				$seqf=join("\t",@tseqtmpfun);
+				
+				
+				#~ my $len=join("/",@lentemp);
+				#~ $hpvclosest=join("/",@hpvclosest);
+				#~ $classification=join("/",@classification);
+				
+				#~ my $infoalign=join("/",@start_stop_len_hit);
+				
+				#~ #print $hpvclosest."par ici \n";
+				
+				#~ $seqf=join("\t",@tseqtmpfun);
+				
 				if($boolean_infofile eq "true"){
 					#~ push(@aecrirefun,${$$hdatafun{$title}{$pool}}[0]."\t".$perc_dis."\t".$abundance."\t".${$$hdatafun{$title}{$pool}}[3]."\t".${$$hdatafun{$title}{$pool}}[4]."\t".$pool."\t".$title."\t".${$$hdatafun{$title}{$pool}}[6]."\t".${$$hdatafun{$title}{$pool}}[7]."\t".join("/",@lentemp)."\t".$infoalign."\t".$hpvclosest."\t".$classification."\t".$seqf);
-					push(@aecrirefun,${$$hdatafun{$title}{$pool}}[0]."\t".$perc_dis."\t".$abundance."\t".${$$hdatafun{$title}{$pool}}[3]."\t".${$$hdatafun{$title}{$pool}}[4]."\t".${$$hdatafun{$title}{$pool}}[11]."-".${$$hdatafun{$title}{$pool}}[12]."\t".$title."\t".$pool."\t".${$$hdatafun{$title}{$pool}}[6]."\t".${$$hdatafun{$title}{$pool}}[7]."\t".join("/",@lentemp)."\t".$infoalign."\t".$hpvclosest."\t".$classification."\t".$seqf);
+					push(@aecrirefun,${$$hdatafun{$title}{$pool}}[0]."\t".$perc_dis."\t".$abundance."\t".${$$hdatafun{$title}{$pool}}[3]."\t".${$$hdatafun{$title}{$pool}}[4]."\t".${$$hdatafun{$title}{$pool}}[11]."-".${$$hdatafun{$title}{$pool}}[12]."\t".$title."\t".$pool."\t".${$$hdatafun{$title}{$pool}}[6]."\t".${$$hdatafun{$title}{$pool}}[7]."\t".$len."\t".$infoalign."\t".$hpvclosest."\t".$classification."\t".$seqf);
 				
 				}
 				else{
-					push(@aecrirefun,${$$hdatafun{$title}{$pool}}[0]."\t".$perc_dis."\t".$abundance."\t".${$$hdatafun{$title}{$pool}}[3]."\t".${$$hdatafun{$title}{$pool}}[4]."\t".${$$hdatafun{$title}{$pool}}[11]."-".${$$hdatafun{$title}{$pool}}[12]."\t".$title."\t".$pool."\t".join("/",@lentemp)."\t".$infoalign."\t".$hpvclosest."\t".$classification."\t".$seqf);
+					push(@aecrirefun,${$$hdatafun{$title}{$pool}}[0]."\t".$perc_dis."\t".$abundance."\t".${$$hdatafun{$title}{$pool}}[3]."\t".${$$hdatafun{$title}{$pool}}[4]."\t".${$$hdatafun{$title}{$pool}}[11]."-".${$$hdatafun{$title}{$pool}}[12]."\t".$title."\t".$pool."\t".$len."\t".$infoalign."\t".$hpvclosest."\t".$classification."\t".$seqf);
 				}
 				
 			
@@ -1692,6 +1779,9 @@ sub contig_build{
 							#~ }
 						#~ }
 						
+						my $frame_query="";
+						my $frame_hit="";
+						
 						if(defined $hit){
 							my $hit_name = $hit->name();
 							my $desc = $hit->description();
@@ -1699,24 +1789,42 @@ sub contig_build{
 							#~ print $desc." la\n";		##	By modifying structure of naming for fasta file, allow to do the blast, but not to get gi, so have to take it from name or description
 							#~ print $hit_name." ici\n";
 							
-							my @tab_name=split(/\|/,$hit_name);
-							my $gi = $tab_name[1];
-							chomp($gi);
-
-							my $taxid="";
-
-							$taxid=$gi_tax{$gi};
-							chomp($taxid);
-							my $classification_tmp="";
-							if(defined($taxid2spe{$taxid})){
-								$classification_tmp=$taxid2spe{$taxid};
-							}
-							elsif(defined($taxid2gen{$taxid})){
-								$classification_tmp=$taxid2gen{$taxid};
+							my $hpv="";
+							
+							#~ print $desc."\n";
+							
+							if($desc=~/.*\((\S+)\)/){
+								$hpv=$1;
 							}
 							else{
-								$classification_tmp="Unclassified";
+								print $hpv." Error\n"; exit;
 							}
+							#~ print $hpv."\n";
+							my $classification_tmp="NA";
+							
+							$classification_tmp=$hhpvtotax{$hpv};
+						
+							if(!(defined($classification_tmp)) or ($classification_tmp eq "")){
+								$classification_tmp="NA";
+							}
+							#~ my @tab_name=split(/\|/,$hit_name);
+							#~ my $gi = $tab_name[1];
+							#~ chomp($gi);
+
+							#~ my $taxid="";
+
+							#~ $taxid=$gi_tax{$gi};
+							#~ chomp($taxid);
+							#~ my $classification_tmp="";
+							#~ if(defined($taxid2spe{$taxid})){
+								#~ $classification_tmp=$taxid2spe{$taxid};
+							#~ }
+							#~ elsif(defined($taxid2gen{$taxid})){
+								#~ $classification_tmp=$taxid2gen{$taxid};
+							#~ }
+							#~ else{
+								#~ $classification_tmp="Unclassified";
+							#~ }
 							
 							my $percent_id_moy="NA";
 							my $hsp=$hit->next_hsp();
@@ -1744,9 +1852,12 @@ sub contig_build{
 									#~ print "HSP : $compte\tFrame query : $frame_query\tFrame hit : $frame_hit\tFrame subject : $frame_subject\t$frame_subject_hit\n";
 									
 									if($frame_query!=$frame_hit){			##Reverse the sequence in order to have the good orientation before RaxML
-										${$$hdatafun{$title}{$pool}}[9]=reverse_complement_IUPAC(${$$hdatafun{$title}{$pool}}[9]);
+										${$$hdatafun{$title}{$pool}}[9]=reverse_complement_IUPAC($seq->seq);
 									}
-
+									else{
+										${$$hdatafun{$title}{$pool}}[9]=$seq->seq;
+									}
+									
 								}while(my $hsp=$hit->next_hsp());
 							}
 							
@@ -1892,37 +2003,6 @@ if($bol_known_empty eq "F"){
 }
 
 chdir "$whereiam/raxml";
-
-
-##FROM HERE :
-##	NEED TO DOWNLOAD 2 FILES FROM PAVE (THEY ARN'T FORMATED THE SAME!!!!!)
-	#	Human Ref Clone table : https://pave.niaid.nih.gov/#explore/reference_genomes/human_genomes --> export
-	#	Animal Ref Clone Table : https://pave.niaid.nih.gov/#explore/reference_genomes/animal_genomes --> export
-##	Both file has to be save as .csv or txt file (separator tabular)
-
-#~ awk -v OFS="\t" -F"\t" '{print $1, $9, $3}' download_animal_RefClone_7896321e.csv
-#~ awk -v OFS="\t" -F"\t" '{print $1, $5, $2}' download_human_RefClone_09156ea6.csv
-
-#~	sudo apt-get install gnumeric
-
-#~ cat <(sed -e '1d' download_animal_RefClone_*.csv | awk -v OFS="\t" -F"\t" '{print $1, $9, $3}') <(sed -e '1d' download_human_RefClone_*.csv | awk -v OFS="\t" -F"\t" '{print $1, $5, $2}') > pave_table.txt
-
-my $table="$whereiam/raxml/pave_table.txt";
-
-my %hacctohpv=();
-my %hacctotax=();
-open(T, $table) or die "$! : $table\n";	#HPV1	V01116	Mupapillomavirus 1
-while(<T>){
-	chomp($_);
-	my @tab=split(/\t/,$_);
-	if((defined($tab[1])) && $tab[1]!~/^\s*$/){
-		$hacctohpv{$tab[1]}=$tab[0];		#	BPV7	DQ217793	Dyoxipapillomavirus 1
-	}
-	if((defined($tab[2])) && $tab[2]!~/^\s*$/){
-		$hacctotax{$tab[1]}=$tab[2];		#	BPV7	DQ217793	Dyoxipapillomavirus 1
-	}
-}
-close(T);
 
 
 my $class_new="$whereiam/raxml/new/RAxML_classification.new";
@@ -2376,7 +2456,7 @@ foreach my $t (sort keys %hnewtable){		##TISSU
 		open(OUT,">".$outputdir."/diversityByTissu_".$t."_RaxML.csv") or die "$!";
 		print OUT "TISSUE\tFamily\tGenus\tSpecies\tRelated\t".join("\t",sort @primertmp)."\tPool\n";		#vérifier ordre primertmp
 		print OUT $t."\tPapillomaviridae\t";
-		$kronaname="krona_".$t."_RaxML.txt";
+		$kronaname="krona_".$t."_RaxML";
 		open(KRO,">".$krona."/krona_".$t."_RaxML.txt") or die "$!";
 	}
 	else{
@@ -2630,7 +2710,7 @@ foreach my $t (sort keys %hnewtable_blastn){		##TISSU
 		open(OUT,">".$outputdir."/diversityByTissu_".$t."_BlastN.csv") or die "$!";
 		print OUT "TISSUE\tFamily\tGenus\tSpecies\tRelated\t".join("\t",sort @primertmp)."\tPool\n";		#vérifier ordre primertmp
 		print OUT $t."\tPapillomaviridae\t";
-		$kronaname="krona_".$t."_BlastN.txt";
+		$kronaname="krona_".$t."_BlastN";
 		open(KRO,">".$krona."/krona_".$t."_BlastN.txt") or die "$!";
 	}
 	else{
@@ -3119,7 +3199,7 @@ sub HPVblastn{
 			 -method_args => [	-num_alignments => '1',			#	recupération de 50 alignements
 							-show_gis => 'yes',					#	le nom du resultat doit contenir le numéro GI
 							-word_size => '11',					#	taille du mot pour effectuer la recherche
-							-evalue => '1e-3',					#	e-value attendu est de 1e-5							-->1e-4
+							-evalue => '1e-1',					#	e-value attendu est de 1e-5							-->1e-4
 							-num_threads => $threads,				#	Nombre de CPU a utiliser				#	Pourcentage d'identité minimum attendu
 							-penalty => '-3',					#	Penalitée du score du blast pour un mismatch		-->	-1
 							-reward => '2',						#	Gain du score du blast pour un match				-->	1
@@ -3147,4 +3227,64 @@ sub reverse_complement_IUPAC {
         # complement the reversed DNA sequence
         $revcomp =~ tr/ABCDGHMNRSTUVWXYabcdghmnrstuvwxy/TVGHCDKNYSAABWXRtvghcdknysaabwxr/;
         return $revcomp;
+}
+
+#~ my $res=longuestFirst(\@lentemp,\@hpvclosest,\classification,\@start_stop_len_hit,\@tseqtmpfun);
+
+sub longuestFirst {
+	my $tlen=shift;
+	my $thpv=shift;
+	my $tclass=shift;
+	my $tpos=shift;
+	my $tseq=shift;
+	
+	my @tindex=();
+	
+	my @sorted_len = sort { $a <=> $b } @$tlen;	# Plus petit en premier
+	
+	while(@sorted_len){
+		my $longuest = pop @sorted_len;
+		push @tindex, first_index { $_ eq $longuest } @$tlen;
+	}
+	
+	
+	
+	#~ while(@$tlen){
+		#~ my $indextop=getindexmax($tlen);
+		#~ print $indextop." ici \n";
+		#~ push @tindex, $indextop;
+		#splice @$tlen, $indextop, 1;	## Pas bon car cahnge index des restant// use undef?
+		#undef $$tlen[$indextop];	## Pas bon car cahnge index des restant// use undef?
+	#~ }
+	
+	my @tlenfun=();
+	my @thpvfun=();
+	my @tclassfun=();
+	my @posfun=();
+	my @tseqfun=();
+	
+	foreach my $i (@tindex){
+		#~ print $i."\n";
+		#~ print $$tlen[$i]." la \n";
+		push(@tlenfun,$$tlen[$i]);
+		push(@thpvfun,$$thpv[$i]);
+		push(@tclassfun,$$tclass[$i]);
+		push(@posfun,$$tpos[$i]);
+		push(@tseqfun,$$tseq[$i]);
+	}
+	
+	my $lenfun=join("/",@tlenfun); 
+	my $hpvfun=join("/",@thpvfun); 
+	my $classfun=join("/",@tclassfun); 
+	my $posfun=join("/",@posfun); 
+	my $seqfun=join("\t",@tseqfun);
+	
+	my @res=();
+	push(@res,$lenfun);
+	push(@res,$hpvfun);
+	push(@res,$classfun);
+	push(@res,$posfun);
+	push(@res,$seqfun);
+	 
+	return(\@res);
 }
