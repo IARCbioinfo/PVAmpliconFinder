@@ -1,9 +1,11 @@
 AaPV1	M15953	Deltapapillomavirus 1
+AchePV1	KY370096	Pipapillomavirus
 AgPV1	KP861980	Dyoomikronpapillomavirus
 AmPV1	MF327535	Omegapapillomavirus
 AmPV2	MF327536	Omegapapillomavirus
 AmPV3	MF327537	Dyonupapillomavirus
 AmPV4	MF327538	Lambdapapillomavirus
+AplaPV1	MK620303	Unclassified
 AsPV1	HQ625440	Pipapillomavirus 2
 BPV1	X02346	Deltapapillomavirus 4
 BPV2	M20219	Deltapapillomavirus 4
@@ -29,6 +31,10 @@ BPV21	KU519396	Unclassified
 BPV22	KY705374	Dyokappapapillomavirus
 BPV23	KX098515	Xipapillomavirus
 BPV24	MG602223	Xipapillomavirus
+BPV25	MG252779	Epsilonpapillomavirus
+BPV26	MG281846	Xipapillomavirus
+BPV27	MH512005	Unclassified
+BcosPV1	MH605022	Unclassified
 BgPV1	JX174437	Deltapapillomavirus 4
 BpPV1	GU220391	Dyolambdapapillomavirus 1
 CPV1	D55633	Lambdapapillomavirus 2
@@ -51,6 +57,9 @@ CPV17	KT272399	Taupapillomavirus
 CPV18	KT326919	Chipapillomavirus
 CPV19	KX599536	Taupapillomavirus
 CPV20	KT901797	Chipapillomavirus
+CPV21	MH285952	Taupapillomavirus
+CPV22	MH285953	Taupapillomavirus
+CPV23	MH285954	Taupapillomavirus
 CcPV1	EU493092	Dyozetapapillomavirus 1
 CcaPV1	EF680235	Deltapapillomavirus 5
 CcanPV1	KC020689	Dyosigmapapillomavirus 1
@@ -65,6 +74,7 @@ ChPV1	DQ091200	Phipapillomavirus 1
 CmPV1	EU493091	Dyozetapapillomavirus 1
 DdPV1	GU117620	Upsilonpapillomavirus 1
 EaPV1	KF741371	Dyochipapillomavirus 1
+EaPV2	MH625918	Zetapapillomavirus
 EcPV1	AF498323	Zetapapillomavirus 1
 EcPV2	EU503122	Dyoiotapapillomavirus 1
 EcPV3	GU384895	Dyorhopapillomavirus 1
@@ -74,6 +84,7 @@ EcPV6	JQ965698	Dyorhopapillomavirus 1
 EcPV7	JX035935	Dyorhopapillomavirus 1
 EcPV8	KU963288	Unclassified
 EdPV1	AY684126	Sigmapapillomavirus 1
+EdPV2	MH376689	Unclassified
 EePV1	FJ379293	Dyoetapapillomavirus 1
 EhPV1	JX123128	Dyoupsilonpapillomavirus 1
 EhPV2	KX276957	Psipapillomavirus
@@ -82,6 +93,7 @@ ElPV1	KJ410351	Lambdapapillomavirus 4
 EsPV1	KC858263	Dyopsipapillomavirus 1
 EsPV2	KC858264	Dyoomegapapillomavirus 1
 EsPV3	KC858265	Dyopsipapillomavirus 1
+FarcPV1	MK620302	Unclassified
 FcPV1	AY057109	Etapapillomavirus 1
 FcaPV1	AF480454	Lambdapapillomavirus 1
 FcaPV2	EU796884	Dyothetapapillomavirus 1
@@ -91,7 +103,9 @@ FcaPV5	KY853656	Taupapillomavirus
 FgPV1	KJ452243	Treiszetapapillomavirus
 FlPV1	EU188799	Dyoepsilonpapillomavirus 1
 GcPV1	KX954132	Deltapapillomavirus
+LcamPV1	MH617579	Unclassified
 LrPV1	AY904722	Lambdapapillomavirus 1
+LsmiPV1	MK620304	Unclassified
 LwPV1	MG571090	Unclassified
 LwPV2	MG571089	Unclassified
 LwPV3	MG571093	Dyonupapillomavirus
@@ -99,7 +113,10 @@ LwPV4	MG571095	Dyothetapapillomavirus
 LwPV5	MG571094	Taupapillomavirus
 LwPV6	MG571091	Omegapapillomavirus
 LwPV7	MG571092	Omegapapillomavirus
+LwiePV1	MH910493	Lambdapapillomavirus
 MaPV1	E15111	Pipapillomavirus 2
+MaegPV1	MH616908	Unclassified
+MaegPV2	MH617143	Unclassified
 McPV2	DQ664501	Pipapillomavirus 2
 MfPV1	EF028290	Betapapillomavirus 1
 MfPV2	GU014531	Betapapillomavirus 6
@@ -113,9 +130,15 @@ MfPV9	EU490516	Alphapapillomavirus 12
 MfPV10	EU490515	Alphapapillomavirus 12
 MfPV11	GQ227670	Alphapapillomavirus 12
 MfuPV1	KT944080	Alphapapillomavirus
+MfuPV2	MH469677	Alphapapillomavirus
 MmPV1	M60184	Alphapapillomavirus 12
+MmPV2	MG837557	Alphapapillomavirus
+MmPV3	MG837558	Alphapapillomavirus
+MmPV4	MG837559	Gammapapillomavirus
+MmPV5	MH745747	Gammapapillomavirus
+MmPV6	MH745748	Alphapapillomavirus
+MmPV7	MH745749	Gammapapillomavirus
 MmiPV1	DQ269468	Pipapillomavirus 2
-MmoPV1	KX812447	Unclassified
 MmuPV1	GU808564	Pipapillomavirus 2
 MnPV1	U01834	Iotapapillomavirus 1
 MpPV1	KF006988	Taupapillomavirus
@@ -128,6 +151,7 @@ OaPV2	U83595	Deltapapillomavirus 3
 OaPV3	FJ796965	Dyokappapapillomavirus 1
 OaPV4	KX954121	Deltapapillomavirus
 OcPV1	AF227240	Kappapapillomavirus 1
+OjohPV1	MH049343	Deltapapillomavirus
 OvPV1	M11910	Deltapapillomavirus 2
 PaPV1	KJ173785	Treisepsilonpapillomavirus 1
 PaPV2	MF168943	Treisepsilonpapillomavirus
@@ -150,11 +174,13 @@ RfPV1	KC858266	Treisdeltapapillomavirus 1
 RnPV1	GQ180114	Pipapillomavirus 2
 RnPV2	HQ625441	Iotapapillomavirus 1
 RnPV3	KT945134	Iotapapillomavirus 1
+RnPV4	MH892425	Unclassified
 RrPV1	KC876045	Dyokappapapillomavirus 2
 RtPV1	AF443292	Deltapapillomavirus 1
 RtPV2	KC810012	Xipapillomavirus 3
 RtiPV1	KP757765	Unclassified
 RtiPV2	KT852571	Unclassified
+RtriPV1	MK620305	Unclassified
 SaPV1	KX643372	Unclassified
 ScPV1	MF564196	Etapapillomavirus
 SfPV1	K02708	Kappapapillomavirus 2
@@ -163,6 +189,8 @@ SsPV2	KY817993	Unclassified
 SscPV1	JF304765	Dyoomikronpapillomavirus 1
 SscPV2	JF304766	Dyoomikronpapillomavirus 1
 SscPV3	JF304767	Dyoomikronpapillomavirus 1
+TbelPV1	MK443496	Unclassified
+TbelPV2	MK443497	Unclassified
 TePV1	KC460987	Dyophipapillomavirus 1
 TmPV1	AY609301	Rhopapillomavirus 1
 TmPV2	JN709473	Rhopapillomavirus 1
@@ -390,7 +418,7 @@ HPV206	U85660	Betapapillomavirus
 HPV207	 	Gammapapillomavirus
 HPV208	 	Gammapapillomavirus
 HPV209	KY242583	Betapapillomavirus
-HPV210	 	Gammapapillomavirus
+HPV210	MH460956	Gammapapillomavirus
 HPV211	MF509816	Gammapapillomavirus
 HPV212	MF509817	Gammapapillomavirus
 HPV213	MF509818	Gammapapillomavirus
@@ -409,6 +437,7 @@ HPV225	MG520499	Gammapapillomavirus
 HPV-m16031680A	MG813996	Gammapapillomavirus
 HPV-mCG2	JF966378	Gammapapillomavirus
 HPV-mCG3	JF966379	Gammapapillomavirus
+HPV-mCGG5	MG869605	Gammapapillomavirus
 HPV-mCH2	KF791917	Gammapapillomavirus
 HPV-mDysk1	KX781280	Gammapapillomavirus
 HPV-mDysk2	KX781281	Gammapapillomavirus
@@ -436,20 +465,158 @@ HPV-mFS1	JF966373	Gammapapillomavirus
 HPV-mFi864	KC311731	Gammapapillomavirus
 HPV-mHIVGc36	MF588677	Betapapillomavirus
 HPV-mHIVGc70	MF588713	Gammapapillomavirus
-HPV-mICB1	MF356498	Gammapapillomavirus
+HPV-mICB2	MK080568	Betapapillomavirus
 HPV-mKC5	JX444073	Gammapapillomavirus
 HPV-mKN1	JF966371	Gammapapillomavirus
 HPV-mKN2	JF966372	Gammapapillomavirus
 HPV-mKN3	JF966374	Gammapapillomavirus
 HPV-mL55	KF482069	Gammapapillomavirus
 HPV-mLCOSOc196	MF588688	Gammapapillomavirus
-HPV-mMTS1	KY349817	Betapapillomavirus
-HPV-mMTS2	KY780961	Gammapapillomavirus
-HPV-mRTRX7	U85660	Betapapillomavirus
 HPV-mSD2	KC113191	Gammapapillomavirus
 HPV-mSE355	KJ506870	Gammapapillomavirus
 HPV-mSE379	KP692117	Gammapapillomavirus
 HPV-mSE383	KP692118	Gammapapillomavirus
+HPV-mSK001	MH675888	Gammapapillomavirus
+HPV-mSK006	MH675890	Gammapapillomavirus
+HPV-mSK008	MH777156	Gammapapillomavirus
+HPV-mSK009	MH777157	Gammapapillomavirus
+HPV-mSK010	MH777158	Gammapapillomavirus
+HPV-mSK011	MH777159	Gammapapillomavirus
+HPV-mSK012	MH777160	Gammapapillomavirus
+HPV-mSK013	MH777161	Gammapapillomavirus
+HPV-mSK014	MH777162	Gammapapillomavirus
+HPV-mSK015	MH777163	Gammapapillomavirus
+HPV-mSK019	MH777167	Gammapapillomavirus
+HPV-mSK020	MH777168	Gammapapillomavirus
+HPV-mSK021	MH777169	Gammapapillomavirus
+HPV-mSK022	MH777170	Gammapapillomavirus
+HPV-mSK023	MH777171	Gammapapillomavirus
+HPV-mSK025	MH777173	Mupapillomavirus
+HPV-mSK027	MH777175	Betapapillomavirus
+HPV-mSK028	MH777176	Gammapapillomavirus
+HPV-mSK029	MH777177	Gammapapillomavirus
+HPV-mSK030	MH777178	Gammapapillomavirus
+HPV-mSK034	MH777182	Gammapapillomavirus
+HPV-mSK037	MH777185	Gammapapillomavirus
+HPV-mSK038	MH777186	Gammapapillomavirus
+HPV-mSK039	MH777187	Gammapapillomavirus
+HPV-mSK040	MH972557	Gammapapillomavirus
+HPV-mSK041	MH777188	Gammapapillomavirus
+HPV-mSK043	MH777190	Betapapillomavirus
+HPV-mSK045	MH972558	Gammapapillomavirus
+HPV-mSK046	MH777192	Gammapapillomavirus
+HPV-mSK049	MH777194	Gammapapillomavirus
+HPV-mSK050	MH777195	Gammapapillomavirus
+HPV-mSK051	MH777196	Gammapapillomavirus
+HPV-mSK052	MH777197	Gammapapillomavirus
+HPV-mSK054	MH777199	Gammapapillomavirus
+HPV-mSK056	MH777201	Gammapapillomavirus
+HPV-mSK057	MH777202	Gammapapillomavirus
+HPV-mSK058	MH777203	Gammapapillomavirus
+HPV-mSK061	MH777206	Gammapapillomavirus
+HPV-mSK062	MH777207	Gammapapillomavirus
+HPV-mSK063	MH777208	Gammapapillomavirus
+HPV-mSK064	MH777209	Gammapapillomavirus
+HPV-mSK065	MH777210	Gammapapillomavirus
+HPV-mSK066	MH777211	Gammapapillomavirus
+HPV-mSK067	MH777212	Gammapapillomavirus
+HPV-mSK072	MH777217	Gammapapillomavirus
+HPV-mSK075	MH777219	Gammapapillomavirus
+HPV-mSK076	MH777220	Gammapapillomavirus
+HPV-mSK078	MH777222	Gammapapillomavirus
+HPV-mSK083	MH777226	Gammapapillomavirus
+HPV-mSK085	MH777228	Gammapapillomavirus
+HPV-mSK086	MH777229	Gammapapillomavirus
+HPV-mSK087	MH777230	Gammapapillomavirus
+HPV-mSK089	MH777232	Gammapapillomavirus
+HPV-mSK090	MH777233	Gammapapillomavirus
+HPV-mSK091	MH777234	Gammapapillomavirus
+HPV-mSK093	MH777236	Gammapapillomavirus
+HPV-mSK094	MH777237	Gammapapillomavirus
+HPV-mSK095	MH777238	Gammapapillomavirus
+HPV-mSK096	MH777239	Gammapapillomavirus
+HPV-mSK098	MH777241	Gammapapillomavirus
+HPV-mSK100	MH777243	Gammapapillomavirus
+HPV-mSK101	MH972562	Gammapapillomavirus
+HPV-mSK102	MH777244	Gammapapillomavirus
+HPV-mSK103	MH777245	Gammapapillomavirus
+HPV-mSK104	MH777246	Gammapapillomavirus
+HPV-mSK107	MH777249	Gammapapillomavirus
+HPV-mSK109	MH777251	Gammapapillomavirus
+HPV-mSK110	MH777252	Gammapapillomavirus
+HPV-mSK111	MH777253	Betapapillomavirus
+HPV-mSK115	MH777257	Gammapapillomavirus
+HPV-mSK116	MH777258	Gammapapillomavirus
+HPV-mSK117	MH777259	Gammapapillomavirus
+HPV-mSK118	MH777260	Gammapapillomavirus
+HPV-mSK119	MH777261	Gammapapillomavirus
+HPV-mSK120	MH777262	Gammapapillomavirus
+HPV-mSK121	MH777263	Gammapapillomavirus
+HPV-mSK122	MH777264	Gammapapillomavirus
+HPV-mSK123	MH777265	Gammapapillomavirus
+HPV-mSK126	MH777268	Gammapapillomavirus
+HPV-mSK128	MH777270	Gammapapillomavirus
+HPV-mSK131	MH777273	Gammapapillomavirus
+HPV-mSK132	MH777274	Gammapapillomavirus
+HPV-mSK137	MH777279	Gammapapillomavirus
+HPV-mSK138	MH777280	Gammapapillomavirus
+HPV-mSK139	MH777281	Gammapapillomavirus
+HPV-mSK142	MH777284	Gammapapillomavirus
+HPV-mSK146	MH777288	Gammapapillomavirus
+HPV-mSK147	MH777289	Gammapapillomavirus
+HPV-mSK150	MH777292	Gammapapillomavirus
+HPV-mSK152	MH777294	Gammapapillomavirus
+HPV-mSK155	MH777297	Gammapapillomavirus
+HPV-mSK156	MH777298	Gammapapillomavirus
+HPV-mSK160	MH777302	Gammapapillomavirus
+HPV-mSK164	MH777306	Betapapillomavirus
+HPV-mSK165	MH777307	Gammapapillomavirus
+HPV-mSK166	MH777308	Gammapapillomavirus
+HPV-mSK167	MH777309	Gammapapillomavirus
+HPV-mSK168	MH777310	Gammapapillomavirus
+HPV-mSK169	MH777311	Gammapapillomavirus
+HPV-mSK170	MH777312	Gammapapillomavirus
+HPV-mSK171	MH777313	Gammapapillomavirus
+HPV-mSK173	MH777315	Gammapapillomavirus
+HPV-mSK174	MH777316	Gammapapillomavirus
+HPV-mSK176	MH777318	Gammapapillomavirus
+HPV-mSK180	MH777322	Gammapapillomavirus
+HPV-mSK183	MH777325	Gammapapillomavirus
+HPV-mSK185	MH777327	Gammapapillomavirus
+HPV-mSK186	MH777328	Gammapapillomavirus
+HPV-mSK189	MH777331	Gammapapillomavirus
+HPV-mSK190	MH777332	Gammapapillomavirus
+HPV-mSK191	MH777333	Gammapapillomavirus
+HPV-mSK192	MH777334	Gammapapillomavirus
+HPV-mSK193	MH777335	Gammapapillomavirus
+HPV-mSK197	MH777339	Gammapapillomavirus
+HPV-mSK199	MH972563	Gammapapillomavirus
+HPV-mSK202	MH777343	Gammapapillomavirus
+HPV-mSK204	MH777345	Gammapapillomavirus
+HPV-mSK205	MH777346	Gammapapillomavirus
+HPV-mSK206	MH777347	Gammapapillomavirus
+HPV-mSK209	MH777350	Betapapillomavirus
+HPV-mSK210	MH777351	Gammapapillomavirus
+HPV-mSK211	MH777352	Gammapapillomavirus
+HPV-mSK216	MH777355	Gammapapillomavirus
+HPV-mSK217	MH777356	Gammapapillomavirus
+HPV-mSK218	MH777357	Gammapapillomavirus
+HPV-mSK219	MH777358	Betapapillomavirus
+HPV-mSK227	MH777366	Gammapapillomavirus
+HPV-mSK229	MH777368	Gammapapillomavirus
+HPV-mSK231	MH777370	Gammapapillomavirus
+HPV-mSK237	MH777376	Gammapapillomavirus
+HPV-mSK238	MH777377	Gammapapillomavirus
+HPV-mSK239	MH777378	Gammapapillomavirus
+HPV-mSK240	MH777379	Gammapapillomavirus
+HPV-mSK241	MH777380	Gammapapillomavirus
+HPV-mSK242	MH777381	Gammapapillomavirus
+HPV-mSK243	MH777382	Gammapapillomavirus
+HPV-mSK244	MH777383	Gammapapillomavirus
+HPV-mSK245	MH777384	Gammapapillomavirus
+HPV-mSK246	MH777385	Gammapapillomavirus
+HPV-mSK249	MH777388	Gammapapillomavirus
+HPV-mSK250	MH777389	Gammapapillomavirus
 HPV-mTG550	MF176072	Gammapapillomavirus
 HPV-mTVMBSFc09	MF588684	Betapapillomavirus
 HPV-mTVMBSGc529	MF588706	Gammapapillomavirus
@@ -511,4 +678,3 @@ HPV-mw34c28a	MF588751	Gammapapillomavirus
 HPV-mw34c34a	MF588731	Gammapapillomavirus
 HPV-mwg1c05	MF588756	Gammapapillomavirus
 HPV-mwg1c09	MF588727	Gammapapillomavirus
-HPV-Gamma06_w03c65	MF588697	Gammapapillomavirus 6
