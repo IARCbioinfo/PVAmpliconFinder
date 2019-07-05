@@ -1,0 +1,73 @@
+
+
+Using BFGS method to optimize GTR rate parameters, to disable this specify "--no-bfgs" 
+
+Found a total of 597 taxa in tree file ../L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk
+
+
+This is RAxML version 8.2.11 released by Alexandros Stamatakis on June 2017.
+
+With greatly appreciated code contributions by:
+Andre Aberer      (HITS)
+Simon Berger      (HITS)
+Alexey Kozlov     (HITS)
+Kassian Kobert    (HITS)
+David Dao         (KIT and HITS)
+Sarah Lutteropp   (KIT and HITS)
+Nick Pattengale   (Sandia)
+Wayne Pfeiffer    (SDSC)
+Akifumi S. Tanabe (NRIFS)
+Charlie Taylor    (UF)
+
+
+Alignment has 2545 distinct alignment patterns
+
+Proportion of gaps and completely undetermined characters in this alignment: 47.64%
+
+RAxML likelihood-based placement algorithm
+
+Using 1 distinct models/data partitions with joint branch length optimization
+
+
+All free model parameters will be estimated by RAxML
+GAMMA model of rate heterogeneity, ML estimate of alpha-parameter
+
+Partition: 0
+Alignment Patterns: 2545
+Name: No Name Provided
+DataType: DNA
+Substitution Matrix: GTR
+
+
+
+
+RAxML was called as follows:
+
+raxmlHPC-PTHREADS-AVX2 -f v -s papara_alignment.default -t ../L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -m GTRGAMMA -n new -T 8 --epa-keep-placements=1 
+
+
+RAxML placement algorithm: You provided a reference tree with 597 taxa; alignmnet has 600 taxa
+3 query taxa will be placed using maximum likelihood
+
+RAxML Evolutionary Placement Algorithm
+
+Likelihood of reference tree: -559574.968825
+
+RAxML will place 3 Query Sequences into the 1191 branches of the reference tree with 597 taxa
+
+Overall Classification time: 19.899646
+
+
+
+Labelled reference tree including branch labels and query sequences written to file: /home/robitaillea/ICB/PVAmpliconFinder/raxml/new/RAxML_labelledTree.new
+
+Labelled reference tree with branch labels (without query sequences) written to file: /home/robitaillea/ICB/PVAmpliconFinder/raxml/new/RAxML_originalLabelledTree.new
+
+Labelled reference tree with branch labels in portable pplacer/EPA format (without query sequences) written to file: /home/robitaillea/ICB/PVAmpliconFinder/raxml/new/RAxML_portableTree.new.jplace
+
+Classification result file written to file: /home/robitaillea/ICB/PVAmpliconFinder/raxml/new/RAxML_classification.new
+
+Classification result file using likelihood weights written to file: /home/robitaillea/ICB/PVAmpliconFinder/raxml/new/RAxML_classificationLikelihoodWeights.new
+
+Classification entropy result file using likelihood weights written to file: /home/robitaillea/ICB/PVAmpliconFinder/raxml/new/RAxML_entropy.new
+

@@ -1329,7 +1329,7 @@ sub concat_sequence{
 						##	Concatenation du nombre de reads dans la table de hash
 						${$hdatafun{$title}{$pool}}[3]+=$reads;
 					}
-					elsif($revcomp=~/${$hdatafun{$title}{$pool}}[9]/){		#Alors nouvelle sequence + grande que l'ancienne --> MAJ des infos
+					elsif($revcomp=~/${$hdatafun{$title}{$pool}}[9]/){		#Alors nouvelle sequence + grande que l'ancienne --> MAJ des infos par rapport à la plus grande sequence
 						${$hdatafun{$title}{$pool}}[1]=$percid;
 						${$hdatafun{$title}{$pool}}[2]=$frame;
 						${$hdatafun{$title}{$pool}}[3]+=$reads;
@@ -1345,12 +1345,36 @@ sub concat_sequence{
 					}
 					else{	##Try to do a consensus with cap3
 						#~ print "ici\t".$#{$hseqfun{$title}{$pool}}."\n";
+						
 						${$hdatafun{$title}{$pool}}[3]+=$reads;
 						
-						if($#{$hseqfun{$title}{$pool}}<0){
+						if(!($hseqfun{$title}{$pool})){					# Une seule sequence deja presente  pour ce cluster
 							push(@{$hseqfun{$title}{$pool}},${$hdatafun{$title}{$pool}}[10]."|".${$hdatafun{$title}{$pool}}[9]); #On lui donne la séquence d'avant que si la table est vide
+							push(@{$hseqfun{$title}{$pool}},$qid."|".$seqstr);				# Et on lui ajoute la nouvelle
 						}
-						push(@{$hseqfun{$title}{$pool}},$qid."|".$seqstr);						#Et la nouvelle
+						else{												# D'autres sequence deja connu pour ce clsuter
+							my $similar="false";
+							foreach my $prevseq (@{$hseqfun{$title}{$pool}}){			## Sinon pour chaque sequence de ce cluster déja presente
+								if(reverse_complement_IUPAC($seqstr) eq $prevseq){		## Exact complementaire d'une sequence de ce clsuter
+									#~ ${$hdatafun{$title}{$pool}}[3]+=$reads;
+									$similar="true";
+									last;
+								}
+								elsif($revcomp=~/$prevseq/){							#Alors nouvelle sequence identique et + grande que une previous sequence de ce cluster
+									$similar="true";
+									last;
+								}
+								elsif($prevseq=~/$revcomp/){							#Alors ancienne sequence identique et + grande que la nouvelle
+									#~ ${$hdatafun{$title}{$pool}}[3]+=$reads;
+									$similar="true";
+									last;
+								}
+							}
+							if($similar eq "false"){					## Auncune similarité trouver avec es autres sequences du cluster
+								push(@{$hseqfun{$title}{$pool}},$qid."|".$seqstr);			# Ajout comme new sequence du cluster
+							}
+						}
+											#Et la nouvelle
 						#~ print reverse_complement_IUPAC($qseq)."\n".${$hdatafun{$title}{$pool}}[9]."\n\n";
 						#~ `cd $inputdir`;
 						#~ `mkdir tmp`;
@@ -1379,10 +1403,32 @@ sub concat_sequence{
 						#~ print "ici\t".$#{$hseqfun{$title}{$pool}}."\n";
 						${$hdatafun{$title}{$pool}}[3]+=$reads;
 						
-						if($#{$hseqfun{$title}{$pool}}<0){
+						if(!($hseqfun{$title}{$pool})){						# Une seule sequence deja presente  pour ce cluster
 							push(@{$hseqfun{$title}{$pool}},${$hdatafun{$title}{$pool}}[10]."|".${$hdatafun{$title}{$pool}}[9]); #On lui donne la séquence d'avant que si la table est vide
+							push(@{$hseqfun{$title}{$pool}},$qid."|".$seqstr);				# Et on lui ajoute la nouvelle
 						}
-						push(@{$hseqfun{$title}{$pool}},$qid."|".$seqstr);						#Et la nouvelle
+						else{												# D'autres sequence deja connu pour ce clsuter
+							my $similar="false";
+							foreach my $prevseq (@{$hseqfun{$title}{$pool}}){			## Sinon pour chaque sequence de ce cluster déja presente
+								if($seqstr eq $prevseq){		## Exact complementaire d'une sequence de ce clsuter
+									#~ ${$hdatafun{$title}{$pool}}[3]+=$reads;
+									$similar="true";
+									last;
+								}
+								elsif($seqstr=~/$prevseq/){							#Alors nouvelle sequence identique et + grande que une previous sequence de ce cluster
+									$similar="true";
+									last;
+								}
+								elsif($prevseq=~/$seqstr/){							#Alors ancienne sequence identique et + grande que la nouvelle
+									#~ ${$hdatafun{$title}{$pool}}[3]+=$reads;
+									$similar="true";
+									last;
+								}
+							}
+							if($similar eq "false"){					## Auncune similarité trouver avec es autres sequences du cluster
+								push(@{$hseqfun{$title}{$pool}},$qid."|".$seqstr);			# Ajout comme new sequence du cluster
+							}
+						}
 					}
 				}
 			}
@@ -1544,7 +1590,15 @@ sub contig_build{
 				while((my $seqtmpfun = $dbtmpfun->next_seq())) {
 					
 					my $seqstrtmpfun  = $seqtmpfun->seq;
+					
+					#~ print "BEFORE ALL\n";
+					#~ if(${$$hdatafun{$title}{$pool}}[0]=~/^51VIRUSput/){
+						#~ print $seqstrtmpfun."\n";
+					#~ }
+					
 					my $len		   = $seqtmpfun->length;
+					
+					#~ print $len." ici\t";
 					##	Get length and sequence
 					
 					push(@lentemp,$len);
@@ -1575,21 +1629,12 @@ sub contig_build{
 						#~ print $desc." la\n";		##	By modifying structure of naming for fasta file, allow to do the blast, but not to get gi, so have to take it from name or description
 						#~ print $hit_name." ici\n";
 						
-						my $hpv="";
-						
-						if($desc=~/.*\((\S+)\)/){		##	SPLIT PAR "|", le 4eme
-							$hpv=$1;
-						}
-						else{
-							print $hpv."\n"; exit;
-						}
-						
 						my $classification_tmp="";
 						
-						$classification_tmp=$hhpvtotax{$hpv};
+						$classification_tmp=$hhpvtotax{$hit_name};
 						
 						if(!(defined($classification_tmp)) or ($classification_tmp eq "")){
-							$classification_tmp="NA";
+							$classification_tmp="Unclassified";
 						}
 						#~ print $hpv."\n";
 						#~ print $classification_tmp."\n";
@@ -1629,8 +1674,8 @@ sub contig_build{
 								push @start_stop_len_hsp, $queryaln;
 								
 								
-								$frame_query=$hsp->query->frame;
-								$frame_hit=$hsp->hit->frame;
+								$frame_query=$hsp->query->strand;
+								$frame_hit=$hsp->hit->strand;
 								
 								#~ print "HSP here : $compte\tFrame query : $frame_query\tFrame hit : $frame_hit\n";
 
@@ -1648,30 +1693,32 @@ sub contig_build{
 						$percent_id_moy=nearest(.01,(($sum/$compte)));
 						push(@start_stop_len_hit,join(";",@start_stop_len_hsp));
 						
-						push(@hpvclosest,$desc."($percent_id_moy%)");
+						push(@hpvclosest,$hit_name."($percent_id_moy%)");
 						push(@classification,$classification_tmp);
-							
 						
-					}				##	Si pas de hit
-					else{
-						push(@hpvclosest,"NA");
-						push(@classification,"NA");
-						push(@start_stop_len_hit,"NA");
-					}
-					
-					## ICI change le frame en fonction de blastn results
-					
-					if(defined $hit){			##	Get at least one hit
 						if($frame_query!=$frame_hit){
 							push(@tseqtmpfun,reverse_complement_IUPAC($seqstrtmpfun));	## ICI frame a changer en fct de blastn results
 						}
 						else{
 							push(@tseqtmpfun,$seqstrtmpfun);	## ICI frame a changer en fct de blastn results
 						}
-					}
-					else{						## Pas de hit at all
+						
+					}				##	Si pas de hit
+					else{
+						push(@hpvclosest,"NA");
+						push(@classification,"NA");
+						push(@start_stop_len_hit,"NA");
+						
 						push(@tseqtmpfun,$seqstrtmpfun);
+						#~ print "Pas de hit\n";
+						#~ print ${$$hdatafun{$title}{$pool}}[0]."\n";
+						#~ print $seqstrtmpfun."\n\n";
 					}
+					
+					#~ if(${$$hdatafun{$title}{$pool}}[0]=~/^122VIRUSput/){
+						#~ print $k.$k.$k."\n";
+						#~ print $seqstrtmpfun."\n";
+					#~ }
 				}
 				##	Fin traitement toutes les sequences du clusters
 				
@@ -1691,21 +1738,39 @@ sub contig_build{
 					#~ exit;
 				#~ }
 				
+				#~ my @lenfun=@lentemp;
+				
+				#~ if(${$$hdatafun{$title}{$pool}}[0]=~/^51VIRUSput/){
+					#~ my $tmp=0;
+					#~ foreach my $lt (@lentemp){
+						#~ print "Avant function : ".$lt."\n";
+						#~ print $tseqtmpfun[$tmp]."\n";
+						#~ $tmp++;
+					#~ }
+				#~ }
+				
+				
+				#~ if(\@lenfun eq \@lentemp){
+					#~ print "SAME REFERENCE\n";exit;
+				#~ }
+				
 				if($#lentemp > 0){		## Plus d'un contigs/singlets au moins un match			 && (@start_stop_len_hsp != 0)
-					my $res=longuestFirst(\@lentemp,\@hpvclosest,\@classification,\@start_stop_len_hit,\@tseqtmpfun);
+					my $res=longuestFirst(\@lentemp,\@hpvclosest,\@classification,\@start_stop_len_hit,\@tseqtmpfun);		# Give a copy to avoid replacement @len
 					$len=$$res[0];
 					$hpvclosest=$$res[1];
 					$classification=$$res[2];
 					$infoalign=$$res[3];
 					$seqf=$$res[4];
 				}
-				elsif($#lentemp==0){				##	Un seul contigs/singlets au moins un match
+				else{				##	Un seul contigs/singlets au moins un match
 					$len=$lentemp[0];
 					$hpvclosest=$hpvclosest[0];
 					$classification=$classification[0];
 					$infoalign=$start_stop_len_hit[0];
 					$seqf=$tseqtmpfun[0];
 				}
+				
+				#~ print "\n".$len."\n";
 				#~ else{												##	pas de match
 					#~ print "error\n";exit;
 					#~ $len=join("/",@lentemp);
@@ -1713,6 +1778,12 @@ sub contig_build{
 					#~ $classification=join("/",@classification);
 				#~ }
 				
+				#~ if(${$$hdatafun{$title}{$pool}}[0]=~/^51VIRUSput/){
+					#~ print "\nApès function : ".$len."\n";
+					#~ print $seqf."\n";
+					#~ print $k.$k.$k."\n";
+					#~ exit;
+				#~ }
 				
 				
 				#~ my $len=join("/",@lentemp);
@@ -1788,24 +1859,13 @@ sub contig_build{
 			
 							#~ print $desc." la\n";		##	By modifying structure of naming for fasta file, allow to do the blast, but not to get gi, so have to take it from name or description
 							#~ print $hit_name." ici\n";
+
+							my $classification_tmp="";
 							
-							my $hpv="";
-							
-							#~ print $desc."\n";
-							
-							if($desc=~/.*\((\S+)\)/){
-								$hpv=$1;
-							}
-							else{
-								print $hpv." Error\n"; exit;
-							}
-							#~ print $hpv."\n";
-							my $classification_tmp="NA";
-							
-							$classification_tmp=$hhpvtotax{$hpv};
+							$classification_tmp=$hhpvtotax{$hit_name};
 						
 							if(!(defined($classification_tmp)) or ($classification_tmp eq "")){
-								$classification_tmp="NA";
+								$classification_tmp="Unclassified";
 							}
 							#~ my @tab_name=split(/\|/,$hit_name);
 							#~ my $gi = $tab_name[1];
@@ -1846,8 +1906,8 @@ sub contig_build{
 									#~ print $hsp->rank." rank\n";
 									push @start_stop_len_hsp, $queryaln;
 
-									my $frame_query=$hsp->query->strand;
-									my $frame_hit=$hsp->hit->strand;
+									$frame_query=$hsp->query->strand;
+									$frame_hit=$hsp->hit->strand;
 									
 									#~ print "HSP : $compte\tFrame query : $frame_query\tFrame hit : $frame_hit\tFrame subject : $frame_subject\t$frame_subject_hit\n";
 									
@@ -1872,7 +1932,7 @@ sub contig_build{
 							$percent_id_moy=nearest(.01,(($sum/$compte)));
 							push(@start_stop_len_hit,join(";",@start_stop_len_hsp));
 
-							$hpvclosest=$desc."($percent_id_moy%)";
+							$hpvclosest=$hit_name."($percent_id_moy%)";
 							$classification=$classification_tmp;
 							
 						}
@@ -2297,16 +2357,35 @@ sub treatputative{
 		#~ $@{$hnewtable{$tissu{$pool}}{$cattmp}{$hpvcat{$hpvname}}{$hpvname}}[$poolsid{$pool}]+=$htarget{$pool}{'known'}{$hpvname};
 		
 		my $genus="";
-		if($querytax{$idselected}=~/^(\S+)\s\d+$/){
+		#~ print $querytax{$idselected}." rax\n";
+		if($querytax{$idselected}=~/^(\S+)papillomavirus (\d+)/){
 			$genus=$1;
+		}
+		elsif($querytax{$idselected}=~/(\S+)papillomavirus/){
+			if($1=~/alpha/i or $1=~/beta/i or $1=~/gamma/i or $1=~/mu/i or $1=~/nu/i){
+				$genus="Unreferenced";
+			}
+			else{
+				$genus=$1;
+			}
 		}
 		else{
 			$genus=$querytax{$idselected};
 		}
+		#~ print $genus."\n";
 		
 		my $genus_blastn="";
+		#~ print $blastn_species." blast\n";
 		if($blastn_species=~/(\S+)papillomavirus (\d+)/){
-			$genus_blastn=$1."papillomavirus";
+			$genus_blastn=$1;
+		}
+		elsif($blastn_species=~/(\S+)papillomavirus/){
+			if($1=~/alpha/i or $1=~/beta/i or $1=~/gamma/i or $1=~/mu/i or $1=~/nu/i){
+				$genus_blastn="Unreferenced";
+			}
+			else{
+				$genus_blastn=$1;
+			}
 		}
 		else{
 			$genus_blastn="Unclassified";
@@ -2348,16 +2427,16 @@ sub treatputative{
 		
 		$@{$hnewtable_blastn{$tissu}{$genus_blastn}{$blastn_species}{$blastn_closest}}[$poolsid{$pool}]+=$nbread;
 		
-		my $simplegenus="";
-		if($querytax{$idselected}=~/^(\S+)papillomavirus/){
-			$simplegenus=$1;
-			if($simplegenus=~/human/i){
-				$simplegenus=$querytax{$idselected};
-			}
-		}
-		else{
-			$simplegenus=$querytax{$idselected};
-		}
+		my $simplegenus=$genus;
+		#~ if($querytax{$idselected}=~/^(\S+)papillomavirus/){
+			#~ $simplegenus=$1;
+			#~ if($simplegenus=~/human/i){
+				#~ $simplegenus=$querytax{$idselected};
+			#~ }
+		#~ }
+		#~ else{
+			#~ $simplegenus=$querytax{$idselected};
+		#~ }
 		
 		
 		#
@@ -3225,7 +3304,8 @@ sub reverse_complement_IUPAC {
         my $revcomp = reverse($dna);
 
         # complement the reversed DNA sequence
-        $revcomp =~ tr/ABCDGHMNRSTUVWXYabcdghmnrstuvwxy/TVGHCDKNYSAABWXRtvghcdknysaabwxr/;
+        #~ $revcomp =~ tr/ABCDGHMNRSTUVWXYabcdghmnrstuvwxy/TVGHCDKNYSAABWXRtvghcdknysaabwxr/;
+        $revcomp =~ tr/ATGCatgc/TACGtacg/;
         return $revcomp;
 }
 
@@ -3242,11 +3322,25 @@ sub longuestFirst {
 	
 	my @sorted_len = sort { $a <=> $b } @$tlen;	# Plus petit en premier
 	
+	my @tlentemp = @$tlen;
+	
 	while(@sorted_len){
 		my $longuest = pop @sorted_len;
-		push @tindex, first_index { $_ eq $longuest } @$tlen;
+		#~ print "longuest ".$longuest."\n";
+		##	Traiter cas ou plusieurs sequence même taille --> pour le moment first index prend tjrs la meme sequence
+		push @tindex, first_index { $_ eq $longuest } @tlentemp;
+		
+		if($tindex[$#tindex] == -1){
+			$tindex[$#tindex] = 0;
+		}
+		
+		#~ print "last index ".$#tindex." and associated value ".$tindex[$#tindex]."\n";
+		$tlentemp[$tindex[$#tindex]]="undef";
 	}
 	
+	#~ foreach my $i (@tindex){
+		#~ print $i."\n";
+	#~ }
 	
 	
 	#~ while(@$tlen){
@@ -3266,7 +3360,7 @@ sub longuestFirst {
 	foreach my $i (@tindex){
 		#~ print $i."\n";
 		#~ print $$tlen[$i]." la \n";
-		push(@tlenfun,$$tlen[$i]);
+		push(@tlenfun,$$tlen[$i]);			## 
 		push(@thpvfun,$$thpv[$i]);
 		push(@tclassfun,$$tclass[$i]);
 		push(@posfun,$$tpos[$i]);
