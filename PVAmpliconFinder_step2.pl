@@ -140,6 +140,7 @@ my %primer=();	##	Keys=pools; Values = primer type
 my %tissu=();	##	Keys=pools; Values = tissu type
 my @pools=();	##	Table of pool (uniqu ID)
 my @primers=();	##	Table uniq primer
+my @tissues=();	##	Table uniq tissues
 my %cptprimer=();	##	Count number of time each primer is present
 my %poolsid=();		##	Give an id to each pool ordered by "sort @pools"	Keys=pools; Values = id
 my $boolean_infofile="true";
@@ -159,6 +160,7 @@ if($infos ne ""){
 		%tissu=%{@$res[1]};
 		@pools=sort keys %primer;
 		@primers=uniq sort values %primer;
+		@tissues=uniq sort values %tissu;
 	}
 	elsif(($cptlineinfo ne $cptlinefasta) && ($cptlinefasta eq $cptlineblast)){
 		print "Error : Info file badly formatted\n Did you forget the header (ID\tprimer\tpool)\n";exit;
@@ -2061,32 +2063,41 @@ my $knownfasta=$outputdir."/putative_known_VIRUS.fa";
 
 #~ `raxml.sh $whereiam $newfasta $knownfasta`;
 
-mkdir $whereiam."/raxml" or die ($!);
+my $raxdir= $whereiam."/raxml";
 
-mkdir $whereiam."/raxml/new" or die ($!);
-mkdir $whereiam."/raxml/known" or die ($!);
-
-
-if($bol_new_empty eq "F"){
-	##	New
-	chdir "$whereiam/raxml/new";
-
-	`papara -t $dirname/raxml/L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -s $dirname/raxml/L1_All_genome_NUC_alignment.phylip -q $newfasta -j $threads`;
-
-	`raxmlHPC-PTHREADS-AVX2 -f v -s papara_alignment.default -t $dirname/raxml/L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -m GTRGAMMA -n new -T $threads --epa-keep-placements=1`;
+if (-d $raxdir) {
+    print "RaxML results already present. RaxML step is skipped. If you want to launch RaxML again, please delete the raxml folder from the output directory.\n";
 }
+else{
 
-if($bol_known_empty eq "F"){
-	##	Known
-	chdir "$whereiam/raxml/known";
+	mkdir $whereiam."/raxml" or die ($!);
 
-	`papara -t $dirname/raxml/L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -s $dirname/raxml/L1_All_genome_NUC_alignment.phylip -q $knownfasta -j $threads`;
 
-	`raxmlHPC-PTHREADS-AVX2 -f v -s papara_alignment.default -t $dirname/raxml/L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -m GTRGAMMA -n known -T $threads --epa-keep-placements=1`;
+
+	mkdir $whereiam."/raxml/new" or die ($!);
+	mkdir $whereiam."/raxml/known" or die ($!);
+
+
+	if($bol_new_empty eq "F"){
+		##	New
+		chdir "$whereiam/raxml/new";
+
+		`papara -t $dirname/raxml/L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -s $dirname/raxml/L1_All_genome_NUC_alignment.phylip -q $newfasta -j $threads`;
+
+		`raxmlHPC-PTHREADS-AVX2 -f v -s papara_alignment.default -t $dirname/raxml/L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -m GTRGAMMA -n new -T $threads --epa-keep-placements=1`;
+	}
+
+	if($bol_known_empty eq "F"){
+		##	Known
+		chdir "$whereiam/raxml/known";
+
+		`papara -t $dirname/raxml/L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -s $dirname/raxml/L1_All_genome_NUC_alignment.phylip -q $knownfasta -j $threads`;
+
+		`raxmlHPC-PTHREADS-AVX2 -f v -s papara_alignment.default -t $dirname/raxml/L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -m GTRGAMMA -n known -T $threads --epa-keep-placements=1`;
+	}
+
+	chdir "$whereiam/raxml";
 }
-
-chdir "$whereiam/raxml";
-
 
 my $class_new="$whereiam/raxml/new/RAxML_classification.new";
 my $class_known="$whereiam/raxml/known/RAxML_classification.known";
@@ -3031,12 +3042,6 @@ close(OUTALL);
 `ktImportText $krona/krona_OverAll_BlastN.txt -o $krona/krona_OverAll_BlastN.html`;
 
 
-
-
-
-
-
-
 ##################################
 ##	WRITE TABLE SUMMARY RAXML	##
 ##################################
@@ -3134,6 +3139,235 @@ foreach my $pool (sort keys %new_blastn){
 }
 close(OUT);
 
+##################################
+##	Creation of extra tables	##
+##################################
+
+my %hreadsmega=();		#megablast
+my %hreadsrax=();		#raxml
+
+my %hinfomega=();
+my %hinforax=();
+
+my %hreadsmega_genus=();		#megablast
+my %hreadsrax_genus=();		#raxml
+
+my %hseqcountmega_genus=();
+my %hseqcountrax_genus=();
+
+my %htypemega_genus=();		#megablast
+my %htyperax_genus=();	
+
+	
+foreach my $file (`ls $outputdir/table_putative_*_VIRUS_RaxML.txt`){
+	chomp($file);
+	my $group="";
+	if($file=~/table_putative_(\S+)_VIRUS_RaxML.txt/){
+		$group=$1;
+		
+		open(IN, $file) or die "$! : $file\n";	#
+		my $header=<IN>;
+		while(<IN>){
+			chomp($_);
+			my $l=$_;
+			my @tab=split /\t/,$l;
+			
+			my $id=$tab[0];
+			my $perc_dis=$tab[1];
+			my $abun=$tab[2];
+			my $nbread=$tab[3];
+			my $gi=$tab[4];
+			my $alig_pos_mega=$tab[5];
+			my $hpv_mega=$tab[6];
+			my $pool=$tab[7];
+			my $tissu=$tab[8];
+			my $primer=$tab[9];
+			my $len=$tab[10];	#OK
+			my $align_pos_blastn=$tab[11];
+			my $hpv_blast=$tab[12];
+			my $classification_blastn=$tab[13];
+			my $raxml_closest=$tab[14];	#OK
+			my $raxml_class=$tab[15];
+			my $seq=$tab[16];
+			
+			my @thpv_blast=split(/\//,$hpv_blast);
+			my @tclassification_blastn=split(/\//,$classification_blastn);
+			
+			my @traxml_closest=split(/\//,$raxml_closest);
+			my @traxml_class=split(/\//,$raxml_class);
+			
+			my @tlen=split(/\//,$len);
+			
+			my $max=getindexmax(\@tlen);
+			
+			$hpv_blast=$thpv_blast[$max];
+			$classification_blastn=$tclassification_blastn[$max];
+			$raxml_closest=$traxml_closest[$max];
+			$raxml_class=$traxml_class[$max];
+			
+			my $t=$tissu;
+			
+			my $hpv="";
+			if($hpv_blast=~/(.+)\(.+\)$/i){
+				$hpv=$1;
+			}
+			else{
+				$hpv=$hpv_blast;
+			}
+			#~ print $hpv."\n";
+			#~ exit;
+			
+			my $genusrax=getgenus($raxml_class);
+			my $genusblast=getgenus($classification_blastn);
+			
+			
+			##	BLASTN
+						#NEW	HPV1	AK	Primer
+			$hreadsmega{$group}{$hpv}{$t}{$primer}+=$nbread;
+			
+			$hreadsmega_genus{$group}{$genusblast}{$t}{$primer}+=$nbread;
+			
+			if(!(defined($hseqcountmega_genus{$group}{$genusblast}{$t}{$primer}))){
+				$hseqcountmega_genus{$group}{$genusblast}{$t}{$primer}=1;
+			}
+			else{
+				$hseqcountmega_genus{$group}{$genusblast}{$t}{$primer}++;
+			}
+			
+			#~ print $group."\t".$hpv."\t".$t."\t".$primer."\n";
+			
+			$hinfomega{$hpv}=$classification_blastn;
+			
+			push(@{$htypemega_genus{$group}{$genusblast}},$hpv);
+			
+			
+			
+			##	RAXML-EPA
+			
+			$hreadsrax{$group}{$raxml_closest}{$t}{$primer}+=$nbread;
+			
+			$hreadsrax_genus{$group}{$genusrax}{$t}{$primer}+=$nbread;
+			
+			if(!(defined($hseqcountrax_genus{$group}{$genusrax}{$t}{$primer}))){
+				$hseqcountrax_genus{$group}{$genusrax}{$t}{$primer}=1;
+			}
+			else{
+				$hseqcountrax_genus{$group}{$genusrax}{$t}{$primer}++;
+			}
+			
+			$hinforax{$raxml_closest}=$raxml_class;
+			
+			#~ print $group."\t".$hpv."\t".$t."\t".$nbread."\t".$raxml_closest."\n";
+			
+			push(@{$htyperax_genus{$group}{$genusrax}},$raxml_closest);
+			
+		}
+		close(IN);
+	}
+}
+
+
+if(($bol_new_empty eq "F") && ($bol_known_empty eq "F")){
+		
+	for my $group (sort keys %hreadsmega_genus){
+		open(OUT, ">".$outputdir."/Table_HPV_presence_".$group."_tissu_BlastN.txt") or die "$! : $outputdir/Table_HPV_presence_${group}_tissu_BlastN.txt\n";
+		
+		print OUT "HPV genus\tUnique virus species\t";
+		foreach my $t (@tissues){
+			print OUT $t;
+			for (my $p=0; $p<=$#primers; $p++){
+				print OUT "\t";
+			}
+		}
+		print OUT "\n";
+		
+		print OUT "\t\t";
+		foreach my $t (@tissues){
+			for (my $p=0; $p<=$#primers; $p++){
+				print OUT "$primers[$p]\t";
+			}
+		}
+		print OUT "\n";
+		
+		
+		for my $genus (sort keys %{$hreadsmega_genus{$group}}){
+
+			my @tabcount=uniq(@{$htypemega_genus{$group}{$genus}});
+			my $countuniq=scalar @tabcount;
+			
+			print OUT $genus."\t".$countuniq."\t";
+			
+			foreach my $t (@tissues){
+				foreach my $p (@primers){
+					my $reads="-";
+					my $seq="-";
+					if((defined($hreadsmega_genus{$group}{$genus}{$t}{$p})) && ($hreadsmega_genus{$group}{$genus}{$t}{$p}!~/^\s*$/)){
+						$reads=$hreadsmega_genus{$group}{$genus}{$t}{$p};
+					}
+					if((defined($hseqcountmega_genus{$group}{$genus}{$t}{$p})) && ($hseqcountmega_genus{$group}{$genus}{$t}{$p}!~/^\s*$/)){
+						$seq=$hseqcountmega_genus{$group}{$genus}{$t}{$p};
+					}
+					print OUT $seq." (".$reads.")\t";
+				}
+			}
+			print OUT "\n";
+		}
+		close(OUT);
+	}
+	
+			
+	for my $group (sort keys %hreadsrax_genus){
+		open(OUT, ">".$outputdir."/Table_HPV_presence_".$group."_tissu_RaxML.txt") or die "$! : $outputdir/Table_HPV_presence_${group}_tissu_RaxML.txt\n";
+		
+		print OUT "HPV genus\tUnique virus species\t";
+		foreach my $t (@tissues){
+			print OUT $t;
+			for (my $p=0; $p<=$#primers; $p++){
+				print OUT "\t";
+			}
+		}
+		print OUT "\n";
+		
+		print OUT "\t\t";
+		foreach my $t (@tissues){
+			for (my $p=0; $p<=$#primers; $p++){
+				print OUT "$primers[$p]\t";
+			}
+		}
+		print OUT "\n";
+		
+		
+		for my $genus (sort keys %{$hreadsrax_genus{$group}}){
+
+			my @tabcount=uniq(@{$htyperax_genus{$group}{$genus}});
+			my $countuniq=scalar @tabcount;
+			
+			print OUT $genus."\t".$countuniq."\t";
+			
+			foreach my $t (@tissues){
+				foreach my $p (@primers){
+					my $reads="-";
+					my $seq="-";
+					if((defined($hreadsrax_genus{$group}{$genus}{$t}{$p})) && ($hreadsrax_genus{$group}{$genus}{$t}{$p}!~/^\s*$/)){
+						$reads=$hreadsrax_genus{$group}{$genus}{$t}{$p};
+					}
+					if((defined($hseqcountrax_genus{$group}{$genus}{$t}{$p})) && ($hseqcountrax_genus{$group}{$genus}{$t}{$p}!~/^\s*$/)){
+						$seq=$hseqcountrax_genus{$group}{$genus}{$t}{$p};
+					}
+					print OUT $seq." (".$reads.")\t";
+				}
+			}
+			print OUT "\n";
+		}
+		close(OUT);
+	}
+	
+}
+
+
+##################
+##	Functions	##
+##################
 
 ##	Get index of max value in a table
 sub getindexmax{
@@ -3405,3 +3639,31 @@ sub longuestFirst {
 	 
 	return(\@res);
 }
+
+sub getgenus{
+	my $hpvname=shift;
+	my $genus="";
+	if($hpvname=~/^alpha/i){
+		$genus="Alphapapillomavirus";
+	}
+	elsif($hpvname=~/^beta/i){
+		$genus="Betapapillomavirus";
+	}
+	elsif($hpvname=~/^gamma/i){
+		$genus="Gammapapillomavirus";
+	}
+	elsif($hpvname=~/^mu/i){
+		$genus="Mupapillomavirus";
+	}
+	elsif($hpvname=~/^nu/i){
+		$genus="Nupapillomavirus";
+	}
+	elsif($hpvname=~/^unclass/i){
+		$genus="Unclassified";
+	}
+	else{
+		$genus="Non-human papillomavirus";
+	}
+	return($genus);
+}
+
