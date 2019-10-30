@@ -585,17 +585,27 @@ if($boolean_infofile eq "true"){
 for my $p (sort keys %htype){
 	
 	my $othersreads=$htype{$p}{'human'}+$htype{$p}{'bacteria'}+$htype{$p}{'other'};
+	#~ print $othersreads." other\n";
 	my $allreads=$othersreads+$htype{$p}{'VIRUS'}+$htype{$p}{'newVIRUS'};
+	#~ print $allreads." all\n";
 	my $virusreads=$htype{$p}{'VIRUS'}+$htype{$p}{'newVIRUS'};
+	my $fracnew;
+	if($virusreads == 0){
+		$fracnew=0;
+	}
+	else{
+		$fracnew=nearest(.001,($htype{$p}{'newVIRUS'}/$virusreads)*100)
+	}
+	#~ print $virusreads." virus\n";
 	
 	if($allreads!=$reads{$p}){
 		print "Error\n";
 		exit;
 	}
 	if($boolean_infofile eq "true"){
-		print OUT $p."\t".$primer{$p}."\t".$tissu{$p}."\t".$reads{$p}."\t".$virusreads."\t".nearest(.001,($virusreads/$allreads)*100)."\t".$othersreads."\t".nearest(.001,($othersreads/$allreads)*100)."\t".$htype{$p}{'newVIRUS'}."\t".nearest(.001,($htype{$p}{'newVIRUS'}/$allreads)*100)."\t".nearest(.001,($htype{$p}{'newVIRUS'}/$virusreads)*100)."\t".scalar(@{$hnew{$p}})."\t".scalar(@{$hknown{$p}})."\n";
+		print OUT $p."\t".$primer{$p}."\t".$tissu{$p}."\t".$reads{$p}."\t".$virusreads."\t".nearest(.001,($virusreads/$allreads)*100)."\t".$othersreads."\t".nearest(.001,($othersreads/$allreads)*100)."\t".$htype{$p}{'newVIRUS'}."\t".nearest(.001,($htype{$p}{'newVIRUS'}/$allreads)*100)."\t".$fracnew."\t".scalar(@{$hnew{$p}})."\t".scalar(@{$hknown{$p}})."\n";
 	}else{
-		print OUT $p."\t".$reads{$p}."\t".$virusreads."\t".nearest(.001,($virusreads/$allreads)*100)."\t".$othersreads."\t".nearest(.001,($othersreads/$allreads)*100)."\t".$htype{$p}{'newVIRUS'}."\t".nearest(.001,($htype{$p}{'newVIRUS'}/$allreads)*100)."\t".nearest(.001,($htype{$p}{'newVIRUS'}/$virusreads)*100)."\t".scalar(@{$hnew{$p}})."\t".scalar(@{$hknown{$p}})."\n";
+		print OUT $p."\t".$reads{$p}."\t".$virusreads."\t".nearest(.001,($virusreads/$allreads)*100)."\t".$othersreads."\t".nearest(.001,($othersreads/$allreads)*100)."\t".$htype{$p}{'newVIRUS'}."\t".nearest(.001,($htype{$p}{'newVIRUS'}/$allreads)*100)."\t".$fracnew."\t".scalar(@{$hnew{$p}})."\t".scalar(@{$hknown{$p}})."\n";
 	}	
 }
 
@@ -622,16 +632,24 @@ foreach my $primer (sort keys %hprimer){
 	my $othersreads=$hprimer{$primer}{'human'}+$hprimer{$primer}{'bacteria'}+$hprimer{$primer}{'other'};
 	my $allreads=$othersreads+$hprimer{$primer}{'VIRUS'}+$hprimer{$primer}{'newVIRUS'};
 	my $virusreads=$hprimer{$primer}{'VIRUS'}+$hprimer{$primer}{'newVIRUS'};
+	my $fracnew;
+	
+	if($virusreads == 0){
+		$fracnew=0;
+	}
+	else{
+		$fracnew=nearest(.001,($hprimer{$primer}{'newVIRUS'}/$virusreads)*100)
+	}
 	
 	if($allreads==0){
 		print "Unexpected error in the count of reads for ".$primer." primer\n";
 		exit;
 	}
 	if($boolean_infofile eq "true"){
-		print OUT $primer."\t".$allreads."\t".$virusreads."\t".nearest(.001,($virusreads/$allreads)*100)."\t".$othersreads."\t".nearest(.001,($othersreads/$allreads)*100)."\t".$hprimer{$primer}{'newVIRUS'}."\t".nearest(.001,($hprimer{$primer}{'newVIRUS'}/$allreads)*100)."\t".nearest(.001,($hprimer{$primer}{'newVIRUS'}/$virusreads)*100)."\n";
+		print OUT $primer."\t".$allreads."\t".$virusreads."\t".nearest(.001,($virusreads/$allreads)*100)."\t".$othersreads."\t".nearest(.001,($othersreads/$allreads)*100)."\t".$hprimer{$primer}{'newVIRUS'}."\t".nearest(.001,($hprimer{$primer}{'newVIRUS'}/$allreads)*100)."\t".$fracnew."\n";
 	}
 	else{
-		print OUT "Mean\t".$allreads."\t".$virusreads."\t".nearest(.001,($virusreads/$allreads)*100)."\t".$othersreads."\t".nearest(.001,($othersreads/$allreads)*100)."\t".$hprimer{$primer}{'newVIRUS'}."\t".nearest(.001,($hprimer{$primer}{'newVIRUS'}/$allreads)*100)."\t".nearest(.001,($hprimer{$primer}{'newVIRUS'}/$virusreads)*100)."\t".nearest(1,(scalar(@{$hVIRUStot{"new"}})/scalar(@pools)))."\t".nearest(1,(scalar(@{$hVIRUStot{"known"}})/scalar(@pools)))."\n";
+		print OUT "Mean\t".$allreads."\t".$virusreads."\t".nearest(.001,($virusreads/$allreads)*100)."\t".$othersreads."\t".nearest(.001,($othersreads/$allreads)*100)."\t".$hprimer{$primer}{'newVIRUS'}."\t".nearest(.001,($hprimer{$primer}{'newVIRUS'}/$allreads)*100)."\t".$fracnew."\t".nearest(1,(scalar(@{$hVIRUStot{"new"}})/scalar(@pools)))."\t".nearest(1,(scalar(@{$hVIRUStot{"known"}})/scalar(@pools)))."\n";
 	}
 }
 

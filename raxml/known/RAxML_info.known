@@ -1,5 +1,72 @@
 
 
+IMPORTANT WARNING: Sequences 15VIRUSput.1 and 92VIRUSput.1 are exactly identical
+
+
+IMPORTANT WARNING: Sequences 15VIRUSput.2 and 92VIRUSput.2 are exactly identical
+
+
+IMPORTANT WARNING: Sequences 17VIRUSput.3 and 97VIRUSput.4 are exactly identical
+
+
+IMPORTANT WARNING: Sequences 11VIRUSput and 90VIRUSput are exactly identical
+
+
+IMPORTANT WARNING: Sequences 16VIRUSput.2 and 93VIRUSput.2 are exactly identical
+
+
+IMPORTANT WARNING: Sequences 16VIRUSput.4 and 16VIRUSput.5 are exactly identical
+
+
+IMPORTANT WARNING: Sequences 16VIRUSput.4 and 93VIRUSput.4 are exactly identical
+
+
+IMPORTANT WARNING: Sequences 16VIRUSput.4 and 93VIRUSput.5 are exactly identical
+
+
+IMPORTANT WARNING: Sequences 13VIRUSput.2 and 94VIRUSput.2 are exactly identical
+
+
+IMPORTANT WARNING: Sequences 12VIRUSput.1 and 91VIRUSput.1 are exactly identical
+
+
+IMPORTANT WARNING: Sequences 12VIRUSput.2 and 91VIRUSput.2 are exactly identical
+
+
+IMPORTANT WARNING: Sequences 12VIRUSput.5 and 12VIRUSput.6 are exactly identical
+
+
+IMPORTANT WARNING: Sequences 12VIRUSput.5 and 91VIRUSput.3 are exactly identical
+
+
+IMPORTANT WARNING: Sequences 22VIRUSput.2 and 95VIRUSput.3 are exactly identical
+
+
+IMPORTANT WARNING: Sequences 22VIRUSput.2 and 95VIRUSput.4 are exactly identical
+
+
+IMPORTANT WARNING: Sequences 22VIRUSput.3 and 62VIRUSput.4 are exactly identical
+
+
+IMPORTANT WARNING: Sequences 58VIRUSput.1 and 80VIRUSput.1 are exactly identical
+
+
+IMPORTANT WARNING: Sequences 61VIRUSput.2 and 89VIRUSput are exactly identical
+
+
+IMPORTANT WARNING: Sequences 62VIRUSput.3 and 95VIRUSput.7 are exactly identical
+
+
+IMPORTANT WARNING: Sequences 95VIRUSput.5 and 95VIRUSput.6 are exactly identical
+
+IMPORTANT WARNING
+Found 20 sequences that are exactly identical to other sequences in the alignment.
+Normally they should be excluded from the analysis.
+
+Just in case you might need it, an alignment file with 
+sequence duplicates removed is printed to file papara_alignment.default.reduced
+
+
 Using BFGS method to optimize GTR rate parameters, to disable this specify "--no-bfgs" 
 
 Found a total of 597 taxa in tree file ../L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk
@@ -20,9 +87,9 @@ Akifumi S. Tanabe (NRIFS)
 Charlie Taylor    (UF)
 
 
-Alignment has 2574 distinct alignment patterns
+Alignment has 2553 distinct alignment patterns
 
-Proportion of gaps and completely undetermined characters in this alignment: 56.73%
+Proportion of gaps and completely undetermined characters in this alignment: 61.83%
 
 RAxML likelihood-based placement algorithm
 
@@ -33,7 +100,7 @@ All free model parameters will be estimated by RAxML
 GAMMA model of rate heterogeneity, ML estimate of alpha-parameter
 
 Partition: 0
-Alignment Patterns: 2574
+Alignment Patterns: 2553
 Name: No Name Provided
 DataType: DNA
 Substitution Matrix: GTR
@@ -46,16 +113,16 @@ RAxML was called as follows:
 raxmlHPC-PTHREADS-AVX2 -f v -s papara_alignment.default -t ../L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -m GTRGAMMA -n known -T 8 --epa-keep-placements=1 
 
 
-RAxML placement algorithm: You provided a reference tree with 597 taxa; alignmnet has 764 taxa
-167 query taxa will be placed using maximum likelihood
+RAxML placement algorithm: You provided a reference tree with 597 taxa; alignmnet has 863 taxa
+266 query taxa will be placed using maximum likelihood
 
 RAxML Evolutionary Placement Algorithm
 
-Likelihood of reference tree: -559579.651731
+Likelihood of reference tree: -559590.208039
 
-RAxML will place 167 Query Sequences into the 1191 branches of the reference tree with 597 taxa
+RAxML will place 266 Query Sequences into the 1191 branches of the reference tree with 597 taxa
 
-Overall Classification time: 326.069002
+Overall Classification time: 559.927559
 
 
 

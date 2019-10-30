@@ -1,167 +1,282 @@
-100VIRUSput	U31790	Gammapapillomavirus 3
-101VIRUSput	KF147892	Taupapillomavirus 3
-102VIRUSput	U31783	Alphapapillomavirus 2
-103VIRUSput	Y15174	Betapapillomavirus 3
-104VIRUSput	MH376689	Unclassified
-105VIRUSput	HM999994	Gammapapillomavirus 10
-106VIRUSput	MF588691	Gammapapillomavirus
-107VIRUSput.1	X74466	Betapapillomavirus 1
-107VIRUSput.2	X74466	Betapapillomavirus 1
-108VIRUSput	U31780	Betapapillomavirus 2
-109VIRUSput	MH972563	Gammapapillomavirus
-10VIRUSput.1	MH777208	Gammapapillomavirus
-10VIRUSput.2	MH777208	Gammapapillomavirus
-10VIRUSput.3	MH376689	Unclassified
-110VIRUSput	FM955840	Betapapillomavirus 2
-111VIRUSput	MH777175	Betapapillomavirus
-112VIRUSput	MF588682	Betapapillomavirus
-113VIRUSput	U31785	Betapapillomavirus 1
-114VIRUSput	U31785	Betapapillomavirus 1
-115VIRUSput	MF588742	Gammapapillomavirus
-116VIRUSput	HM999999	Gammapapillomavirus 8
-117VIRUSput.1	MF588677	Betapapillomavirus
-117VIRUSput.2	MF588677	Betapapillomavirus
-118VIRUSput	GU225708	Gammapapillomavirus 13
-119VIRUSput	MG520499	Gammapapillomavirus
-11VIRUSput.1	X74480	Betapapillomavirus 3
-11VIRUSput.2	X74480	Betapapillomavirus 3
-11VIRUSput.3	X74480	Betapapillomavirus 3
-11VIRUSput.4	X74480	Betapapillomavirus 3
-11VIRUSput.5	X74480	Betapapillomavirus 3
-120VIRUSput.1	X74480	Betapapillomavirus 3
-120VIRUSput.2	X74480	Betapapillomavirus 3
-121VIRUSput	KY853656	Taupapillomavirus
-122VIRUSput	MF588677	Betapapillomavirus
-123VIRUSput	M17463	Betapapillomavirus 1
-124VIRUSput	MH972563	Gammapapillomavirus
-125VIRUSput	M17463	Betapapillomavirus 1
-126VIRUSput	Y15174	Betapapillomavirus 3
-127VIRUSput	FM955841	Betapapillomavirus 1
-128VIRUSput.1	KP692118	Gammapapillomavirus
-128VIRUSput.2	KP692118	Gammapapillomavirus
-129VIRUSput	GQ845444	Betapapillomavirus 2
-12VIRUSput.1	Y15174	Betapapillomavirus 3
-12VIRUSput.2	Y15174	Betapapillomavirus 3
-12VIRUSput.3	Y15174	Betapapillomavirus 3
-130VIRUSput	MH675890	Gammapapillomavirus
-131VIRUSput	MH972563	Gammapapillomavirus
-132VIRUSput	U31783	Alphapapillomavirus 2
-133VIRUSput	X55964	Alphapapillomavirus 4
-134VIRUSput	U31785	Betapapillomavirus 1
-135VIRUSput	HG421739	Gammapapillomavirus 15
-136VIRUSput	MH777347	Gammapapillomavirus
-137VIRUSput	X74466	Betapapillomavirus 1
-138VIRUSput	GQ845442	Betapapillomavirus 2
-139VIRUSput	KC108721	Gammapapillomavirus 23
-13VIRUSput.1	Y15174	Betapapillomavirus 3
-13VIRUSput.2	Y15174	Betapapillomavirus 3
-13VIRUSput.3	Y15174	Betapapillomavirus 3
-13VIRUSput.4	GU014531	Betapapillomavirus 6
-14VIRUSput.1	FJ947080	Betapapillomavirus 3
-14VIRUSput.2	FJ947080	Betapapillomavirus 3
-14VIRUSput.3	FJ947080	Betapapillomavirus 3
-15VIRUSput	MH675890	Gammapapillomavirus
-16VIRUSput	MH777335	Gammapapillomavirus
-17VIRUSput	U31781	Betapapillomavirus 2
-18VIRUSput	U31786	Betapapillomavirus 2
-19VIRUSput	X74470	Betapapillomavirus 1
-20VIRUSput	MH777389	Gammapapillomavirus
-21VIRUSput	KR816174	Gammapapillomavirus 26
-22VIRUSput	M17463	Betapapillomavirus 1
-23VIRUSput	AY382779	Betapapillomavirus 5
-24VIRUSput	Y15174	Betapapillomavirus 3
-25VIRUSput	GU117634	Gammapapillomavirus 7
-26VIRUSput	MH972563	Gammapapillomavirus
-27VIRUSput	M17463	Betapapillomavirus 1
-28VIRUSput	HM999987	Gammapapillomavirus 15
-29VIRUSput	MF588682	Betapapillomavirus
-30VIRUSput	U31782	Betapapillomavirus 1
-31VIRUSput	FN677756	Betapapillomavirus 2
-32VIRUSput	U31781	Betapapillomavirus 2
-33VIRUSput	U31786	Betapapillomavirus 2
-34VIRUSput	GU117634	Gammapapillomavirus 7
-35VIRUSput	HM999997	Betapapillomavirus 2
-36VIRUSput	KX781282	Gammapapillomavirus
-37VIRUSput	MF356498	Gammapapillomavirus
-38VIRUSput	GQ845445	Gammapapillomavirus 7
-39VIRUSput	GU117632	Gammapapillomavirus 12
-40VIRUSput	EF422221	Betapapillomavirus 2
-41VIRUSput	KP692115	Gammapapillomavirus 27
-42VIRUSput	MF588682	Betapapillomavirus
-43VIRUSput	MF588733	Gammapapillomavirus
-44VIRUSput	MH777208	Gammapapillomavirus
-45VIRUSput	AY382778	Betapapillomavirus 1
-46VIRUSput	HM999996	Gammapapillomavirus 17
-47VIRUSput	MH972562	Gammapapillomavirus
-48VIRUSput	MH972563	Gammapapillomavirus
-49VIRUSput	MH777252	Gammapapillomavirus
-4VIRUSput.1	Y15174	Betapapillomavirus 3
-4VIRUSput.2	Y15174	Betapapillomavirus 3
-4VIRUSput.3	KY853656	Taupapillomavirus
-4VIRUSput.4	Y15174	Betapapillomavirus 3
-50VIRUSput	HM999990	Gammapapillomavirus 7
-51VIRUSput	MH777376	Gammapapillomavirus
-52VIRUSput	X74470	Betapapillomavirus 1
-53VIRUSput	AY382778	Betapapillomavirus 1
-54VIRUSput	MF588682	Betapapillomavirus
-55VIRUSput	JF966371	Gammapapillomavirus
-56VIRUSput	GQ246951	Betapapillomavirus 1
-57VIRUSput	MH777244	Gammapapillomavirus
-58VIRUSput	U31779	Betapapillomavirus 1
-59VIRUSput	MF588748	Gammapapillomavirus
-5VIRUSput.1	X74480	Betapapillomavirus 3
-5VIRUSput.2	X74480	Betapapillomavirus 3
-5VIRUSput.3	KY853656	Taupapillomavirus
-60VIRUSput	MF588685	Betapapillomavirus
-61VIRUSput	U31783	Alphapapillomavirus 2
-62VIRUSput	U31790	Gammapapillomavirus 3
-63VIRUSput	X74466	Betapapillomavirus 1
-64VIRUSput	HM999994	Gammapapillomavirus 10
-65VIRUSput	U31785	Betapapillomavirus 1
-66VIRUSput	MH972563	Gammapapillomavirus
-67VIRUSput	U31780	Betapapillomavirus 2
-68VIRUSput	MF588691	Gammapapillomavirus
-69VIRUSput	MH376689	Unclassified
-6VIRUSput	FJ947080	Betapapillomavirus 3
-70VIRUSput	FM955840	Betapapillomavirus 2
-71VIRUSput	MH777175	Betapapillomavirus
-72VIRUSput	MF588682	Betapapillomavirus
-73VIRUSput	GU117633	Gammapapillomavirus 10
-74VIRUSput	GQ845446	Betapapillomavirus 1
-75VIRUSput	HM999989	Gammapapillomavirus 16
-76VIRUSput	MH376689	Unclassified
-77VIRUSput	AY382779	Betapapillomavirus 5
-78VIRUSput	MH777313	Gammapapillomavirus
-79VIRUSput	MF588742	Gammapapillomavirus
-7VIRUSput	Y15174	Betapapillomavirus 3
-80VIRUSput	GU117630	Gammapapillomavirus 10
-81VIRUSput	X74467	Betapapillomavirus 1
-82VIRUSput	MH777334	Gammapapillomavirus
-83VIRUSput	MH777156	Gammapapillomavirus
-84VIRUSput	MH777333	Gammapapillomavirus
-85VIRUSput	X74469	Betapapillomavirus 2
-86VIRUSput	MF588679	Betapapillomavirus
-87VIRUSput	KY242583	Betapapillomavirus
-88VIRUSput	MF588723	Gammapapillomavirus
-89VIRUSput	FM955840	Betapapillomavirus 2
-8VIRUSput	FJ947080	Betapapillomavirus 3
-90VIRUSput	KT698166	Gammapapillomavirus
-91VIRUSput	X70827	Gammapapillomavirus 1
-92VIRUSput	MF588677	Betapapillomavirus
-93VIRUSput	MH777334	Gammapapillomavirus
-94VIRUSput	MK080568	Betapapillomavirus
-95VIRUSput	FM955837	Betapapillomavirus 1
-96VIRUSput	FN547152	Alphapapillomavirus 2
-97VIRUSput	U31779	Betapapillomavirus 1
-98VIRUSput	MH376689	Unclassified
-99VIRUSput	MH777347	Gammapapillomavirus
-9VIRUSput.1	Y15174	Betapapillomavirus 3
-9VIRUSput.10	FM955840	Betapapillomavirus 2
-9VIRUSput.2	Y15174	Betapapillomavirus 3
-9VIRUSput.3	Y15174	Betapapillomavirus 3
-9VIRUSput.4	Y15174	Betapapillomavirus 3
-9VIRUSput.5	Y15174	Betapapillomavirus 3
-9VIRUSput.6	Y15174	Betapapillomavirus 3
-9VIRUSput.7	Y15174	Betapapillomavirus 3
-9VIRUSput.8	Y15174	Betapapillomavirus 3
-9VIRUSput.9	Y15174	Betapapillomavirus 3
+100VIRUSput.1	U31787	Betapapillomavirus 2
+100VIRUSput.2	U31787	Betapapillomavirus 2
+100VIRUSput.3	U31787	Betapapillomavirus 2
+101VIRUSput.1	X74467	Betapapillomavirus 1
+101VIRUSput.2	X74467	Betapapillomavirus 1
+102VIRUSput.1	MF588682	Betapapillomavirus
+102VIRUSput.2	MF588682	Betapapillomavirus
+102VIRUSput.3	MF588682	Betapapillomavirus
+103VIRUSput.1	MH777171	Gammapapillomavirus
+103VIRUSput.2	MH777171	Gammapapillomavirus
+103VIRUSput.3	MH777171	Gammapapillomavirus
+104VIRUSput.1	X74469	Betapapillomavirus 2
+104VIRUSput.2	X74469	Betapapillomavirus 2
+105VIRUSput.1	GQ845442	Betapapillomavirus 2
+105VIRUSput.2	GQ845442	Betapapillomavirus 2
+105VIRUSput.3	GQ845442	Betapapillomavirus 2
+106VIRUSput	M17463	Betapapillomavirus 1
+107VIRUSput.1	M32305	Betapapillomavirus 1
+107VIRUSput.2	M32305	Betapapillomavirus 1
+107VIRUSput.3	M32305	Betapapillomavirus 1
+107VIRUSput.4	M32305	Betapapillomavirus 1
+108VIRUSput	M17463	Betapapillomavirus 1
+109VIRUSput	U31782	Betapapillomavirus 1
+110VIRUSput.1	GQ845441	Gammapapillomavirus 8
+110VIRUSput.2	GQ845441	Gammapapillomavirus 8
+111VIRUSput	MF588682	Betapapillomavirus
+112VIRUSput.1	DQ080079	Alphapapillomavirus 7
+112VIRUSput.2	DQ080079	Alphapapillomavirus 7
+112VIRUSput.3	M62849	Alphapapillomavirus 7
+113VIRUSput.1	X74469	Betapapillomavirus 2
+113VIRUSput.2	X74469	Betapapillomavirus 2
+113VIRUSput.3	X74469	Betapapillomavirus 2
+114VIRUSput.1	U31778	Betapapillomavirus 1
+114VIRUSput.2	U31778	Betapapillomavirus 1
+114VIRUSput.3	U31778	Betapapillomavirus 1
+115VIRUSput.1	M12737	Betapapillomavirus 1
+115VIRUSput.2	M12737	Betapapillomavirus 1
+116VIRUSput.1	GU117634	Gammapapillomavirus 7
+116VIRUSput.2	GU117634	Gammapapillomavirus 7
+117VIRUSput	GQ246951	Betapapillomavirus 1
+118VIRUSput	GQ246951	Betapapillomavirus 1
+119VIRUSput	GQ845441	Gammapapillomavirus 8
+11VIRUSput	M14119	Alphapapillomavirus 10
+120VIRUSput	HM999993	Gammapapillomavirus 11
+121VIRUSput.1	MF588758	Gammapapillomavirus
+121VIRUSput.2	MF588758	Gammapapillomavirus
+121VIRUSput.3	MF588758	Gammapapillomavirus
+122VIRUSput.1	U31781	Betapapillomavirus 2
+122VIRUSput.2	U31781	Betapapillomavirus 2
+123VIRUSput.1	X74480	Betapapillomavirus 3
+123VIRUSput.2	X74480	Betapapillomavirus 3
+124VIRUSput	U31779	Betapapillomavirus 1
+125VIRUSput.1	U31782	Betapapillomavirus 1
+125VIRUSput.2	U31782	Betapapillomavirus 1
+126VIRUSput	MF588713	Gammapapillomavirus
+127VIRUSput	GU117634	Gammapapillomavirus 7
+128VIRUSput	FM955839	Betapapillomavirus 2
+129VIRUSput	M17463	Betapapillomavirus 1
+12VIRUSput.1	M14119	Alphapapillomavirus 10
+12VIRUSput.2	M14119	Alphapapillomavirus 10
+12VIRUSput.3	M14119	Alphapapillomavirus 10
+12VIRUSput.4	M14119	Alphapapillomavirus 10
+12VIRUSput.5	M14119	Alphapapillomavirus 10
+12VIRUSput.6	M14119	Alphapapillomavirus 10
+130VIRUSput	X74464	Betapapillomavirus 2
+131VIRUSput.1	KP692115	Gammapapillomavirus 27
+131VIRUSput.2	KP692115	Gammapapillomavirus 27
+132VIRUSput	MF509816	Gammapapillomavirus
+133VIRUSput	HM999998	Gammapapillomavirus 15
+134VIRUSput	MF588718	Gammapapillomavirus
+135VIRUSput	M17463	Betapapillomavirus 1
+136VIRUSput	MF588711	Gammapapillomavirus
+137VIRUSput	MH777333	Gammapapillomavirus
+138VIRUSput	FM955840	Betapapillomavirus 2
+139VIRUSput	GQ246951	Betapapillomavirus 1
+13VIRUSput.1	X74470	Betapapillomavirus 1
+13VIRUSput.2	X74470	Betapapillomavirus 1
+13VIRUSput.3	X74470	Betapapillomavirus 1
+140VIRUSput	MF588678	Betapapillomavirus
+141VIRUSput	MF588683	Betapapillomavirus
+142VIRUSput	HE963025	Betapapillomavirus 2
+143VIRUSput.1	U31790	Gammapapillomavirus 3
+143VIRUSput.2	U31790	Gammapapillomavirus 3
+144VIRUSput	X74469	Betapapillomavirus 2
+145VIRUSput	U31779	Betapapillomavirus 1
+146VIRUSput	U31778	Betapapillomavirus 1
+147VIRUSput	EF422221	Betapapillomavirus 2
+148VIRUSput	MF588711	Gammapapillomavirus
+149VIRUSput	GQ845445	Gammapapillomavirus 7
+14VIRUSput	M17463	Betapapillomavirus 1
+150VIRUSput	Y15174	Betapapillomavirus 3
+151VIRUSput	EF422221	Betapapillomavirus 2
+152VIRUSput	KX781284	Gammapapillomavirus
+153VIRUSput	GQ845442	Betapapillomavirus 2
+15VIRUSput.1	Y15173	Betapapillomavirus 3
+15VIRUSput.2	Y15173	Betapapillomavirus 3
+15VIRUSput.3	Y15173	Betapapillomavirus 3
+16VIRUSput.1	M12737	Betapapillomavirus 1
+16VIRUSput.2	M12737	Betapapillomavirus 1
+16VIRUSput.3	M12737	Betapapillomavirus 1
+16VIRUSput.4	M12737	Betapapillomavirus 1
+16VIRUSput.5	M12737	Betapapillomavirus 1
+16VIRUSput.6	M12737	Betapapillomavirus 1
+16VIRUSput.7	M12737	Betapapillomavirus 1
+16VIRUSput.8	M12737	Betapapillomavirus 1
+17VIRUSput.1	U31787	Betapapillomavirus 2
+17VIRUSput.2	U31787	Betapapillomavirus 2
+17VIRUSput.3	U31787	Betapapillomavirus 2
+18VIRUSput.1	GQ845442	Betapapillomavirus 2
+18VIRUSput.2	GQ845442	Betapapillomavirus 2
+19VIRUSput	M17463	Betapapillomavirus 1
+20VIRUSput.1	M17463	Betapapillomavirus 1
+20VIRUSput.2	M17463	Betapapillomavirus 1
+21VIRUSput	MH777171	Gammapapillomavirus
+22VIRUSput.1	U31782	Betapapillomavirus 1
+22VIRUSput.2	U31782	Betapapillomavirus 1
+22VIRUSput.3	U31782	Betapapillomavirus 1
+22VIRUSput.4	U31782	Betapapillomavirus 1
+23VIRUSput	M17463	Betapapillomavirus 1
+24VIRUSput.1	MF588682	Betapapillomavirus
+24VIRUSput.2	MF588682	Betapapillomavirus
+25VIRUSput	MF588682	Betapapillomavirus
+26VIRUSput.1	M12737	Betapapillomavirus 1
+26VIRUSput.2	M12737	Betapapillomavirus 1
+27VIRUSput	U31782	Betapapillomavirus 1
+28VIRUSput	KP692115	Gammapapillomavirus 27
+29VIRUSput	U31785	Betapapillomavirus 1
+30VIRUSput	U31787	Betapapillomavirus 2
+31VIRUSput.1	DQ080079	Alphapapillomavirus 7
+31VIRUSput.2	DQ080079	Alphapapillomavirus 7
+32VIRUSput.1	KX781285	Gammapapillomavirus
+32VIRUSput.2	KX781285	Gammapapillomavirus
+33VIRUSput.1	M17463	Betapapillomavirus 1
+33VIRUSput.2	M17463	Betapapillomavirus 1
+34VIRUSput	U31781	Betapapillomavirus 2
+35VIRUSput	M32305	Betapapillomavirus 1
+36VIRUSput	GQ845441	Gammapapillomavirus 8
+37VIRUSput	FN677755	Betapapillomavirus 5
+38VIRUSput.1	U31790	Gammapapillomavirus 3
+38VIRUSput.2	U31790	Gammapapillomavirus 3
+39VIRUSput.1	X74467	Betapapillomavirus 1
+39VIRUSput.2	X74467	Betapapillomavirus 1
+40VIRUSput	U31785	Betapapillomavirus 1
+41VIRUSput	JF966374	Gammapapillomavirus
+42VIRUSput	MF588718	Gammapapillomavirus
+43VIRUSput	MF588758	Gammapapillomavirus
+44VIRUSput	GQ845441	Gammapapillomavirus 8
+45VIRUSput	FM955839	Betapapillomavirus 2
+46VIRUSput	U31785	Betapapillomavirus 1
+47VIRUSput	U31778	Betapapillomavirus 1
+48VIRUSput	FN677755	Betapapillomavirus 5
+49VIRUSput	MF588711	Gammapapillomavirus
+50VIRUSput	GU117634	Gammapapillomavirus 7
+51VIRUSput	HG421739	Gammapapillomavirus 15
+52VIRUSput	M17463	Betapapillomavirus 1
+53VIRUSput	MF509816	Gammapapillomavirus
+54VIRUSput	M17463	Betapapillomavirus 1
+55VIRUSput	JF966373	Gammapapillomavirus
+56VIRUSput	KP692115	Gammapapillomavirus 27
+57VIRUSput.1	X74467	Betapapillomavirus 1
+57VIRUSput.2	X74467	Betapapillomavirus 1
+57VIRUSput.3	X74467	Betapapillomavirus 1
+57VIRUSput.4	X74467	Betapapillomavirus 1
+57VIRUSput.5	X74467	Betapapillomavirus 1
+57VIRUSput.6	X74467	Betapapillomavirus 1
+58VIRUSput.1	MH777169	Gammapapillomavirus
+58VIRUSput.2	MH777169	Gammapapillomavirus
+58VIRUSput.3	U31790	Gammapapillomavirus 3
+59VIRUSput.1	U31787	Betapapillomavirus 2
+59VIRUSput.2	U31787	Betapapillomavirus 2
+59VIRUSput.3	GU014531	Betapapillomavirus 6
+59VIRUSput.4	GU014531	Betapapillomavirus 6
+60VIRUSput.1	X74466	Betapapillomavirus 1
+60VIRUSput.2	X74466	Betapapillomavirus 1
+61VIRUSput.1	U31781	Betapapillomavirus 2
+61VIRUSput.2	U31781	Betapapillomavirus 2
+61VIRUSput.3	U31781	Betapapillomavirus 2
+62VIRUSput.1	U31782	Betapapillomavirus 1
+62VIRUSput.2	U31782	Betapapillomavirus 1
+62VIRUSput.3	U31782	Betapapillomavirus 1
+62VIRUSput.4	U31782	Betapapillomavirus 1
+63VIRUSput.1	FM955840	Betapapillomavirus 2
+63VIRUSput.2	FM955840	Betapapillomavirus 2
+63VIRUSput.3	FM955840	Betapapillomavirus 2
+63VIRUSput.4	FM955840	Betapapillomavirus 2
+64VIRUSput.1	MH777389	Gammapapillomavirus
+64VIRUSput.2	MH777389	Gammapapillomavirus
+64VIRUSput.3	MH777389	Gammapapillomavirus
+65VIRUSput.1	U31778	Betapapillomavirus 1
+65VIRUSput.2	U31778	Betapapillomavirus 1
+66VIRUSput.1	MF588677	Betapapillomavirus
+66VIRUSput.2	MH777190	Betapapillomavirus
+66VIRUSput.3	KY705374	Dyokappapapillomavirus
+67VIRUSput.1	GQ845442	Betapapillomavirus 2
+67VIRUSput.2	GQ845442	Betapapillomavirus 2
+68VIRUSput	GQ845442	Betapapillomavirus 2
+69VIRUSput.1	M12737	Betapapillomavirus 1
+69VIRUSput.2	M12737	Betapapillomavirus 1
+69VIRUSput.3	M12737	Betapapillomavirus 1
+70VIRUSput	EF422221	Betapapillomavirus 2
+71VIRUSput	EF422221	Betapapillomavirus 2
+72VIRUSput	GQ845442	Betapapillomavirus 2
+73VIRUSput.1	M32305	Betapapillomavirus 1
+73VIRUSput.2	M32305	Betapapillomavirus 1
+73VIRUSput.3	M32305	Betapapillomavirus 1
+74VIRUSput.1	U31778	Betapapillomavirus 1
+74VIRUSput.2	U31782	Betapapillomavirus 1
+75VIRUSput	U31782	Betapapillomavirus 1
+76VIRUSput	FM955842	Betapapillomavirus 2
+77VIRUSput.1	X74466	Betapapillomavirus 1
+77VIRUSput.2	X74466	Betapapillomavirus 1
+77VIRUSput.3	X74466	Betapapillomavirus 1
+77VIRUSput.4	X74466	Betapapillomavirus 1
+78VIRUSput.1	JX413107	Gammapapillomavirus 20
+78VIRUSput.2	JX413107	Gammapapillomavirus 20
+79VIRUSput	FM955842	Betapapillomavirus 2
+80VIRUSput.1	MH777169	Gammapapillomavirus
+80VIRUSput.2	MH777169	Gammapapillomavirus
+80VIRUSput.3	MH777169	Gammapapillomavirus
+81VIRUSput.1	X74470	Betapapillomavirus 1
+81VIRUSput.2	X74470	Betapapillomavirus 1
+82VIRUSput	X74466	Betapapillomavirus 1
+83VIRUSput	FM955840	Betapapillomavirus 2
+84VIRUSput	JX413105	Gammapapillomavirus 11
+85VIRUSput.1	U31785	Betapapillomavirus 1
+85VIRUSput.2	U31785	Betapapillomavirus 1
+86VIRUSput	JX413105	Gammapapillomavirus 11
+87VIRUSput	JX413105	Gammapapillomavirus 11
+88VIRUSput	Y15173	Betapapillomavirus 3
+89VIRUSput	U31781	Betapapillomavirus 2
+90VIRUSput	M14119	Alphapapillomavirus 10
+91VIRUSput.1	M14119	Alphapapillomavirus 10
+91VIRUSput.2	M14119	Alphapapillomavirus 10
+91VIRUSput.3	M14119	Alphapapillomavirus 10
+91VIRUSput.4	M14119	Alphapapillomavirus 10
+92VIRUSput.1	Y15173	Betapapillomavirus 3
+92VIRUSput.2	Y15173	Betapapillomavirus 3
+92VIRUSput.3	Y15173	Betapapillomavirus 3
+92VIRUSput.4	X74480	Betapapillomavirus 3
+93VIRUSput.1	M12737	Betapapillomavirus 1
+93VIRUSput.2	M12737	Betapapillomavirus 1
+93VIRUSput.3	M12737	Betapapillomavirus 1
+93VIRUSput.4	M12737	Betapapillomavirus 1
+93VIRUSput.5	M12737	Betapapillomavirus 1
+93VIRUSput.6	M12737	Betapapillomavirus 1
+94VIRUSput.1	X74470	Betapapillomavirus 1
+94VIRUSput.2	X74470	Betapapillomavirus 1
+94VIRUSput.3	X74470	Betapapillomavirus 1
+94VIRUSput.4	X74470	Betapapillomavirus 1
+95VIRUSput.1	U31782	Betapapillomavirus 1
+95VIRUSput.2	U31782	Betapapillomavirus 1
+95VIRUSput.3	U31782	Betapapillomavirus 1
+95VIRUSput.4	U31782	Betapapillomavirus 1
+95VIRUSput.5	U31782	Betapapillomavirus 1
+95VIRUSput.6	U31782	Betapapillomavirus 1
+95VIRUSput.7	U31782	Betapapillomavirus 1
+96VIRUSput	M17463	Betapapillomavirus 1
+97VIRUSput.1	U31787	Betapapillomavirus 2
+97VIRUSput.2	U31787	Betapapillomavirus 2
+97VIRUSput.3	U31787	Betapapillomavirus 2
+97VIRUSput.4	U31787	Betapapillomavirus 2
+98VIRUSput.1	M17463	Betapapillomavirus 1
+98VIRUSput.2	M17463	Betapapillomavirus 1
+99VIRUSput.1	MF588713	Gammapapillomavirus
+99VIRUSput.2	MF588713	Gammapapillomavirus
+99VIRUSput.3	MF588713	Gammapapillomavirus
+90VIRUSput	M14119	Alphapapillomavirus 10
+91VIRUSput.1	M14119	Alphapapillomavirus 10
+91VIRUSput.2	M14119	Alphapapillomavirus 10
+91VIRUSput.3	M14119	Alphapapillomavirus 10
+94VIRUSput.2	X74470	Betapapillomavirus 1
+92VIRUSput.1	Y15173	Betapapillomavirus 3
+92VIRUSput.2	Y15173	Betapapillomavirus 3
+93VIRUSput.2	M12737	Betapapillomavirus 1
+93VIRUSput.5	M12737	Betapapillomavirus 1
+97VIRUSput.4	U31787	Betapapillomavirus 2
+95VIRUSput.4	U31782	Betapapillomavirus 1
+62VIRUSput.4	U31782	Betapapillomavirus 1
+80VIRUSput.1	MH777169	Gammapapillomavirus
+89VIRUSput	U31781	Betapapillomavirus 2
+95VIRUSput.7	U31782	Betapapillomavirus 1
+95VIRUSput.6	U31782	Betapapillomavirus 1
