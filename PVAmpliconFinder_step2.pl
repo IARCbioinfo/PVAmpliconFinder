@@ -90,7 +90,9 @@ if ( $opts{h} ) {
 #	time perl analysis_summary_HPV_Vlast.pl -i output/blast_result -o output/results -s pool -d output/vsearch -t 8 -f infofile.txt;
 
 
-my $whereiam=getcwd;
+my $whereiam=getcwd;		##	where the analysis is done
+
+my $dirname = dirname(__FILE__);	# where the script is located
 
 if($inputdirfasta!~/^\//){
 	$inputdirfasta=$whereiam."/".$inputdirfasta;
@@ -284,7 +286,7 @@ sub readinfofile{
 
 #~ cat <(sed -e '1d' download_animal_RefClone_*.csv | awk -v OFS="\t" -F"\t" '{print $1, $9, $3}') <(sed -e '1d' download_human_RefClone_*.csv | awk -v OFS="\t" -F"\t" '{print $1, $5, $2}') > pave_table.txt
 
-my $table="$whereiam/raxml/pave_table.txt";
+my $table="$dirname/raxml/pave_table.txt";
 
 my %hacctohpv=();
 my %hacctotax=();
@@ -735,7 +737,7 @@ my %taxid2gen=();
 my %taxid2spe=();
 my %taxid2fam=();
 
-my $lineage="$whereiam/databases/lineages/lineagesVirus.csv";		
+my $lineage="$dirname/databases/lineages/lineagesVirus.csv";		
 
 my $csv = Text::CSV->new ( { binary => 1 } ) or die "Cannot use CSV: ".Text::CSV->error_diag ();
 
@@ -1481,7 +1483,7 @@ sub concat_sequence{
 ##	BLASTN DATABASE DEFINITION	##
 ##################################
 my $fac = Bio::Tools::Run::StandAloneBlastPlus->new(
-   -db_data => $whereiam.'/databases/PaVE/PaVE.fasta',
+   -db_data => $dirname.'/databases/PaVE/PaVE.fasta',
    -create => 1,
    -alphabet=>'dna'
 		);
@@ -2059,25 +2061,28 @@ my $knownfasta=$outputdir."/putative_known_VIRUS.fa";
 
 #~ `raxml.sh $whereiam $newfasta $knownfasta`;
 
-mkdir $whereiam."/raxml/new";
-mkdir $whereiam."/raxml/known";
+mkdir $whereiam."/raxml" or die ($!);
+
+mkdir $whereiam."/raxml/new" or die ($!);
+mkdir $whereiam."/raxml/known" or die ($!);
+
 
 if($bol_new_empty eq "F"){
 	##	New
 	chdir "$whereiam/raxml/new";
 
-	`papara -t ../L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -s ../L1_All_genome_NUC_alignment.phylip -q $newfasta -j $threads`;
+	`papara -t $dirname/raxml/L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -s $dirname/raxml/L1_All_genome_NUC_alignment.phylip -q $newfasta -j $threads`;
 
-	`raxmlHPC-PTHREADS-AVX2 -f v -s papara_alignment.default -t ../L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -m GTRGAMMA -n new -T $threads --epa-keep-placements=1`;
+	`raxmlHPC-PTHREADS-AVX2 -f v -s papara_alignment.default $dirname/raxml/L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -m GTRGAMMA -n new -T $threads --epa-keep-placements=1`;
 }
 
 if($bol_known_empty eq "F"){
 	##	Known
 	chdir "$whereiam/raxml/known";
 
-	`papara -t ../L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -s ../L1_All_genome_NUC_alignment.phylip -q $knownfasta -j $threads`;
+	`papara -t $dirname/raxml/L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -s $dirname/raxml/L1_All_genome_NUC_alignment.phylip -q $knownfasta -j $threads`;
 
-	`raxmlHPC-PTHREADS-AVX2 -f v -s papara_alignment.default -t ../L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -m GTRGAMMA -n known -T $threads --epa-keep-placements=1`;
+	`raxmlHPC-PTHREADS-AVX2 -f v -s papara_alignment.default -t $dirname/raxml/L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -m GTRGAMMA -n known -T $threads --epa-keep-placements=1`;
 }
 
 chdir "$whereiam/raxml";
