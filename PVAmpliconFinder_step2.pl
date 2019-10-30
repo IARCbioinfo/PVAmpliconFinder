@@ -3270,7 +3270,7 @@ foreach my $file (`ls $outputdir/table_putative_*_VIRUS_RaxML.txt`){
 if(($bol_new_empty eq "F") && ($bol_known_empty eq "F")){
 		
 	for my $group (sort keys %hreadsmega_genus){
-		open(OUT, ">".$outputdir."/Table_HPV_presence_".$group."_tissu_BlastN.txt") or die "$! : $outputdir/Table_HPV_presence_${group}_tissu_BlastN.txt\n";
+		open(OUT, ">".$outputdir."/Table_Genus_presence_".$group."_tissu_BlastN.txt") or die "$! : $outputdir/Table_Genus_presence_${group}_tissu_BlastN.txt\n";
 		
 		print OUT "HPV genus\tUnique virus species\t";
 		foreach my $t (@tissues){
@@ -3317,7 +3317,7 @@ if(($bol_new_empty eq "F") && ($bol_known_empty eq "F")){
 	
 			
 	for my $group (sort keys %hreadsrax_genus){
-		open(OUT, ">".$outputdir."/Table_HPV_presence_".$group."_tissu_RaxML.txt") or die "$! : $outputdir/Table_HPV_presence_${group}_tissu_RaxML.txt\n";
+		open(OUT, ">".$outputdir."/Table_Genus_presence_".$group."_tissu_RaxML.txt") or die "$! : $outputdir/Table_Genus_presence_${group}_tissu_RaxML.txt\n";
 		
 		print OUT "HPV genus\tUnique virus species\t";
 		foreach my $t (@tissues){
@@ -3361,10 +3361,84 @@ if(($bol_new_empty eq "F") && ($bol_known_empty eq "F")){
 		}
 		close(OUT);
 	}
-	
+
+
+	for my $group (sort keys %hreadsmega){
+		open(OUT, ">".$outputdir."/Table_HPV_presence_".$group."_tissu_BlastN.txt") or die "$! : $outputdir/Table_HPV_presence_${group}_tissu_BlastN.txt\n";
+		
+		print OUT "Name\tClassification\t";
+		foreach my $t (@tissues){
+			print OUT $t;
+			for (my $p=0; $p<=$#primers; $p++){
+				print OUT "\t";
+			}
+		}
+		print OUT "\n";
+		
+		print OUT "\t\t";
+		foreach my $t (@tissues){
+			for (my $p=0; $p<=$#primers; $p++){
+				print OUT "$primers[$p]\t";
+			}
+		}
+		print OUT "\n";
+		
+		for my $hpv (sort keys %{$hreadsmega{$group}}){
+			
+			print OUT $hpv."\t".$hinfomega{$hpv}."\t";
+			
+			foreach my $t (@tissues){
+				foreach my $p (@primers){
+					my $reads="-";
+					if((defined($hreadsmega{$group}{$hpv}{$t}{$p})) && ($hreadsmega{$group}{$hpv}{$t}{$p}!~/^\s*$/)){
+						$reads=$hreadsmega{$group}{$hpv}{$t}{$p};
+					}
+					print OUT $reads."\t";
+				}
+			}
+			print OUT "\n";
+		}
+		close(OUT);
+	}
+		
+	for my $group (sort keys %hreadsrax){
+		open(OUT, ">".$outputdir."/Table_HPV_presence_".$group."_tissu_RaxML.txt") or die "$! : $outputdir/Table_HPV_presence_${group}_tissu_RaxML.txt\n";
+		
+		print OUT "Name\tClassification\t";
+		foreach my $t (@tissues){
+			print OUT $t;
+			for (my $p=0; $p<=$#primers; $p++){
+				print OUT "\t";
+			}
+		}
+		print OUT "\n";
+		
+		print OUT "\t\t";
+		foreach my $t (@tissues){
+			for (my $p=0; $p<=$#primers; $p++){
+				print OUT "$primers[$p]\t";
+			}
+		}
+		print OUT "\n";
+		
+		for my $hpv (sort keys %{$hreadsrax{$group}}){
+			
+			print OUT $hpv."\t".$hinforax{$hpv}."\t";
+			
+			foreach my $t (@tissues){
+				foreach my $p (@primers){
+					my $reads="-";
+					if((defined($hreadsrax{$group}{$hpv}{$t}{$p})) && ($hreadsrax{$group}{$hpv}{$t}{$p}!~/^\s*$/)){
+						$reads=$hreadsrax{$group}{$hpv}{$t}{$p};
+					}
+					print OUT $reads."\t";
+				}
+			}
+			print OUT "\n";
+		}
+		close(OUT);
+	}
 }
-
-
 ##################
 ##	Functions	##
 ##################
