@@ -2084,7 +2084,7 @@ else{
 
 		`papara -t $dirname/raxml/L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -s $dirname/raxml/L1_All_genome_NUC_alignment.phylip -q $newfasta -j $threads`;
 
-		`raxmlHPC-PTHREADS-AVX2 -f v -s papara_alignment.default -t $dirname/raxml/L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -m GTRGAMMA -n new -T $threads --epa-keep-placements=1`;
+		`raxmlHPC-PTHREADS-AVX -f v -s papara_alignment.default -t $dirname/raxml/L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -m GTRGAMMA -n new -T $threads --epa-keep-placements=1`;
 	}
 
 	if($bol_known_empty eq "F"){
@@ -2093,7 +2093,7 @@ else{
 
 		`papara -t $dirname/raxml/L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -s $dirname/raxml/L1_All_genome_NUC_alignment.phylip -q $knownfasta -j $threads`;
 
-		`raxmlHPC-PTHREADS-AVX2 -f v -s papara_alignment.default -t $dirname/raxml/L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -m GTRGAMMA -n known -T $threads --epa-keep-placements=1`;
+		`raxmlHPC-PTHREADS-AVX -f v -s papara_alignment.default -t $dirname/raxml/L1_All_genome_NUC_GTRGAMMA_tree_newick.nwk -m GTRGAMMA -n known -T $threads --epa-keep-placements=1`;
 	}
 
 	chdir "$whereiam/raxml";
