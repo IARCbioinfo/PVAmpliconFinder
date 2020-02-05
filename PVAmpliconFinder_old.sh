@@ -195,7 +195,7 @@ then
 	cd ${fastq_dir};
 	
 	##	Trimming TrimGalore!
-	find . -name "${suffix}*R1*.fastq" -o -name "${suffix}*R1*.fq" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'r2="${0/R1/R2}"; echo Pair : ${0} $r2; trim_galore --fastqc --length 30 --paired --retain_unpaired -o '${trim_galore}' ${0} $r2 &>>'${logfile}';';
+	find . -name "${suffix}*R1*.fastq" -o -name "${suffix}*R1*.fq" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'r2="${0/R1/R2}"; echo Pair : ${0} $r2; trim_galore --fastqc --paired --retain_unpaired -o '${trim_galore}' ${0} $r2 &>>'${logfile}';';
 	
 	cd ${trim_galore};
 	
@@ -206,13 +206,9 @@ then
 	
 	mkdir ${fastq_filtered} 2>> ${logfile};
 	
-	#~ find . -name "${suffix}*val_1.fq" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'r2="${0/val_/unpaired_}"; cat $r2 >> ${0}; mv ${0} '${fastq_filtered}';'
+	find . -name "${suffix}*val_1.fq" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'r2="${0/val_/unpaired_}"; cat $r2 >> ${0}; mv ${0} '${fastq_filtered}';'
 	
-	#~ find . -name "${suffix}*val_2.fq" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'r2="${0/val_/unpaired_}"; cat $r2 >> ${0}; mv ${0} '${fastq_filtered}';'
-	
-	find . -name "${suffix}*val_1.fq" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'mv ${0} '${fastq_filtered}';'
-	
-	find . -name "${suffix}*val_2.fq" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'mv ${0} '${fastq_filtered}';'
+	find . -name "${suffix}*val_2.fq" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'r2="${0/val_/unpaired_}"; cat $r2 >> ${0}; mv ${0} '${fastq_filtered}';'
 	
 	cd ${fastq_filtered};
 	
@@ -254,23 +250,13 @@ then
 
 	##	Merging Pairs
 	echo -e "~~	MergePair	~~";
-	find . -name "${suffix}*R1*.fq" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'r2="${0/R1/R2}"; [[ ${0} =~ \.*/*(${suffix}.*)[\._-]R1.* ]]; echo Pair : ${0} $r2 - Label : ${BASH_REMATCH[1]}; vsearch --quiet --fastq_mergepairs ${0} --reverse $r2 --threads '${threads}' --fastq_allowmergestagger --label_suffix ${BASH_REMATCH[1]} --fastqout_notmerged_fwd  '${tmpdir}/'${BASH_REMATCH[1]}_UnMFwd.fastq --fastqout_notmerged_rev '${tmpdir}/'${BASH_REMATCH[1]}_UnMRev.fastq --fastaout '${tmpdir}/'${BASH_REMATCH[1]}.fasta &>> '${logfile}';'
+	find . -name "${suffix}*R1*.fq" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'r2="${0/R1/R2}"; [[ ${0} =~ \.*/*(${suffix}.*)[\._-]R1.* ]]; echo Pair : ${0} $r2 - Label : ${BASH_REMATCH[1]}; vsearch --quiet --fastq_mergepairs ${0} --reverse $r2 --minseqlength 30 --threads '${threads}' --fastq_allowmergestagger --label_suffix ${BASH_REMATCH[1]} --fastaout '${tmpdir}/'${BASH_REMATCH[1]}.fasta &>> '${logfile}';'
+	
 	
 	cd ${tmpdir};
-	find . -name "${suffix}*_UnMFwd.fastq" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'fasta="${0/.fastq/.fasta}"; vsearch --fastx_filter ${0} --fastaout ${fasta}'
-	find . -name "${suffix}*_UnMRev.fastq" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'fasta="${0/.fastq/.fasta}"; vsearch --fastx_filter ${0} --fastaout ${fasta}'
-
-	##	Merge the UMergeFw and the UMergeRev into the merge fasta file, puis go to derep
-	
-	find . -name "${suffix}*_UnMFwd.fasta" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'merged="${0/_UnMFwd.fasta/}"; cat ${merged}.fasta ${0}  > ${merged}_merged.fasta';
-	find . -name "${suffix}*_UnMRev.fasta" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'merged="${0/_UnMRev.fasta/}"; cat ${0} >> ${merged}_merged.fasta';
-	
-	#~ THIS IS WHERE WE STOPPED YESTERDAY 
-	
-	#~ cd ${tmpdir};
 	##	Dereplication
 	echo -e "~~	Dereplicate	~~";
-	find . -name "${suffix}*_merged.fasta" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'vsearch --quiet --derep_fulllength '${tmpdir}/'${0} --sizeout --threads '${threads}' --relabel_sha1 --fasta_width 0 --minuniquesize 2 --output '${tmpdir}'/$(basename "${0/_merged.fasta/}")_lin_der.fasta --log $(basename "${0/_merged.fasta/}").log  &>> '${logfile}';'
+	find . -name "${suffix}*.fasta" | xargs --max-args=1 --max-procs=${threads} -- bash -c 'vsearch --quiet --derep_fulllength '${tmpdir}/'${0} --sizeout --threads '${threads}' --relabel_sha1 --fasta_width 0 --minuniquesize 2 --output '${tmpdir}'/$(basename "${0/.fasta/}")_lin_der.fasta --log $(basename "${0/.fasta/}").log  &>> '${logfile}';'
 
 	##	Chimerics removal
 	echo -e "~~	ChimericSeqRemoval	~~";
