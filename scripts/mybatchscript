@@ -1,0 +1,22 @@
+#!/usr/bin/bash
+#SBATCH -J "megablast"
+#SBATCH -A "NGS2_Luisa"
+#SBATCH -c 28					   ### number of files to treat 
+#SBATCH --mem=16G 				   ### blastn purpose
+#SBATCH --time=24:00:00
+#SBATCH --mail-user="lohmanne@students.iarc.fr"
+#SBATCH --mail-type=ALL
+#SBATCH	--output=PVAF-T1-%j.out                    ### %j will be replaced by the batch job id
+#SBATCH --error=PVAF-T1-%j.err                     ### %j will be replaced by the batch job id
+
+# files of the RSU analysis are in /data/icb/NGS2_Luisa_amplicon/work/RSU/files 
+#conda init
+source activate PVAmpliconFinder 
+
+/home/lohmanne/PVAmpliconFinder/PVAmpliconFinder.sh \
+	 -b nt \
+	 -s pool \
+	 -d /data/icb/NGS2_Luisa_amplicon/work/RSU/files \
+	 -o /data/icb/NGS2_Luisa_amplicon/work/RSU/results \
+	 -f /home/lohmanne/PVAmpliconFinder/data/InfoFiles_RSU \
+	 -t 28

@@ -1,0 +1,7 @@
+.Rhistory
+PVAmpliconFinder_old.sh
+PVAmpliconFinder_step2_old.pl
+data/*
+scripts/*.err
+scripts/*.out 
+scripts/raxml/*
