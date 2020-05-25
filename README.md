@@ -72,7 +72,7 @@ It is advised to use the NCBI script [update_blastdb.pl](https://www.ncbi.nlm.ni
   |-----------|---------------|
   | -d        | PATH to input fastq directory|
 
-> tests files can be found .....
+> tests files can be found [here](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA555194)
 
 ## Parameters
 
@@ -141,7 +141,7 @@ Version 1.0
 
 ## License
 
-This project is licensed under ...
+This project is licensed under GPL-3.0
 
 ## Acknowledgments
 
