@@ -14,6 +14,8 @@ The PVampliconFinder workflow is designed for the analysis of sequencing reads g
 
 [Python2.7](https://www.python.org/download/releases/2.7/) or higher and [Perl v5.22.1](https://www.perl.org/get.html) or higher are required.
 
+The tool has been created under UNIX environment, but installing [clang_osx-64](https://anaconda.org/conda-forge/clang_osx-64), [clangxx_osx-64](https://anaconda.org/conda-forge/clangxx_osx-64) and [gfortran_osx-64](https://anaconda.org/conda-forge/gfortran_osx-64) with conda should provide a functional environment on Mac.
+
 ### Automatic installation
 
 PVAmpliconFinder come with a SHELL script [PVAmplicon_install.sh](PVAmplicon_install.sh) that will proceed with the downloading and the installation of all the software required to run PVAmpliconFinder.
