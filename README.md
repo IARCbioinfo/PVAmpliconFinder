@@ -101,7 +101,7 @@ Flags are special parameters without value.
 
 ## Usage
 ```
-sh amplicon_processing_HPV_Vlast.sh [-h] [-t threads] [-b "nt" database] [-f info_file] [-i identity thershold] -s fastq_files_suffix -d input_dir -o output_dir
+sh PVAmpliconFinder.sh [-h] [-t threads] [-b "nt" database] [-f info_file] [-i identity thershold] -s fastq_files_suffix -d input_dir -o output_dir
 ```
 ## Output
 
