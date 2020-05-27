@@ -127,7 +127,7 @@ sh amplicon_processing_HPV_Vlast.sh [-h] [-t threads] [-b "nt" database] [-f inf
 
   | Name      | Email | Description     |
   |-----------|---------------|-----------------|
-  | Alexis Robitaille    | robitaillea@students.iarc.fr | Developer to contact for support (link to specific gitter chatroom) |
+  | Alexis Robitaille    | alexis.robitaille@orange.fr | Developer to contact for support |
   | Magali Olivier    | olivierm@iarc.fr |  |
   | Massimo Tommasino    | tommasinom@iarc.fr |  |
 
@@ -141,7 +141,7 @@ Version 1.0
 
 ## License
 
-This project is licensed under GPL-3.0
+This project is licensed under GPL-3.0.
 
 ## Acknowledgments
 
