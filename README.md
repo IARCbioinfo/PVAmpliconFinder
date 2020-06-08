@@ -2,9 +2,9 @@
 
 Robitaille, A., Brancaccio, R.N., Dutta, S. et al. PVAmpliconFinder: a workflow for the identification of human papillomaviruses from high-throughput amplicon sequencing. BMC Bioinformatics 21, 233 (2020). https://doi.org/10.1186/s12859-020-03573-8
 
-**PVampliconFinder** is a data analysis workflow designed to rapidly identify and classify known and potentially new *papilliomaviridae* sequences from amplicon deep-sequencing with degenerated papillomavirus (PV) primers.
-
 ## Description
+
+**PVampliconFinder** is a data analysis workflow designed to rapidly identify and classify known and potentially new *papilliomaviridae* sequences from amplicon deep-sequencing with degenerated papillomavirus (PV) primers.
 
 PVampliconFinder is based on alignment similarity metrics, but also consider molecular evolution time for an improved identification and taxonomic classification of novel PVs. The final output of the tool includes a list of fully characterized putatively new papillomaviriade sequences, as well as graphical representations of relative abundance of the virome sequence diversity in the tested samples. 
 
