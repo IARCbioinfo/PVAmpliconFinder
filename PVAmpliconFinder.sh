@@ -13,15 +13,15 @@
 ##############
 ##	USAGE	##
 ##############
-usage="$(basename "$0") [-h] [-t threads] [-b \"nt\" database] [-f info_file] [-i identity thershold] -s fastq_files_suffix -d input_dir -o output_dir -- program to process amplicon-based NGS data
+usage="$(basename "$0") [-h] [-t threads] [-b \"nt\" database] [-f info_file] [-i identity thershold] -s fastq_files_prefix -d input_dir -o output_dir -- program to process amplicon-based NGS data
 Version 1.0
-The fastq filename to process must with the same suffix (option \"-s\").
+The fastq filename to process must start with the same prefix (option \"-s\").
 The Read 1 filename must contain \"R1\" and the Read 2 filename must contain \"R2\" (the pair must otherwise have the same name).
 See README for more information about $(basename "$0") usage.
 
 where:
     -h  show this help text
-    -s	suffix of fastq filename (ex : \"pool\" or \"sample\")
+    -s	prefix of fastq filename (ex : \"pool\" or \"sample\" or \"SRR\")
     -d  PATH to input fastq directory (.fastq | .fq | .zip | .tar.gz | .gz)
     -o	PATH to output directory
     -f	file containing pool information
@@ -90,9 +90,10 @@ then
 fi
 
 if ! [[ "$identity" =~ ^[0-9]+$ ]]
-    then
-        echo -e "$usage"
-        echo -e "You must provide an integer as identity thershold for de-novo clustering"
+then
+	echo -e "$usage"
+	echo -e "You must provide an integer as identity thershold for de-novo clustering"
+	exit
 fi
 
 if [ -z "$dbnt" ]
