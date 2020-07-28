@@ -1,0 +1,9 @@
+ID	Primer set	Tissue
+pool1-skin-pathogen_S1_L001	Beta3_1	skin
+pool2-skin-pathogen_S2_L001	Beta3_2	skin
+pool3-skin-pathogen_S3_L001	FAP	skin
+pool4-skin-pathogen_S4_L001	FAPM1	skin
+pool5-skin-pathogen_S5_L001	CUT	skin
+pool6-oral-pathogen_S6_L001	FAPM1	oral
+pool7-oral-pathogen_S7_L001	FAPM2	oral
+pool8-oral-pathogen_S8_L001	CUT	oral
