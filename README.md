@@ -87,7 +87,7 @@ It is advised to use the NCBI script [update_blastdb.pl](https://www.ncbi.nlm.ni
   * #### Optional
 | Name      | Default value | Description     |
 |-----------|---------------|-----------------|
-| -f   | NA | Tabular file containing information about the samples |
+| -f   | NA | Tabular file containing information about the samples - The first line of this file must be "**ID  primer  tissue**" |
 | -b    | nt | Name of the local "nt" blast database |
 | -i	| 98	| Threshold of percentage of identity used for the de-novo centroid-based clustering	|
 | -t    | 2 | Number of threads |
