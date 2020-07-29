@@ -20,19 +20,25 @@ The tool has been created under UNIX environment, but installing [clang_osx-64](
 
 ### Automatic installation
 
-PVAmpliconFinder come with a SHELL script [PVAmplicon_install.sh](PVAmplicon_install.sh) that will proceed with the downloading and the installation of all the software required to run PVAmpliconFinder.
-
-```
-source PVAmplicon_install.sh [-h] [-p conda installation path]
-
-Description :
-
-    -h  display help
-    -p	directory installation path (will be created if not already existing) - default value : PVAmpliconFinder/program
-
-```
-
 **PVAmpliconFinder rely on [Bioconda](https://bioconda.github.io/) to install the software and associated dependencies**
+
+[Please install the version of Miniconda corresponding to your python version](https://docs.conda.io/en/latest/miniconda.html)
+
+#### Add conda channel
+```
+conda config --add channels defaults
+conda config --add channels bioconda
+conda config --add channels conda-forge
+```
+
+#### Install conda packages
+```
+conda install -y fastqc multiqc trim-galore vsearch blast raxml cap3 krona libxml2 gcc_linux-64 gxx_linux-64 gfortran_linux-64 perl-padwalker perl-xml-libxml perl-libxml-perl perl-bioperl perl-getopt-long perl-math-round perl-statistics-basic perl-list-moreutils perl-module-build perl-bioperl-run perl-text-csv
+```
+#### Add PaPaRa program to PATH
+```
+export PATH="PATH_TO_PVAMPLICONFINDER/program:$PATH"
+```
 
 > For 32bits system, [PaPaRa](https://cme.h-its.org/exelixis/web/software/papara/index.html) available binary file is not functionnal, as specified on the webpage of the tool. You need to install manually PaPara following the instruction, and put the binary file in PVAmpliconFinder/program. Note that the binary file must be named "papara".
 
