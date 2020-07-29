@@ -105,12 +105,14 @@ then
 		wget https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh
 		chmod +x ${path}/Miniconda2-latest-Linux-x86_64.sh
 		bash ${path}/Miniconda2-latest-Linux-x86_64.sh -b -p $PWD/miniconda
+		export PATH="${path}/miniconda2/bin:$PATH"
 	else
 		wget https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86.sh
 		chmod +x ${path}/Miniconda2-latest-Linux-x86.sh
 		bash ${path}/Miniconda2-latest-Linux-x86.sh -b -p $PWD/miniconda
 		echo "${RED}Please considere that under 32bits version, you need to manually install PaPaRa"
 		echo "For more information, please visit https://cme.h-its.org/exelixis/web/software/papara/index.html${NC}"
+		export PATH="${path}/miniconda2/bin:$PATH"
 	fi
 else																	##	Python version => 3.0.0
 	if [ ${MACHINE_TYPE} == 'x86_64' ]
@@ -118,12 +120,14 @@ else																	##	Python version => 3.0.0
 		wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 		chmod +x ${path}/Miniconda3-latest-Linux-x86_64.sh
 		bash ${path}/Miniconda3-latest-Linux-x86_64.sh -b -p $PWD/miniconda
+		export PATH="${path}/miniconda3/bin:$PATH"
 	else
 		wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86.sh
 		chmod +x ${path}/Miniconda3-latest-Linux-x86.sh
 		bash ${path}/Miniconda3-latest-Linux-x86.sh -b -p $PWD/miniconda
 		echo "${RED}Please considere that under 32bits version, you need to manually install PaPaRa"
 		echo "For more information, please visit https://cme.h-its.org/exelixis/web/software/papara/index.html${NC}"
+		export PATH="${path}/miniconda3/bin:$PATH"
 	fi
 fi
 
@@ -144,9 +148,9 @@ export PATH="${path}/miniconda:$PATH"
 #~ conda update -y -c defaults/label/cf201901 conda
 
 ##	Add bioconda channels
-conda config --add channels defaults/label/cf201901
-conda config --add channels bioconda/label/cf201901
-conda config --add channels conda-forge/label/cf201901
+conda config --add channels defaults
+conda config --add channels bioconda
+conda config --add channels conda-forge
 
 ##########################
 ##	Install the tools	##
