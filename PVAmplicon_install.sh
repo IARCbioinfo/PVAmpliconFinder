@@ -39,7 +39,7 @@ while getopts ':hp:' option; do
        exit 1
        ;;
    (*) echo -e "$usage"
-       exit
+       exit 1
        ;;
    esac
 done
@@ -72,6 +72,12 @@ MACHINE_TYPE=`uname -m`
 
 ##	Check if Python is installed and get the Python version
 PYTHON_VERSION=$(python -V 2>&1 | grep -Po '(?<=Python )(.+)')
+
+if [[ -z "$PYTHON_VERSION" ]]
+then
+	PYTHON_VERSION=$(python3 -V 2>&1 | grep -Po '(?<=Python )(.+)')
+fi
+
 if [[ -z "$PYTHON_VERSION" ]]
 then
     echo -e "Python is not yet installed. Please install at least Python version 2.7.0 on your machine.\n"
@@ -92,12 +98,12 @@ parsedVersion=$(echo "${PYTHON_VERSION//./}" | grep -P '^\d+' -o)
 cd ${path}
 
 ##	Install the Miciconda version corresponding to the Phyton version installed on the system
-if [[ "$parsedVersion" -lt "2700" ]]										##	Python version < 2.7.0
+if [[ "$parsedVersion" -lt "270" ]]										##	Python version < 2.7.0
 then 
     echo -e "Python is not yet installed, or the version is too old. Please install or update your current python version."
     echo -e "For more information, please visit : https://github.com/SixEl27/PVAmpliconFinder"
     exit
-elif [[ "$parsedVersion" -lt "3000" && "$parsedVersion" -ge "2700" ]]		##	Python version => 2.7.0 && Python version < 3.0.0
+elif [[ "$parsedVersion" -lt "300" && "$parsedVersion" -ge "270" ]]		##	Python version => 2.7.0 && Python version < 3.0.0
 then
 	echo -e "Downloading and installation of CONDA."
 	if [ ${MACHINE_TYPE} == 'x86_64' ]
