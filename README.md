@@ -66,9 +66,9 @@ The list of tools used by PVAmpliconFinder can be manually downloaded and instal
 
 PVAmpliconFinder need the **nt** and **taxdb** NCBI databases to work properly. You can find thoses databases at the following ftp adress : ftp://ftp.ncbi.nlm.nih.gov/blast/db/. Note that the taxonomy file must be correctly located.
 
-It is advised to use the NCBI script [update_blastdb.pl](https://www.ncbi.nlm.nih.gov/IEB/ToolBox/CPP_DOC/lxr/source/src/app/blast/update_blastdb.pl) to facilitate the installation of the databases.
+It is advised to use the NCBI script [update_blastdb.pl](https://www.ncbi.nlm.nih.gov/IEB/ToolBox/CPP_DOC/lxr/source/src/app/blast/update_blastdb.pl) to facilitate the installation of the databases. More information [here](https://www.ncbi.nlm.nih.gov/books/NBK537770/).
 
-**Once downloaded and installed, please check that the ```~/.ncbirc file``` is present and point to the correct NCBI nt database location.**
+**Once downloaded and installed, please check that the ```~/.ncbirc file``` is present and point to the correct NCBI nt database location.** More information [here](https://www.ncbi.nlm.nih.gov/books/NBK279695/).
 
 ### List of other databases
 
