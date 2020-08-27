@@ -430,11 +430,11 @@ sub loadblastresult{
 			
 			##	Parsing of the ID
 			foreach my $p (sort @pools){
-				if($qid=~/^($p)\d+;size=(\d+);*$/){
+				if($qid=~/^($p)\d+;clusterid=\d+;size=(\d+)$/){			#pool1-skin-pathogen_S1_L0011;clusterid=0;size=170654
 					$pool=$1;
 					$reads=$2;
 				}
-				elsif($qid=~/^(Undertermined)\d+;size=(\d+);*$/){
+				elsif($qid=~/^(Undertermined)\d+;clusterid=\d+;size=(\d+)$/){
 					$pool=$1;
 					$reads=$2;
 				}
@@ -1332,8 +1332,8 @@ sub concat_sequence{
 			chomp($seqstr);
 			chomp($qid);
 			
-			##	Parsing of the ID
-			if($qid=~/^($sampleName)\S+;size=(\d+);*$/){
+			##	Parsing of the ID 
+			if($qid=~/^($sampleName)\S+;clusterid=\d+;size=(\d+)$/){
 				$pool=$1;
 				$reads=$2;
 			}
@@ -1484,12 +1484,29 @@ sub concat_sequence{
 ##################################
 ##	BLASTN DATABASE DEFINITION	##
 ##################################
+#~ print $dirname.'/databases/PaVE/PaVE.fasta';
+#~ exit;
+
+my $blast_dir=$dirname.'/databases/PaVE/';
+
 my $fac = Bio::Tools::Run::StandAloneBlastPlus->new(
    -db_data => $dirname.'/databases/PaVE/PaVE.fasta',
-   -create => 1,
-   -alphabet=>'dna'
-		);
-		
+   -alphabet=>'dna',
+   -create => 1
+   );
+   
+$fac->make_db();
+
+#~ my $fac = Bio::Tools::Run::StandAloneBlastPlus->new(
+   #~ -db_data => $dirname.'/databases/PaVE/PaVE.fasta',
+   #~ -alphabet=>'dna',
+   #~ -create => 1
+   #~ );
+   
+#~ my $num_seq = $fac->db_num_sequences;	
+
+#~ print $num_seq."\n";
+
 ##########
 ##	NEW	##
 ##########
@@ -1852,6 +1869,9 @@ sub contig_build{
 				while (my $seq = $in->next_seq){
 				
 					my $id=$seq->display_id();
+					
+					#~ print $id."\n";
+					#~ print $seq->seq."\n";
 					
 					if($id eq ${$$hdatafun{$title}{$pool}}[10]){
 						#print $id."\n";
@@ -3603,6 +3623,13 @@ sub parseRaxMLv2{
 sub HPVblastn{
 	my $seqfun=shift;
 	my $outfun=shift;
+	
+	#~ print $seqfun." seqfun\n";
+	#~ print $seqfun->seq." seqfun seq\n";
+	#~ print $outfun." outfun\n";
+	
+	#~ `touch $outfun`;
+	
 	my $resultfun = $fac->blastn( -query => $seqfun,										#Faire le blast avec la sequence $seq -db_data => '/data/robitaillea/blastHPVdb/HPV.fasta',	
 			 -outfile => $outfun, 
 			 #~ -db_data => '/data/robitaillea/blastHPVdb/HPV.fasta',
@@ -3616,7 +3643,8 @@ sub HPVblastn{
 							-gapopen => '5',					#														-->	0
 							-gapextend => '2',					#														-->	2
 							] );
-							
+	
+	#~ print "reach here\n";
 	my $in2fun=Bio::SearchIO->new(	-format => 'blast',								#Ouverture en lecture du fichier de resultat blast
 								-file => $outfun);
 	return $in2fun;
